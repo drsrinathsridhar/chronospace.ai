@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XGM012JDZF"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'G-XGM012JDZF');
+    </script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brown Interaction Capture System (BRICS)</title>
+    
+    <!-- Google Font for the header -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: transparent;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Full-screen video with cover styling */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        /* Header styling for product name */
+        .header {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 2.6rem;
+            font-weight: 700; /* Bold font weight */
+            color: #333; /* Darker color for header text */
+            margin-top: 20px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.7); /* 70% opaque white background */
+            padding: 10px 20px;
+            border-radius: 8px;
+            z-index: 1;
+        }
+
+        /* Footer styling for links */
+        .footer {
+            position: fixed;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: 1rem;
+            font-family: Arial, sans-serif;
+        }
+
+        .footer a {
+            color: #00BFFF;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .footer a:hover {
+            color: #1E90FF;
+        }
+
+        /* Mute/Unmute button styling */
+        .mute-button {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 2;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Logo styling in bottom right */
+        .logo {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 2;
+            width: 100px; /* Adjust as needed */
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Video background -->
+    <video id="background-video" class="video-background" autoplay loop muted playsinline>
+        <source src="https://cs.brown.edu/people/ssrinath/brics4d/videos/teaser_lores.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- Product header at the top -->
+    <div class="header">Brown Interaction Capture System (BRICS)</div>
+
+    <!-- Footer with links -->
+    <div class="footer">
+        <a href="https://ivl.cs.brown.edu/" target="_blank">Brown IVL</a> | 
+        <a href="mailto:contact@brics4d.com">contact@brics4d.com</a>
+    </div>
+
+    <!-- Mute/Unmute Button -->
+    <button id="mute-button" class="mute-button" onclick="toggleMute()">🔇</button>
+
+    <!-- Logo in the bottom right corner -->
+    <img src="brics.jpg" alt="BRICS Logo" class="logo">
+
+    <script>
+        const video = document.getElementById('background-video');
+        const muteButton = document.getElementById('mute-button');
+
+        function toggleMute() {
+            video.muted = !video.muted;
+            muteButton.textContent = video.muted ? '🔇' : '🔊';
+        }
+    </script>
+
+</body>
+</html>

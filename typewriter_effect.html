@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typewriter Effect - Single Line with Total Duration</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #000; /* Black background */
+      color: #fff; /* White text */
+      font-family: monospace;
+      font-size: 3.4em; /* 30% larger font size */
+      text-align: center;
+      padding: 0 10%; /* Add padding for readability on narrow screens */
+    }
+    #text {
+      white-space: pre-wrap; /* Allow text to wrap if needed */
+      overflow: hidden;
+      display: inline; /* Inline display for cursor to follow text */
+    }
+    /* Blinking cursor style */
+    .cursor {
+      display: inline-block;
+      width: 0.05em;
+      height: 1em;
+      background-color: #fff;
+      animation: blink-caret 0.5s step-end infinite; /* Keep cursor blinking */
+      vertical-align: bottom; /* Align cursor with text */
+    }
+    @keyframes blink-caret {
+      50% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="text"></div> <!-- Only one element for both text and cursor -->
+
+<audio id="typewriter-sound" src="typewriter.mp3"></audio>
+
+<script>
+  const textContent = "These 3D reconstructions and \"bullet time\" videos were generated using BRICS, our spatial AI technology.";
+  const totalDuration = 5000; // 6 seconds in milliseconds
+  const totalCharacters = textContent.length;
+  const charDelay = totalDuration / totalCharacters; // Calculate delay per character
+
+  const textElement = document.getElementById("text");
+  const soundElement = document.getElementById("typewriter-sound");
+
+  let charIndex = 0;
+
+  function playSound() {
+    if (soundElement) {
+      soundElement.currentTime = 0;
+      soundElement.play().catch(error => {
+        console.log("Sound autoplay blocked or failed. Retrying...");
+        setTimeout(() => soundElement.play(), 100);
+      });
+    }
+  }
+
+  function typeWriter() {
+    if (charIndex < totalCharacters) {
+      // Add character plus cursor
+      textElement.innerHTML = textContent.substring(0, charIndex + 1) + "<span class='cursor'></span>";
+      if (textContent[charIndex] === " ") {
+        playSound(); // Play sound after each word completes
+      }
+      charIndex++;
+      setTimeout(typeWriter, charDelay); // Adjust delay based on total duration
+    } else {
+      // Keep the cursor blinking at the end after typing completes
+      textElement.innerHTML = textContent + "<span class='cursor'></span>";
+    }
+  }
+
+  // Start typing after a user click to enable sound playback
+  window.addEventListener("click", () => {
+    typeWriter();
+  }, { once: true });
+</script>
+
+</body>
+</html>
