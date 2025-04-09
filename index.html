@@ -13,7 +13,7 @@
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brown Interaction Capture System (BRICS)</title>
+    <title>Chronospace AI</title>
     
     <!-- Google Font for the header -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,7 +53,7 @@
         /* Header styling for product name */
         .header {
             font-family: 'DM Sans', sans-serif;
-            font-size: 2.6rem;
+            font-size: 3.6rem;
             font-weight: 700; /* Bold font weight */
             color: #333; /* Darker color for header text */
             margin-top: 20px;
@@ -71,7 +71,7 @@
             width: 100%;
             text-align: center;
             color: white;
-            font-size: 1rem;
+            font-size: 1.5rem;
             font-family: Arial, sans-serif;
         }
 
@@ -110,7 +110,7 @@
             bottom: 20px;
             right: 20px;
             z-index: 2;
-            width: 100px; /* Adjust as needed */
+            width: 200px; /* Adjust as needed */
             height: auto;
         }
     </style>
@@ -124,19 +124,20 @@
     </video>
 
     <!-- Product header at the top -->
-    <div class="header">Brown Interaction Capture System (BRICS)</div>
+    <div class="header">
+    <img src="chronospace.png" alt="CSAI Logo" width="800px">
+    </div>
 
     <!-- Footer with links -->
     <div class="footer">
-        <a href="https://ivl.cs.brown.edu/" target="_blank">Brown IVL</a> | 
-        <a href="mailto:contact@brics4d.com">contact@brics4d.com</a>
+        <a href="mailto:contact@chronospace.ai">contact@chronospace.ai</a>
     </div>
 
     <!-- Mute/Unmute Button -->
     <button id="mute-button" class="mute-button" onclick="toggleMute()">🔇</button>
 
     <!-- Logo in the bottom right corner -->
-    <img src="brics.jpg" alt="BRICS Logo" class="logo">
+    <!--<img src="chronospace.jpg" alt="CSAI Logo" class="logo">-->
 
     <script>
         const video = document.getElementById('background-video');
