@@ -537,6 +537,16 @@ a:hover {
     }
 }
 
+.mobile-break-closing {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-break-closing {
+        display: inline;
+    }
+}
+
 /* Collaboration Types */
 .collaboration-type {
     margin-bottom: 2rem;
@@ -940,8 +950,8 @@ a:hover {
     }
 
     .content-container {
-        padding: 4rem 2.5rem;
-        max-width: 88%;
+        padding: 4rem 1.5rem;
+        max-width: 95%;
     }
 
     .contact-actions {
