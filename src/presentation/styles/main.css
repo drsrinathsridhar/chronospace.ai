@@ -772,10 +772,10 @@ a:hover {
 }
 
 .pagination-dot {
-    width: 6px;
-    height: 6px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
-    background: rgba(84, 250, 236, 0.25);
+    background: rgba(84, 250, 236, 0.35);
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -783,13 +783,13 @@ a:hover {
 }
 
 .pagination-dot:hover {
-    background: rgba(84, 250, 236, 0.5);
+    background: rgba(84, 250, 236, 0.65);
 }
 
 .pagination-dot.active {
-    background: rgba(84, 250, 236, 0.7);
-    width: 8px;
-    height: 8px;
+    background: rgba(84, 250, 236, 0.85);
+    width: 9px;
+    height: 9px;
 }
 
 .pagination-dot.mobile-only {
