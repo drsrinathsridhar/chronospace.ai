@@ -149,38 +149,74 @@
                 <p class="section-subheading">Dive deeper into ChronoSpace AI</p>
                 <div class="text-block">
 
-                    <div class="article-grid">
-                        <article class="article-card">
-                            <a href="https://www.linkedin.com/pulse/spatial-ai-blind-were-giving-eyes-paul-walborsky-kxyxc/?trackingId=HcavpmfCQfWKfsresnhbeA%3D%3D" target="_blank" rel="noopener" class="article-card-link">
-                                <div class="article-thumbnail">
-                                    <img src="assets/images/thumb-reality.png" alt="AI Is Blind. We're Giving It Eyes.">
-                                </div>
-                                <div class="article-content">
-                                    <h4 class="article-title">Giving AI Eyes to Reality <span class="external-link-icon">↗</span></h4>
-                                    <p class="article-description">Unlocking Spatial AI for mission-critical applications</p>
-                                    <div class="article-meta">
-                                        <span class="article-author">Paul Walborsky</span>
-                                        <span class="article-date">October 6, 2025</span>
-                                    </div>
-                                </div>
-                            </a>
-                        </article>
+                    <div class="article-carousel-wrapper">
+                        <button class="carousel-nav carousel-nav-left" id="carousel-prev" aria-label="Previous articles">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
 
-                        <article class="article-card">
-                            <a href="https://www.linkedin.com/pulse/geometry-what-you-need-raw-material-power-next-ai-wave-paul-walborsky-zkjwc/?trackingId=V1bhFYg%2FQ6i6I9uF%2BHCFqQ%3D%3D" target="_blank" rel="noopener" class="article-card-link">
-                                <div class="article-thumbnail">
-                                    <img src="assets/images/thumb-geo.png" alt="Geometry Is What You Need">
-                                </div>
-                                <div class="article-content">
-                                    <h4 class="article-title">Geometry Is What You Need <span class="external-link-icon">↗</span></h4>
-                                    <p class="article-description">How real-world 4D data unlocks Spatial AI</p>
-                                    <div class="article-meta">
-                                        <span class="article-author">Paul Walborsky</span>
-                                        <span class="article-date">August 7, 2025</span>
+                        <div class="article-grid" id="article-carousel">
+                            <article class="article-card">
+                                <a href="https://www.linkedin.com/pulse/spatial-ai-blind-were-giving-eyes-paul-walborsky-kxyxc/?trackingId=HcavpmfCQfWKfsresnhbeA%3D%3D" target="_blank" rel="noopener" class="article-card-link">
+                                    <div class="article-thumbnail">
+                                        <img src="assets/images/thumb-reality.png" alt="AI Is Blind. We're Giving It Eyes.">
                                     </div>
-                                </div>
-                            </a>
-                        </article>
+                                    <div class="article-content">
+                                        <h4 class="article-title">Giving AI Eyes to Reality <span class="external-link-icon">↗</span></h4>
+                                        <p class="article-description">Unlocking Spatial AI for mission-critical applications</p>
+                                        <div class="article-meta">
+                                            <span class="article-author">Paul Walborsky</span>
+                                            <span class="article-date">October 6, 2025</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </article>
+
+                            <article class="article-card">
+                                <a href="https://www.linkedin.com/pulse/geometry-what-you-need-raw-material-power-next-ai-wave-paul-walborsky-zkjwc/?trackingId=V1bhFYg%2FQ6i6I9uF%2BHCFqQ%3D%3D" target="_blank" rel="noopener" class="article-card-link">
+                                    <div class="article-thumbnail">
+                                        <img src="assets/images/thumb-geo.png" alt="Geometry Is What You Need">
+                                    </div>
+                                    <div class="article-content">
+                                        <h4 class="article-title">Geometry Is What You Need <span class="external-link-icon">↗</span></h4>
+                                        <p class="article-description">How real-world 4D data unlocks Spatial AI</p>
+                                        <div class="article-meta">
+                                            <span class="article-author">Paul Walborsky</span>
+                                            <span class="article-date">August 7, 2025</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </article>
+
+                            <article class="article-card">
+                                <a href="https://www.brown.edu/news/2025-09-25/brown-faculty-inventors-showcase-new-technologies" target="_blank" rel="noopener" class="article-card-link">
+                                    <div class="article-thumbnail">
+                                        <img src="assets/images/thumb-demoday.jpg" alt="Brown Faculty Inventors Showcase New Technologies">
+                                    </div>
+                                    <div class="article-content">
+                                        <h4 class="article-title">Brown Faculty Inventors Showcase New Technologies <span class="external-link-icon">↗</span></h4>
+                                        <p class="article-description">Featuring ChronoSpace AI at Brown's Innovation Showcase</p>
+                                        <div class="article-meta">
+                                            <span class="article-author">Brown University</span>
+                                            <span class="article-date">September 25, 2025</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </article>
+                        </div>
+
+                        <button class="carousel-nav carousel-nav-right" id="carousel-next" aria-label="Next articles">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="carousel-pagination" id="carousel-dots">
+                        <button class="pagination-dot active" data-index="0" aria-label="Go to page 1"></button>
+                        <button class="pagination-dot" data-index="1" aria-label="Go to page 2"></button>
+                        <button class="pagination-dot mobile-only" data-index="2" aria-label="Go to page 3"></button>
                     </div>
                 </div>
             </section>

@@ -582,11 +582,29 @@ a:hover {
     transition: opacity 0.6s ease;
 }
 
-.article-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
+/* Carousel Wrapper */
+.article-carousel-wrapper {
+    position: relative;
     margin-top: 2rem;
+}
+
+.article-grid {
+    display: flex;
+    gap: 2rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-snap-type: x mandatory;
+}
+
+.article-grid::-webkit-scrollbar {
+    display: none;
+}
+
+.article-grid .article-card {
+    flex: 0 0 calc(50% - 1rem);
+    scroll-snap-align: start;
 }
 
 .article-card {
@@ -694,6 +712,88 @@ a:hover {
 .article-author,
 .article-date {
     font-size: 0.85rem;
+}
+
+/* Carousel Navigation Arrows */
+.carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+    color: #54FAEC;
+    opacity: 0.6;
+}
+
+.carousel-nav:hover {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.15);
+}
+
+.carousel-nav:active {
+    transform: translateY(-50%) scale(0.9);
+}
+
+.carousel-nav-left {
+    left: -40px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.carousel-nav-left.visible {
+    opacity: 0.6;
+    pointer-events: auto;
+}
+
+.carousel-nav-right {
+    right: -40px;
+}
+
+.carousel-nav-right.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Carousel Pagination Dots */
+.carousel-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 2rem;
+}
+
+.pagination-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(84, 250, 236, 0.25);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.pagination-dot:hover {
+    background: rgba(84, 250, 236, 0.5);
+}
+
+.pagination-dot.active {
+    background: rgba(84, 250, 236, 0.7);
+    width: 8px;
+    height: 8px;
+}
+
+.pagination-dot.mobile-only {
+    display: none;
 }
 
 /* Final CTA Section */
@@ -979,8 +1079,35 @@ a:hover {
     }
 
     .article-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
+        gap: 1rem;
+        padding: 0 0.5rem;
+    }
+
+    .article-grid .article-card {
+        flex: 0 0 85%;
+    }
+
+    .carousel-nav {
+        display: none;
+    }
+
+    .carousel-pagination {
+        margin-top: 1.5rem;
+        gap: 8px;
+    }
+
+    .pagination-dot {
+        width: 6px;
+        height: 6px;
+    }
+
+    .pagination-dot.active {
+        width: 8px;
+        height: 8px;
+    }
+
+    .pagination-dot.mobile-only {
+        display: flex;
     }
 
     .collaboration-grid {

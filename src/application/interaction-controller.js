@@ -1,11 +1,17 @@
 class InteractionController {
     constructor() {
         this.collapseTriggers = document.querySelectorAll('.collapse-trigger');
+        this.carousel = document.getElementById('article-carousel');
+        this.prevBtn = document.getElementById('carousel-prev');
+        this.nextBtn = document.getElementById('carousel-next');
+        this.paginationDots = document.querySelectorAll('.pagination-dot');
         this.init();
     }
 
     init() {
         this.bindCollapseEvents();
+        this.bindCarouselEvents();
+        this.bindPaginationEvents();
     }
 
     bindCollapseEvents() {
@@ -35,6 +41,102 @@ class InteractionController {
             trigger.classList.remove('collapsed');
             if (icon) icon.textContent = '−';
         }
+    }
+
+    bindCarouselEvents() {
+        if (!this.carousel || !this.prevBtn || !this.nextBtn) return;
+
+        this.nextBtn.addEventListener('click', () => this.scrollCarousel('next'));
+        this.prevBtn.addEventListener('click', () => this.scrollCarousel('prev'));
+        this.carousel.addEventListener('scroll', () => this.updateArrowVisibility());
+
+        // Initial arrow state
+        this.updateArrowVisibility();
+    }
+
+    scrollCarousel(direction) {
+        const scrollAmount = this.carousel.offsetWidth;
+        const newScrollLeft = direction === 'next'
+            ? this.carousel.scrollLeft + scrollAmount
+            : this.carousel.scrollLeft - scrollAmount;
+
+        this.carousel.scrollTo({
+            left: newScrollLeft,
+            behavior: 'smooth'
+        });
+    }
+
+    updateArrowVisibility() {
+        const scrollLeft = this.carousel.scrollLeft;
+        const maxScroll = this.carousel.scrollWidth - this.carousel.clientWidth;
+
+        // Show/hide left arrow
+        if (scrollLeft > 10) {
+            this.prevBtn.classList.add('visible');
+        } else {
+            this.prevBtn.classList.remove('visible');
+        }
+
+        // Show/hide right arrow
+        if (scrollLeft < maxScroll - 10) {
+            this.nextBtn.classList.remove('hidden');
+        } else {
+            this.nextBtn.classList.add('hidden');
+        }
+
+        // Update pagination dots
+        this.updatePaginationDots();
+    }
+
+    bindPaginationEvents() {
+        if (!this.paginationDots.length) return;
+
+        this.paginationDots.forEach(dot => {
+            dot.addEventListener('click', (e) => {
+                const index = parseInt(e.currentTarget.getAttribute('data-index'));
+                this.scrollToArticle(index);
+            });
+        });
+    }
+
+    scrollToArticle(index) {
+        const cards = this.carousel.querySelectorAll('.article-card');
+        if (cards[index]) {
+            cards[index].scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+                inline: 'start'
+            });
+        }
+    }
+
+    updatePaginationDots() {
+        const scrollLeft = this.carousel.scrollLeft;
+        const cards = this.carousel.querySelectorAll('.article-card');
+
+        if (!cards.length) return;
+
+        // Find which card is most visible
+        let currentIndex = 0;
+        let minDistance = Infinity;
+
+        cards.forEach((card, index) => {
+            const cardLeft = card.offsetLeft;
+            const distance = Math.abs(scrollLeft - cardLeft);
+
+            if (distance < minDistance) {
+                minDistance = distance;
+                currentIndex = index;
+            }
+        });
+
+        this.paginationDots.forEach((dot, index) => {
+            if (index === currentIndex) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
     }
 }
 
