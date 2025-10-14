@@ -667,6 +667,7 @@ a:hover {
     color: #54FAEC;
     margin-bottom: 0.5rem;
     line-height: 1.3;
+    letter-spacing: -0.012em;
     transition: color 0.2s ease;
 }
 
