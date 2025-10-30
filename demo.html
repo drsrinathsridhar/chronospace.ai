@@ -25,9 +25,23 @@
         .video-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(84, 250, 236, 0.1); border-radius: 8px; padding: 1rem; transition: transform 0.3s ease, border-color 0.3s ease; }
         .video-card:hover { transform: translateY(-4px); border-color: rgba(84, 250, 236, 0.3); box-shadow: 0 8px 24px rgba(84, 250, 236, 0.1); }
         .video-card .video-embed { position: relative; padding-top: 56.25%; background: rgba(0,0,0,0.3); border-radius: 6px; overflow: hidden; }
-        .video-card iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+        .video-card iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; pointer-events: none; }
         .video-title { font-size: clamp(1.05rem, 2.2vw, 1.2rem); color: #54FAEC; margin-top: 0.85rem; margin-bottom: 0.3rem; font-weight: 500; letter-spacing: -0.002em; }
         .video-card .article-description { margin-top: 0.75rem; }
+        /* Click-to-enlarge overlay */
+        .enlarge-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.08); backdrop-filter: blur(1px); color: #54FAEC; opacity: 0; transition: opacity 0.2s ease; cursor: pointer; border: none; }
+        .video-card:hover .enlarge-overlay, .enlarge-overlay:focus-visible { opacity: 1; }
+        .enlarge-overlay .overlay-inner { display: flex; gap: 0.6rem; align-items: center; padding: 0.6rem 0.9rem; border-radius: 999px; background: rgba(0,0,0,0.35); border: 1px solid rgba(84, 250, 236, 0.25); }
+        .enlarge-overlay span.label { font-size: 0.95rem; color: #E8FFFC; }
+        .enlarge-overlay svg { width: 18px; height: 18px; color: #54FAEC; }
+        /* Lightbox modal */
+    .video-lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: none; align-items: center; justify-content: center; z-index: 3000; padding: 1rem; }
+        .video-lightbox.open { display: flex; }
+    .video-lightbox .lightbox-content { position: relative; width: min(80vw, 1100px); aspect-ratio: 16 / 9; background: #000; border-radius: 10px; overflow: hidden; border: 1px solid rgba(84, 250, 236, 0.25); box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .video-lightbox iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+        .video-lightbox .close-btn { position: absolute; top: 10px; right: 12px; background: rgba(0,0,0,0.5); color: #E8FFFC; border: 1px solid rgba(84, 250, 236, 0.35); border-radius: 6px; padding: 6px 10px; cursor: pointer; z-index: 10; transition: all 0.2s ease; }
+        .video-lightbox .close-btn:hover { background: rgba(0,0,0,0.7); border-color: rgba(84, 250, 236, 0.6); }
+        @media (max-width: 768px) { .video-lightbox .lightbox-content { width: 96vw; } }
     </style>
     
     <style>
@@ -59,6 +73,12 @@
                     <div class="video-card">
                         <div class="video-embed">
                             <!-- Replace data-youtube-id or src with actual link -->
+                            <button class="enlarge-overlay" type="button" aria-label="Play video in large view">
+                                <span class="overlay-inner" aria-hidden="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                                    <span class="label">Play</span>
+                                </span>
+                            </button>
                             <iframe
                                 src="https://www.youtube-nocookie.com/embed/_-LZKMHyu-4"
                                 title="Our Capture Rig Compared to Existing Rigs"
@@ -75,6 +95,12 @@
                     <div class="video-card">
                         <div class="video-embed">
                             <!-- Replace data-youtube-id or src with actual link -->
+                            <button class="enlarge-overlay" type="button" aria-label="Play video in large view">
+                                <span class="overlay-inner" aria-hidden="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                                    <span class="label">Play</span>
+                                </span>
+                            </button>
                             <iframe
                                 src="https://www.youtube-nocookie.com/embed/PD_f7wVRs4o"
                                 title="Captured Data Samples &amp; Diversity"
@@ -91,6 +117,12 @@
                     <div class="video-card">
                         <div class="video-embed">
                             <!-- Replace data-youtube-id or src with actual link -->
+                            <button class="enlarge-overlay" type="button" aria-label="Play video in large view">
+                                <span class="overlay-inner" aria-hidden="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                                    <span class="label">Play</span>
+                                </span>
+                            </button>
                             <iframe
                                 src="https://www.youtube-nocookie.com/embed/Ky6Mw9vANKA"
                                 title="Our 4D Reconstructions and North Star"
@@ -107,6 +139,12 @@
                     <div class="video-card">
                         <div class="video-embed">
                             <!-- Replace data-youtube-id or src with actual link -->
+                            <button class="enlarge-overlay" type="button" aria-label="Play video in large view">
+                                <span class="overlay-inner" aria-hidden="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                                    <span class="label">Play</span>
+                                </span>
+                            </button>
                             <iframe
                                 src="https://www.youtube-nocookie.com/embed/Ui50u1pWvKE"
                                 title="Foundation Model Generalization on Synthetic Data"
@@ -122,6 +160,14 @@
             </section>
         </div>
     </main>
+
+    <!-- Lightbox Modal -->
+    <div class="video-lightbox" id="video-lightbox" aria-hidden="true" role="dialog" aria-label="Video preview">
+        <div class="lightbox-content">
+            <button class="close-btn" id="lightbox-close" aria-label="Close video">✕</button>
+            <iframe id="lightbox-iframe" src="" allow="autoplay; encrypted-media; picture-in-picture; accelerometer; gyroscope" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+    </div>
 
     <footer class="footer">
         <div class="footer-divider"></div>
@@ -139,5 +185,49 @@
     <script src="src/presentation/scripts/main.js"></script>
     <script src="src/application/scroll-controller.js"></script>
     <script src="src/application/interaction-controller.js"></script>
+    
+    <!-- Page-scoped lightbox behavior -->
+    <script>
+    (function() {
+        const lightbox = document.getElementById('video-lightbox');
+        const iframe = document.getElementById('lightbox-iframe');
+        const closeBtn = document.getElementById('lightbox-close');
+
+        function openLightbox(baseUrl) {
+            if (!baseUrl) return;
+            const sep = baseUrl.includes('?') ? '&' : '?';
+            const src = `${baseUrl}${sep}autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+            iframe.src = src;
+            lightbox.classList.add('open');
+            lightbox.setAttribute('aria-hidden', 'false');
+            document.documentElement.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            iframe.src = '';
+            lightbox.classList.remove('open');
+            lightbox.setAttribute('aria-hidden', 'true');
+            document.documentElement.style.overflow = '';
+            document.body.style.overflow = '';
+        }
+
+        // Click handlers for each embed overlay
+        document.querySelectorAll('.video-card .video-embed').forEach(embed => {
+            const smallIframe = embed.querySelector('iframe');
+            const baseUrl = smallIframe ? smallIframe.getAttribute('src') : '';
+            embed.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                openLightbox(baseUrl);
+            });
+        });
+
+        // Close interactions
+        if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+        if (lightbox) lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox(); });
+    })();
+    </script>
 </body>
 </html>
