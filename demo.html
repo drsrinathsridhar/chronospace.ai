@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0a0618">
+    <title>Demo – ChronoSpace AI</title>
+    <meta name="description" content="ChronoSpace AI demo page with embedded videos.">
+    <!-- Prevent indexing -->
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <meta name="googlebot" content="noindex, nofollow">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="icon" href="assets/images/logo-light.png" media="(prefers-color-scheme: light)">
+    <link rel="icon" href="assets/images/logo-dark.png" media="(prefers-color-scheme: dark)">
+    <link rel="apple-touch-icon" href="assets/images/logo-light.png">
+    <link rel="stylesheet" href="src/presentation/styles/main.css">
+    
+    <!-- Page-specific minimal styles to match theme and ensure responsive embeds -->
+    <style>
+        .video-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; }
+        @media (max-width: 768px) { .video-grid { grid-template-columns: 1fr; gap: 1.25rem; } }
+        .video-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(84, 250, 236, 0.1); border-radius: 8px; padding: 1rem; transition: transform 0.3s ease, border-color 0.3s ease; }
+        .video-card:hover { transform: translateY(-4px); border-color: rgba(84, 250, 236, 0.3); box-shadow: 0 8px 24px rgba(84, 250, 236, 0.1); }
+        .video-card .video-embed { position: relative; padding-top: 56.25%; background: rgba(0,0,0,0.3); border-radius: 6px; overflow: hidden; }
+        .video-card iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+        .video-title { font-size: clamp(1.05rem, 2.2vw, 1.2rem); color: #54FAEC; margin-top: 0.85rem; margin-bottom: 0.3rem; font-weight: 500; letter-spacing: -0.002em; }
+        .video-card .article-description { margin-top: 0.75rem; }
+    </style>
+    
+    <style>
+        /* Enlarge content width on this page so video previews are bigger on desktop */
+        .demo-page .content-container { max-width: 1100px; }
+    </style>
+</head>
+<body class="demo-page">
+    <div class="scroll-indicator"></div>
+
+    <main class="main-content" id="content">
+        <div class="content-container">
+            <!-- Top Logo -->
+            <section class="logo-section visible" aria-label="ChronoSpace AI">
+                <div class="logo" style="text-align:center; margin-bottom: 2rem;">
+                    <a href="/" aria-label="Back to home">
+                        <img src="assets/images/logo-white.svg" alt="ChronoSpace AI" class="logo-svg">
+                    </a>
+                </div>
+            </section>
+
+            <!-- Demo Videos -->
+            <section class="demo-videos-section visible" aria-labelledby="demo-videos-title">
+                <h3 id="demo-videos-title">Demo Videos</h3>
+                <!-- <p class="section-subheading">Embeds with captions — links and text to be provided</p> -->
+
+                <div class="video-grid">
+                    <!-- Video 1 -->
+                    <div class="video-card">
+                        <div class="video-embed">
+                            <!-- Replace data-youtube-id or src with actual link -->
+                            <iframe
+                                src="https://www.youtube-nocookie.com/embed/_-LZKMHyu-4"
+                                title="Our Capture Rig Compared to Existing Rigs"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                loading="lazy" allowfullscreen>
+                            </iframe>
+                        </div>
+                        <h4 class="video-title">Our Capture Rig Compared to Existing Rigs</h4>
+                        <p class="article-description">The low cost and portability of our wireless rigs enables us to capture data anywhere we like.</p>
+                    </div>
+
+                    <!-- Video 2 -->
+                    <div class="video-card">
+                        <div class="video-embed">
+                            <!-- Replace data-youtube-id or src with actual link -->
+                            <iframe
+                                src="https://www.youtube-nocookie.com/embed/PD_f7wVRs4o"
+                                title="Captured Data Samples &amp; Diversity"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                loading="lazy" allowfullscreen>
+                            </iframe>
+                        </div>
+                        <h4 class="video-title">Captured Data Samples &amp; Diversity</h4>
+                        <p class="article-description">We have captured diverse scenes including sports, restaurants, homes, kitchens, and shop floors.</p>
+                    </div>
+
+                    <!-- Video 3 -->
+                    <div class="video-card">
+                        <div class="video-embed">
+                            <!-- Replace data-youtube-id or src with actual link -->
+                            <iframe
+                                src="https://www.youtube-nocookie.com/embed/Ky6Mw9vANKA"
+                                title="Our 4D Reconstructions and North Star"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                loading="lazy" allowfullscreen>
+                            </iframe>
+                        </div>
+                        <h4 class="video-title">Our 4D Reconstructions and North Star</h4>
+                        <p class="article-description">This video shows 4D reconstruction results produced from our portable capture system, and vision for our foundation model.</p>
+                    </div>
+
+                    <!-- Video 4 -->
+                    <div class="video-card">
+                        <div class="video-embed">
+                            <!-- Replace data-youtube-id or src with actual link -->
+                            <iframe
+                                src="https://www.youtube-nocookie.com/embed/Ui50u1pWvKE"
+                                title="Foundation Model Generalization on Synthetic Data"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                loading="lazy" allowfullscreen>
+                            </iframe>
+                        </div>
+                        <h4 class="video-title">Foundation Model Generalization on Synthetic Data</h4>
+                        <p class="article-description">We have demonstrated the generalization capabilities and fidelity of our model on synthetic data. Every object above is a Gaussian Splat directly produced by our foundation model.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-divider"></div>
+        <div class="footer-content">
+            <p class="footer-text">ChronoSpace AI, Inc. 2025</p>
+            <div class="footer-social">
+                <span class="footer-follow">Follow on</span>
+                <a href="https://www.linkedin.com/company/chronospace-ai" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+                <span class="footer-separator">•</span>
+                <a href="https://x.com/chronospaceai" target="_blank" rel="noopener" class="footer-link">X</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="src/presentation/scripts/main.js"></script>
+    <script src="src/application/scroll-controller.js"></script>
+    <script src="src/application/interaction-controller.js"></script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+# Robots exclusion for ChronoSpace AI
+# We intentionally block indexing of the demo page
+User-agent: *
+Disallow: /demo.html
