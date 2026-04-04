@@ -10,202 +10,172 @@
 
   gtag('config', 'G-9P2J929L7B');
 </script>
-    
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#0a0618">
-    <title>ChronoSpace AI – Demo Videos</title>
+    <meta name="theme-color" content="#000000">
+    <title>ChronoSpace AI - Digitizing the 4D Physical World</title>
     <meta name="description" content="ChronoSpace AI demo page with embedded videos.">
-    <!-- Prevent indexing -->
     <meta name="robots" content="noindex, nofollow, noarchive">
     <meta name="googlebot" content="noindex, nofollow">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="assets/images/logo-light.png" media="(prefers-color-scheme: light)">
     <link rel="icon" href="assets/images/logo-dark.png" media="(prefers-color-scheme: dark)">
     <link rel="apple-touch-icon" href="assets/images/logo-light.png">
     <link rel="stylesheet" href="src/presentation/styles/main.css">
-    
-    <!-- Page-specific minimal styles to match theme and ensure responsive embeds -->
-    <style>
-        .video-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; }
-        @media (max-width: 768px) { .video-grid { grid-template-columns: 1fr; gap: 1.25rem; } }
-        .video-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(84, 250, 236, 0.1); border-radius: 8px; padding: 1rem; transition: transform 0.3s ease, border-color 0.3s ease; }
-        .video-card:hover { transform: translateY(-4px); border-color: rgba(84, 250, 236, 0.3); box-shadow: 0 8px 24px rgba(84, 250, 236, 0.1); }
-        .video-card .video-embed { position: relative; padding-top: 56.25%; background: rgba(0,0,0,0.3); border-radius: 6px; overflow: hidden; }
-        .video-card iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; pointer-events: none; }
-        .video-title { font-size: clamp(1.05rem, 2.2vw, 1.2rem); color: #54FAEC; margin-top: 0.85rem; margin-bottom: 0.3rem; font-weight: 500; letter-spacing: -0.002em; }
-        .video-card .article-description { margin-top: 0.75rem; }
-        /* Click-to-enlarge overlay */
-        .enlarge-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.08); backdrop-filter: blur(1px); color: #54FAEC; opacity: 0; transition: opacity 0.2s ease; cursor: pointer; border: none; }
-        .video-card:hover .enlarge-overlay, .enlarge-overlay:focus-visible { opacity: 1; }
-        .enlarge-overlay .overlay-inner { display: flex; gap: 0.6rem; align-items: center; padding: 0.6rem 0.9rem; border-radius: 999px; background: rgba(0,0,0,0.35); border: 1px solid rgba(84, 250, 236, 0.25); }
-        .enlarge-overlay span.label { font-size: 0.95rem; color: #E8FFFC; }
-        .enlarge-overlay svg { width: 18px; height: 18px; color: #54FAEC; }
-        /* Lightbox modal */
-    .video-lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: none; align-items: center; justify-content: center; z-index: 3000; padding: 1rem; }
-        .video-lightbox.open { display: flex; }
-    .video-lightbox .lightbox-content { position: relative; width: min(80vw, 1100px); aspect-ratio: 16 / 9; background: #000; border-radius: 10px; overflow: hidden; border: 1px solid rgba(84, 250, 236, 0.25); box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
-        .video-lightbox iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-        .video-lightbox .close-btn { position: absolute; top: 10px; right: 12px; background: rgba(0,0,0,0.5); color: #E8FFFC; border: 1px solid rgba(84, 250, 236, 0.35); border-radius: 6px; padding: 6px 10px; cursor: pointer; z-index: 10; transition: all 0.2s ease; }
-        .video-lightbox .close-btn:hover { background: rgba(0,0,0,0.7); border-color: rgba(84, 250, 236, 0.6); }
-        @media (max-width: 768px) { .video-lightbox .lightbox-content { width: 96vw; } }
-    </style>
-    
-    <style>
-        /* Enlarge content width on this page so video previews are bigger on desktop */
-        .demo-page .content-container { max-width: 1100px; }
-    </style>
+    <link rel="stylesheet" href="src/presentation/styles/demo.css">
 </head>
-<body class="demo-page">
-    <div class="scroll-indicator"></div>
+<body>
+    <div class="ambient-glow"></div>
 
-    <main class="main-content" id="content">
-        <div class="content-container">
-            <!-- Top Logo -->
-            <section class="logo-section visible" aria-label="ChronoSpace AI">
-                <div class="logo" style="text-align:center; margin-bottom: 2rem;">
-                    <a href="/" aria-label="Back to home">
-                        <img src="assets/images/logo-white.svg" alt="ChronoSpace AI" class="logo-svg">
-                    </a>
+    <div class="demo-wrapper">
+        <!-- Header -->
+        <header class="demo-header">
+            <a href="/" class="demo-logo-link" aria-label="Back to home">
+                <img src="assets/images/logo-white-transparent.png" alt="ChronoSpace AI" class="demo-logo-img">
+                <span class="demo-logo-text">ChronoSpace AI</span>
+            </a>
+        </header>
+
+        <!-- Title -->
+        <section class="demo-title-section">
+            <h1 class="demo-title">Demo</h1>
+        </section>
+
+        <!-- Video Grid -->
+        <section class="demo-grid">
+            <!-- Video 0: Mission -->
+            <div class="demo-card">
+                <div class="demo-video-embed">
+                    <iframe
+                        src="https://drive.google.com/file/d/1PiHJud1xh7iHAapBqltsUdNgJaPRPxU9/preview"
+                        title="The ChronoSpace AI Mission"
+                        allow="autoplay; encrypted-media"
+                        loading="lazy" allowfullscreen>
+                    </iframe>
                 </div>
-            </section>
-
-            <!-- Demo Videos -->
-            <section class="demo-videos-section visible" aria-labelledby="demo-videos-title">
-                <h3 id="demo-videos-title">Demo Videos</h3>
-                <!-- <p class="section-subheading">Embeds with captions — links and text to be provided</p> -->
-
-                <div class="video-grid">
-                    <!-- Video 3 -->
-                    <div class="video-card">
-                        <div class="video-embed">
-                            <!-- Replace data-youtube-id or src with actual link -->
-                            <button class="enlarge-overlay" type="button" aria-label="Play video in large view">
-                                <span class="overlay-inner" aria-hidden="true">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                                    <span class="label">Play</span>
-                                </span>
-                            </button>
-                            <iframe
-                                src="https://www.youtube-nocookie.com/embed/Ky6Mw9vANKA"
-                                title="Our 4D Reconstructions and North Star"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                referrerpolicy="strict-origin-when-cross-origin"
-                                loading="lazy" allowfullscreen>
-                            </iframe>
-                        </div>
-                        <h4 class="video-title">Our 4D Reconstructions and North Star</h4>
-                        <p class="article-description">This video shows 4D reconstruction results produced from our portable capture system, and vision for our foundation model that is trained directly on 4D geometry-native data.</p>
+                <div class="demo-card-body">
+                    <div class="demo-card-header">
+                        <h3 class="demo-card-title">The ChronoSpace AI Mission</h3>
+                        <button class="demo-expand-btn" data-src="https://drive.google.com/file/d/1PiHJud1xh7iHAapBqltsUdNgJaPRPxU9/preview" aria-label="Expand video">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+                        </button>
                     </div>
-                  
-                    <!-- Video 1 -->
-                    <div class="video-card">
-                        <div class="video-embed">
-                            <!-- Replace data-youtube-id or src with actual link -->
-                            <button class="enlarge-overlay" type="button" aria-label="Play video in large view">
-                                <span class="overlay-inner" aria-hidden="true">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                                    <span class="label">Play</span>
-                                </span>
-                            </button>
-                            <iframe
-                                src="https://www.youtube-nocookie.com/embed/_-LZKMHyu-4"
-                                title="Our Capture Rig Compared to Existing Rigs"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                referrerpolicy="strict-origin-when-cross-origin"
-                                loading="lazy" allowfullscreen>
-                            </iframe>
-                        </div>
-                        <h4 class="video-title">Our Capture Rig Compared to Existing Rigs</h4>
-                        <p class="article-description">The low cost and portability of our wireless rigs enables us to capture 4D geometry-native data anywhere.</p>
-                    </div>
-
-                    <!-- Video 2 -->
-                    <div class="video-card">
-                        <div class="video-embed">
-                            <!-- Replace data-youtube-id or src with actual link -->
-                            <button class="enlarge-overlay" type="button" aria-label="Play video in large view">
-                                <span class="overlay-inner" aria-hidden="true">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                                    <span class="label">Play</span>
-                                </span>
-                            </button>
-                            <iframe
-                                src="https://www.youtube-nocookie.com/embed/PD_f7wVRs4o"
-                                title="Captured Data Samples &amp; Diversity"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                referrerpolicy="strict-origin-when-cross-origin"
-                                loading="lazy" allowfullscreen>
-                            </iframe>
-                        </div>
-                        <h4 class="video-title">Captured Data Samples &amp; Diversity</h4>
-                        <p class="article-description">We have already captured 4D geometry-native data in diverse settings including sports, restaurants, homes, kitchens, and shop floors.</p>
-                    </div>
-
-                    <!-- Video 4 -->
-                    <!--<div class="video-card">
-                        <div class="video-embed">
-                            <button class="enlarge-overlay" type="button" aria-label="Play video in large view">
-                                <span class="overlay-inner" aria-hidden="true">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                                    <span class="label">Play</span>
-                                </span>
-                            </button>
-                            <iframe
-                                src="https://www.youtube-nocookie.com/embed/Ui50u1pWvKE"
-                                title="Foundation Model Generalization on Synthetic Data"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                referrerpolicy="strict-origin-when-cross-origin"
-                                loading="lazy" allowfullscreen>
-                            </iframe>
-                        </div>
-                        <h4 class="video-title">Foundation Model Generalization on Synthetic Data</h4>
-                        <p class="article-description">We have demonstrated the generalization capabilities and fidelity of our model on synthetic data. Every object above is a Gaussian Splat directly produced by our foundation model.</p>
-                    </div> -->
+                    <p class="demo-card-desc">Our mission is to build the essential infrastructure to rapidly <b>digitize the 4D physical world</b>.</p>
                 </div>
-            </section>
-        </div>
-    </main>
+            </div>
+
+            <!-- Video 1 -->
+            <div class="demo-card">
+                <div class="demo-video-embed">
+                    <iframe
+                        src="https://drive.google.com/file/d/1mbSOjF0_oU0DbuNJc0P2UzYvkb5GRbdW/preview"
+                        title="Patent-Pending Rig-in-a-Suitcase"
+                        allow="autoplay; encrypted-media"
+                        loading="lazy" allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="demo-card-body">
+                    <div class="demo-card-header">
+                        <h3 class="demo-card-title">Patent-Pending Rig-in-a-Suitcase</h3>
+                        <button class="demo-expand-btn" data-src="https://drive.google.com/file/d/1mbSOjF0_oU0DbuNJc0P2UzYvkb5GRbdW/preview" aria-label="Expand video">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+                        </button>
+                    </div>
+                    <p class="demo-card-desc">Our ultra-portable capture rigs feature the world's first <b>wireless sync technology</b> with 10 μs accuracy even in cluttered RF environments.</p>
+                </div>
+            </div>
+
+            <!-- Video 2 -->
+            <div class="demo-card">
+                <div class="demo-video-embed">
+                    <iframe
+                        src="https://drive.google.com/file/d/1t80NpUpOs2s43JMxudF6apw286BlbenM/preview"
+                        title="Diverse In-the-Wild Capture"
+                        allow="autoplay; encrypted-media"
+                        loading="lazy" allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="demo-card-body">
+                    <div class="demo-card-header">
+                        <h3 class="demo-card-title">Diverse In-the-Wild Capture</h3>
+                        <button class="demo-expand-btn" data-src="https://drive.google.com/file/d/1t80NpUpOs2s43JMxudF6apw286BlbenM/preview" aria-label="Expand video">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+                        </button>
+                    </div>
+                    <p class="demo-card-desc">Our ultra-portable rigs enable ubiquitous capture in diverse settings.</p>
+                </div>
+            </div>
+
+            <!-- Video 3 -->
+            <div class="demo-card">
+                <div class="demo-video-embed">
+                    <iframe
+                        src="https://drive.google.com/file/d/10lc93hcKY07D_4e9gtpH-7Y_SRl6yLWh/preview"
+                        title="State-of-the-art 4D Reconstruction Algorithms"
+                        allow="autoplay; encrypted-media"
+                        loading="lazy" allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="demo-card-body">
+                    <div class="demo-card-header">
+                        <h3 class="demo-card-title">State-of-the-art 4D Reconstruction Algorithms</h3>
+                        <button class="demo-expand-btn" data-src="https://drive.google.com/file/d/10lc93hcKY07D_4e9gtpH-7Y_SRl6yLWh/preview" aria-label="Expand video">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+                        </button>
+                    </div>
+                    <p class="demo-card-desc">We have invented the leading methods for 4D reconstruction from raw captured data.</p>
+                </div>
+            </div>
+
+            <!-- Video 4 -->
+            <div class="demo-card">
+                <div class="demo-video-embed">
+                    <iframe
+                        src="https://drive.google.com/file/d/1xt0opGOG8Sw8CRcndUTSbPr_8AeDxcph/preview"
+                        title="Long-Duration Compressed 4D Content"
+                        allow="autoplay; encrypted-media"
+                        loading="lazy" allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="demo-card-body">
+                    <div class="demo-card-header">
+                        <h3 class="demo-card-title">Long-Duration Compressed 4D Content</h3>
+                        <button class="demo-expand-btn" data-src="https://drive.google.com/file/d/1xt0opGOG8Sw8CRcndUTSbPr_8AeDxcph/preview" aria-label="Expand video">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+                        </button>
+                    </div>
+                    <p class="demo-card-desc">We have invented a new compression method to easily share long-duration 4D content, like the 30-minute long dance sequence above.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="demo-footer">
+            <p>&copy; 2026 ChronoSpace AI, Inc.</p>
+        </footer>
+    </div>
 
     <!-- Lightbox Modal -->
-    <div class="video-lightbox" id="video-lightbox" aria-hidden="true" role="dialog" aria-label="Video preview">
-        <div class="lightbox-content">
-            <button class="close-btn" id="lightbox-close" aria-label="Close video">✕</button>
-            <iframe id="lightbox-iframe" src="" allow="autoplay; encrypted-media; picture-in-picture; accelerometer; gyroscope" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    <div class="demo-lightbox" id="demo-lightbox" aria-hidden="true" role="dialog" aria-label="Video preview">
+        <div class="demo-lightbox-content">
+            <button class="demo-lightbox-close" id="lightbox-close" aria-label="Close video">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+            <iframe id="lightbox-iframe" src="" allow="autoplay; encrypted-media; picture-in-picture; accelerometer; gyroscope" allowfullscreen></iframe>
         </div>
     </div>
 
-    <footer class="footer">
-        <div class="footer-divider"></div>
-        <div class="footer-content">
-            <p class="footer-text">ChronoSpace AI, Inc. 2026</p>
-            <!-- <div class="footer-social">
-                <span class="footer-follow">Follow on</span>
-                <a href="https://www.linkedin.com/company/chronospace-ai" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
-                <span class="footer-separator">•</span>
-                <a href="https://x.com/chronospaceai" target="_blank" rel="noopener" class="footer-link">X</a>
-            </div> -->
-        </div>
-    </footer>
-
-    <script src="src/presentation/scripts/main.js"></script>
-    <script src="src/application/scroll-controller.js"></script>
-    <script src="src/application/interaction-controller.js"></script>
-    
-    <!-- Page-scoped lightbox behavior -->
     <script>
     (function() {
-        const lightbox = document.getElementById('video-lightbox');
-        const iframe = document.getElementById('lightbox-iframe');
-        const closeBtn = document.getElementById('lightbox-close');
+        var lightbox = document.getElementById('demo-lightbox');
+        var iframe = document.getElementById('lightbox-iframe');
+        var closeBtn = document.getElementById('lightbox-close');
 
-        function openLightbox(baseUrl) {
-            if (!baseUrl) return;
-            const sep = baseUrl.includes('?') ? '&' : '?';
-            const src = `${baseUrl}${sep}autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+        function openLightbox(src) {
+            if (!src) return;
             iframe.src = src;
             lightbox.classList.add('open');
             lightbox.setAttribute('aria-hidden', 'false');
@@ -221,21 +191,44 @@
             document.body.style.overflow = '';
         }
 
-        // Click handlers for each embed overlay
-        document.querySelectorAll('.video-card .video-embed').forEach(embed => {
-            const smallIframe = embed.querySelector('iframe');
-            const baseUrl = smallIframe ? smallIframe.getAttribute('src') : '';
-            embed.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                openLightbox(baseUrl);
+        document.querySelectorAll('.demo-expand-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                openLightbox(btn.getAttribute('data-src'));
             });
         });
 
-        // Close interactions
+        document.querySelectorAll('.demo-card-body').forEach(function(body) {
+            var btn = body.querySelector('.demo-expand-btn');
+            if (btn) {
+                body.addEventListener('click', function(e) {
+                    if (e.target.closest('.demo-expand-btn')) return;
+                    openLightbox(btn.getAttribute('data-src'));
+                });
+            }
+        });
+
+        // Detect clicks on cross-origin iframes via focus
+        document.querySelectorAll('.demo-video-embed').forEach(function(embed) {
+            var cardIframe = embed.querySelector('iframe');
+            var card = embed.closest('.demo-card');
+            var btn = card ? card.querySelector('.demo-expand-btn') : null;
+            if (!cardIframe || !btn) return;
+
+            var src = btn.getAttribute('data-src');
+            window.addEventListener('blur', function() {
+                if (document.activeElement === cardIframe) {
+                    setTimeout(function() {
+                        openLightbox(src);
+                        // Refocus parent so it works again next time
+                        window.focus();
+                    }, 100);
+                }
+            });
+        });
+
         if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
-        if (lightbox) lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
-        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox(); });
+        if (lightbox) lightbox.addEventListener('click', function(e) { if (e.target === lightbox) closeLightbox(); });
+        document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox(); });
     })();
     </script>
 </body>
