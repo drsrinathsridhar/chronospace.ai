@@ -1,16 +1,20 @@
-/* CSS Custom Properties */
+/*
+ * ChronoSpace AI — Main Stylesheet
+ * Shared design tokens and index.html layout
+ */
+
+/* ---- Design Tokens ---- */
 :root {
-    --bg: #000000;
-    --card-bg: #0d0d0d;
+    --bg: #2b2b2b;
+    --card-bg: #181818;
     --card-border: rgba(255, 255, 255, 0.06);
     --text-primary: #f5f5f7;
     --text-secondary: rgba(255, 255, 255, 0.5);
     --text-tertiary: rgba(255, 255, 255, 0.3);
-    --accent: rgba(120, 120, 255, 0.15);
     --font-primary: 'Raleway', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* Reset */
+/* ---- Reset ---- */
 *, *::before, *::after {
     margin: 0;
     padding: 0;
@@ -32,22 +36,7 @@ body {
     overflow-x: hidden;
 }
 
-/* Ambient background glow */
-.ambient-glow {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
-    background:
-        radial-gradient(ellipse 60% 50% at 50% 40%, rgba(80, 80, 180, 0.08) 0%, transparent 70%),
-        radial-gradient(ellipse 40% 40% at 30% 60%, rgba(100, 60, 160, 0.05) 0%, transparent 60%),
-        radial-gradient(ellipse 40% 40% at 70% 55%, rgba(60, 100, 180, 0.05) 0%, transparent 60%);
-}
-
-/* Page layout */
+/* ---- Index Page Layout ---- */
 .page-wrapper {
     min-height: 100vh;
     min-height: 100dvh;
@@ -56,8 +45,6 @@ body {
     align-items: center;
     justify-content: center;
     padding: 3rem 2rem;
-    position: relative;
-    z-index: 1;
     gap: 2.5rem;
 }
 
@@ -86,7 +73,7 @@ body {
         0 16px 56px rgba(0, 0, 0, 0.3);
 }
 
-/* Subtle inner glow on card */
+/* Subtle top-edge highlight */
 .hero-card::before {
     content: '';
     position: absolute;
@@ -98,7 +85,7 @@ body {
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
 }
 
-/* Brand: icon + name */
+/* Brand: logo icon + company name */
 .brand {
     display: flex;
     align-items: center;
@@ -122,7 +109,7 @@ body {
     line-height: 1;
 }
 
-/* Divider between brand and tagline */
+/* Divider */
 .tagline-divider {
     width: 48px;
     height: 1px;
@@ -133,15 +120,14 @@ body {
 
 /* Tagline */
 .tagline {
-    font-size: clamp(1.05rem, 2.5vw, 1.35rem);
+    font-size: clamp(1rem, 2vw, 1.2rem);
     font-weight: 300;
     color: var(--text-secondary);
     letter-spacing: 0.04em;
-    font-size: clamp(1rem, 2vw, 1.2rem);
     animation: contentFadeIn 1s 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* Contact section */
+/* Contact */
 .contact-section {
     text-align: center;
     padding-top: 0.5rem;
@@ -178,30 +164,18 @@ body {
     letter-spacing: 0.02em;
 }
 
-/* Animations */
+/* ---- Animations ---- */
 @keyframes cardReveal {
-    from {
-        opacity: 0;
-        transform: translateY(20px) scale(0.98);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
+    from { opacity: 0; transform: translateY(20px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @keyframes contentFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(8px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Responsive */
+/* ---- Responsive: Tablet ---- */
 @media (max-width: 768px) {
     .page-wrapper {
         padding: 1.5rem 1.25rem;
@@ -227,8 +201,7 @@ body {
     }
 
     .tagline {
-        font-size: 0.8rem;
-        letter-spacing: 0.06em;
+        font-size: 0.9rem;
     }
 
     .tagline-divider {
@@ -240,6 +213,7 @@ body {
     }
 }
 
+/* ---- Responsive: Small Mobile ---- */
 @media (max-width: 480px) {
     .hero-card {
         padding: 3rem 1.5rem;
@@ -256,6 +230,6 @@ body {
     }
 
     .tagline {
-        font-size: 0.75rem;
+        font-size: 0.85rem;
     }
 }

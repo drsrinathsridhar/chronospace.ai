@@ -1,4 +1,9 @@
-/* Demo page layout */
+/*
+ * ChronoSpace AI — Demo Page Stylesheet
+ * Video grid, card components, and lightbox overlay
+ */
+
+/* ---- Page Layout ---- */
 .demo-wrapper {
     max-width: 1000px;
     margin: 0 auto;
@@ -7,7 +12,7 @@
     z-index: 1;
 }
 
-/* Header */
+/* ---- Header: logo link back to home ---- */
 .demo-header {
     margin-bottom: 3rem;
     animation: contentFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -38,7 +43,7 @@
     letter-spacing: -0.02em;
 }
 
-/* Title */
+/* ---- Page Title ---- */
 .demo-title-section {
     margin-bottom: 3rem;
     animation: contentFadeIn 0.8s 0.1s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -51,7 +56,7 @@
     letter-spacing: -0.03em;
 }
 
-/* Video grid */
+/* ---- Video Grid: 3-column on desktop, 1-column on mobile ---- */
 .demo-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -60,79 +65,50 @@
     animation: contentFadeIn 0.8s 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* Video card */
+/* ---- Video Card: fully clickable, opens lightbox ---- */
 .demo-card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
     border-radius: 16px;
     overflow: hidden;
+    cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .demo-card:hover {
     transform: translateY(-3px);
-    border-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.12);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
-/* Video embed — iframe is interactive */
-.demo-video-embed {
+/* Video thumbnail: iframe as non-interactive preview */
+.demo-video-thumb {
     position: relative;
-    padding-top: 56.25%;
+    padding-top: 56.25%; /* 16:9 aspect ratio */
     background: #000;
 }
 
-.demo-video-embed iframe {
+.demo-video-thumb iframe {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     border: 0;
+    pointer-events: none; /* clicks pass through to the card */
 }
 
-/* Card body — clickable to open lightbox */
+/* Card body: title + description */
 .demo-card-body {
     padding: 1.25rem 1.5rem 1.5rem;
-    cursor: pointer;
-}
-
-.demo-card-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
 }
 
 .demo-card-title {
     font-size: 1.05rem;
     font-weight: 500;
     color: var(--text-primary);
+    margin-bottom: 0.5rem;
     line-height: 1.3;
     letter-spacing: -0.01em;
-    flex: 1;
-}
-
-/* Expand button */
-.demo-expand-btn {
-    flex-shrink: 0;
-    background: none;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 6px;
-    padding: 5px;
-    cursor: pointer;
-    color: var(--text-secondary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-    margin-top: 2px;
-}
-
-.demo-expand-btn:hover {
-    color: var(--text-primary);
-    border-color: rgba(255, 255, 255, 0.25);
-    background: rgba(255, 255, 255, 0.05);
 }
 
 .demo-card-desc {
@@ -142,7 +118,7 @@
     line-height: 1.6;
 }
 
-/* Footer */
+/* ---- Footer ---- */
 .demo-footer {
     text-align: center;
     padding: 2rem 0;
@@ -157,33 +133,35 @@
     letter-spacing: 0.02em;
 }
 
-/* Lightbox */
+/* ---- Lightbox Overlay: semi-transparent with blur ---- */
 .demo-lightbox {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     display: none;
     align-items: center;
     justify-content: center;
     z-index: 3000;
-    padding: 2rem;
+    padding: 4rem 5%;
 }
 
 .demo-lightbox.open {
     display: flex;
 }
 
+/* Lightbox video container: 16:9, max 900px wide */
 .demo-lightbox-content {
     position: relative;
-    width: min(85vw, 1100px);
+    width: 100%;
+    max-width: 900px;
     aspect-ratio: 16 / 9;
     background: #000;
-    border-radius: 16px;
+    border-radius: 12px;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
 }
 
 .demo-lightbox-content iframe {
@@ -194,18 +172,20 @@
     border: 0;
 }
 
+/* Close button: circular, fixed to top-right of viewport */
 .demo-lightbox-close {
-    position: absolute;
-    top: -40px;
-    right: 0;
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
     background: rgba(255, 255, 255, 0.1);
-    color: var(--text-primary);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 8px;
-    padding: 8px;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
     cursor: pointer;
-    z-index: 10;
-    transition: background 0.2s ease, border-color 0.2s ease;
+    z-index: 3001;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -213,10 +193,11 @@
 
 .demo-lightbox-close:hover {
     background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.35);
+    transform: scale(1.05);
 }
 
-/* Responsive */
+/* ---- Responsive: Tablet ---- */
 @media (max-width: 768px) {
     .demo-wrapper {
         padding: 2rem 1.25rem 1.5rem;
@@ -240,16 +221,23 @@
         gap: 1.25rem;
     }
 
+    .demo-lightbox {
+        padding: 3rem 1rem;
+    }
+
     .demo-lightbox-content {
-        width: 96vw;
-        border-radius: 12px;
+        border-radius: 10px;
     }
 
     .demo-lightbox-close {
-        top: -36px;
+        top: 0.75rem;
+        right: 0.75rem;
+        width: 40px;
+        height: 40px;
     }
 }
 
+/* ---- Responsive: Small Mobile ---- */
 @media (max-width: 480px) {
     .demo-card-body {
         padding: 1rem 1.25rem 1.25rem;
