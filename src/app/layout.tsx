@@ -12,9 +12,17 @@ const GA_MEASUREMENT_ID = "G-9P2J929L7B";
 
 /**
  * Icons and share cards come from the file conventions alongside this file, so they are
- * inherited by every route and need no entry here: `icon.svg` + `favicon.ico` (the
- * hexagonal monogram, white on c-black), `apple-icon.png` at 180 × 180, and
- * `opengraph-image.jpg` / `twitter-image.jpg` at 1200 × 630 with their `.alt.txt`.
+ * inherited by every route and need no entry here.
+ *
+ * `icon.svg` is the real favicon: the hexagonal monogram on a transparent ground, drawn
+ * in c-black and flipped to white by a `prefers-color-scheme` query inside the SVG, so
+ * it follows the browser's theme rather than the page's. Every current browser prefers
+ * it over the `.ico` because Next emits it with `sizes="any"`.
+ *
+ * `favicon.ico` is the fallback for browsers with no SVG-favicon support. ICO cannot
+ * carry a media query, so it ships the c-black mark only — the light-theme variant.
+ * `apple-icon.png` stays an opaque c-black tile on purpose: iOS composites home-screen
+ * icons over whatever is behind them, and a transparent one renders badly.
  */
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
