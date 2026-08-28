@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import subjectManufacturing from "@/app/(home)/assets/subject-manufacturing.webp";
 import subjectRobotics from "@/app/(home)/assets/subject-robotics.webp";
-import subjectSports from "@/app/(home)/assets/subject-sports.webp";
+import subjectEntertainment from "@/app/(home)/assets/subject-entertainment.webp";
 
 /**
  * The signature component: a bordered instrument window holding the captured subject.
@@ -12,7 +12,7 @@ import subjectSports from "@/app/(home)/assets/subject-sports.webp";
  * mobile instance — a uniform 0.5934 scale — falls out of the same rules.
  *
  * The three subjects change on the same 10s timeline as the headline's word roll:
- * milling machine → robot arm → sprinter → milling machine. It is the word roll's own
+ * milling machine → robot arm → dancer → milling machine. It is the word roll's own
  * movement, not a separate dissolve — the outgoing subject rises `--subject-rise` out
  * of frame as it fades, the incoming one rises into place as it fades up, on the same
  * steps and the same curve. The thermal tint is baked into the exports; do not
@@ -42,7 +42,7 @@ export function CaptureViewport() {
       data-section="capture-viewport"
       data-figma-id="7235:886"
       role="img"
-      aria-label="ChronoSpace capture viewport: a milling machine scanned in 4D, cycling with a robot arm and a sprinter"
+      aria-label="ChronoSpace capture viewport: a milling machine scanned in 4D, cycling with a robot arm and a dancer"
       className="enter enter-d4 border-c-blue-300 bg-c-black md:mt-lg relative mt-[46px] aspect-[578/443] w-full overflow-hidden border md:min-h-[200px]"
     >
       {/* UI layer — inset 20px on all four sides, holding the crosshairs and the four
@@ -81,13 +81,16 @@ export function CaptureViewport() {
           className="object-contain"
         />
       </div>
-      <div className="animate-subject-c absolute top-[8.1264%] left-[20.5882%] h-[83.7472%] w-[58.8235%] opacity-0 motion-reduce:animate-none">
+      {/* The dancer ships trimmed to its own alpha bounds, so this box is the artwork
+          rather than artwork plus padding — centring the box centres the dancer. Height
+          is the 82.4% of the frame the other two subjects also occupy. */}
+      <div className="animate-subject-c absolute top-[8.8%] left-[28.2933%] h-[82.4%] w-[43.4134%] opacity-0 motion-reduce:animate-none">
         <Image
-          src={subjectSports}
+          src={subjectEntertainment}
           alt=""
           fill
           loading="eager"
-          sizes="(min-width: 992px) 340px, 210px"
+          sizes="(min-width: 992px) 251px, 149px"
           className="object-contain"
         />
       </div>

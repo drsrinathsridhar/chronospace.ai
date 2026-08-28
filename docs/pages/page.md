@@ -842,6 +842,7 @@ Keep the Figma records above as they are — they document the file, not the sit
 | CTA (`7434:3623`)          | —                                                    | links to `https://calendar.app.google/JKqjSzst8t1QSRfZA`, new tab                  |
 | Page title                 | `ChronoSpace — AI that digitizes the physical world` | `ChronoSpace - Digitizing the Physical World` (client's own hyphen, kept verbatim) |
 | Bottom-left                | investor credit alone                                | `contact-email` above it — `contact@chronospace.ai`, no Figma node                 |
+| Subject 3 (`7235:896`)     | sprinter                                             | dancer — `subject-entertainment.webp`, supplied by the client                      |
 | `layout.tsx`               | —                                                    | Google Analytics `G-9P2J929L7B`, the snippet from the live chronospace.ai          |
 
 The shortened word is also what the page description, the share-card alt text and
@@ -849,6 +850,12 @@ the share card itself now say. `contact-email` is a section without a node: it
 mirrors `backed-by` deliberately — same `label-3` caption in `c-white-32p` over its
 payload, same 16px gap — so the bottom-left corner reads as one pair rather than as
 one designed block and one bolted on.
+
+The dancer ships trimmed to its own alpha bounds — 519 × 755, no transparent
+padding — unlike the other two subjects, which carry theirs. That is deliberate:
+with no padding the element box _is_ the artwork, so the centring rule the other
+two only approximate, the dancer hits exactly. Its height is the same 82.4% of the
+frame they occupy, and its width falls out of the artwork's own ratio.
 
 ```css
 .ticker__roll {
