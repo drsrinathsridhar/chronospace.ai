@@ -1,0 +1,383 @@
+@import "tailwindcss";
+/* devlooper: don't let Tailwind scan run artifacts in .devlooper/ — they hold Figma token
+   names with slashes (e.g. body/rg-3) that Tailwind would emit as invalid CSS variables. */
+@source not "../../.devlooper";
+
+/* ── Brand fonts ─────────────────────────────────────────────────────────────
+   Self-hosted variable files from public/fonts/ (Fontshare ITF Free Font Licence:
+   https://www.fontshare.com/licenses/itf-ffl). Both files default to their HEAVIEST
+   named instance — Nippo 700, Supreme 800 — so the axis range is declared here and
+   every rule states its own weight. Nippo's "Regular" is 378, not 400. */
+@font-face {
+  font-family: "Nippo";
+  src: url("/fonts/Nippo-Variable.woff2") format("woff2-variations");
+  font-weight: 200 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Supreme";
+  src: url("/fonts/Supreme-Variable.ttf") format("truetype-variations");
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  /* ── Breakpoints ───────────────────────────────────────────────────────────
+     Mobile-first, mapped to the design frames the fidelity loop screenshots:
+     base = mobile (390 / Figma 375), md = tablet (768), lg = desktop (≥992). */
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+
+  /* ── Colours — published Figma fill styles (DESIGN.md » colors) ─────────── */
+  --color-c-black: #090b19;
+  --color-c-white: #ffffff;
+  --color-grey: #ededed;
+  --color-c-orange-500: #f25324;
+  --color-c-orange-600: #d13e13;
+  --color-pink-500: #e61876;
+  --color-c-blue-900: #30323e;
+  --color-c-blue-500: #1c29a2;
+  --color-c-blue-300: #777cad;
+  --color-c-blue-200: #b7b9ff;
+  --color-c-black-18p: #090b192e;
+  --color-c-black-8p: #090b1914;
+  --color-c-white-16p: #ffffff29;
+  --color-c-white-32p: #ffffff52;
+  --color-c-grid-line: #1b1c25;
+  --color-gradient-thermal-from: #fd7a39;
+  --color-gradient-thermal-to: #ec168f;
+
+  /* ── Families ────────────────────────────────────────────────────────────── */
+  --font-nippo: "Nippo", ui-sans-serif, system-ui, sans-serif;
+  --font-supreme: "Supreme", ui-sans-serif, system-ui, sans-serif;
+
+  /* ── Type scale — headings & labels are Nippo 378, paragraphs Supreme ────── */
+  --text-heading-1: 56px;
+  --text-heading-1--line-height: 1.1;
+  --text-heading-1--letter-spacing: -0.02em;
+  --text-heading-1--font-weight: 378;
+  --text-heading-2: 48px;
+  --text-heading-2--line-height: 1.1;
+  --text-heading-2--letter-spacing: -0.02em;
+  --text-heading-2--font-weight: 378;
+  --text-heading-3: 40px;
+  --text-heading-3--line-height: 1.1;
+  --text-heading-3--letter-spacing: -0.02em;
+  --text-heading-3--font-weight: 378;
+  --text-heading-4: 32px;
+  --text-heading-4--line-height: 1.1;
+  --text-heading-4--letter-spacing: -0.02em;
+  --text-heading-4--font-weight: 378;
+  --text-heading-5: 24px;
+  --text-heading-5--line-height: 1.1;
+  --text-heading-5--letter-spacing: -0.02em;
+  --text-heading-5--font-weight: 378;
+  --text-heading-6: 20px;
+  --text-heading-6--line-height: 1.1;
+  --text-heading-6--letter-spacing: -0.02em;
+  --text-heading-6--font-weight: 378;
+
+  --text-paragraph-lead: 32px;
+  --text-paragraph-lead--line-height: 1.2;
+  --text-paragraph-lead--letter-spacing: 0em;
+  --text-paragraph-lead--font-weight: 400;
+  --text-paragraph-1: 20px;
+  --text-paragraph-1--line-height: 1.2;
+  --text-paragraph-1--letter-spacing: 0em;
+  --text-paragraph-1--font-weight: 400;
+  --text-paragraph-2: 16px;
+  --text-paragraph-2--line-height: 1.2;
+  --text-paragraph-2--letter-spacing: 0em;
+  --text-paragraph-2--font-weight: 400;
+  --text-paragraph-3: 14px;
+  --text-paragraph-3--line-height: 1.2;
+  --text-paragraph-3--letter-spacing: 0em;
+  --text-paragraph-3--font-weight: 400;
+  --text-paragraph-4: 12px;
+  --text-paragraph-4--line-height: 1.2;
+  --text-paragraph-4--letter-spacing: 0em;
+  --text-paragraph-4--font-weight: 400;
+  --text-paragraph-light: 18px;
+  --text-paragraph-light--line-height: 1.2;
+  --text-paragraph-light--letter-spacing: 0em;
+  --text-paragraph-light--font-weight: 300;
+
+  --text-label-1: 16px;
+  --text-label-1--line-height: 1.1;
+  --text-label-1--letter-spacing: 0em;
+  --text-label-1--font-weight: 378;
+  --text-label-2: 14px;
+  --text-label-2--line-height: 1.1;
+  --text-label-2--letter-spacing: 0em;
+  --text-label-2--font-weight: 378;
+  --text-label-3: 12px;
+  --text-label-3--line-height: 1.1;
+  --text-label-3--letter-spacing: 0em;
+  --text-label-3--font-weight: 378;
+  --text-label-4: 10px;
+  --text-label-4--line-height: 1.1;
+  --text-label-4--letter-spacing: 0em;
+  --text-label-4--font-weight: 378;
+
+  /* ── Spacing scale (DESIGN.md » spacing) ─────────────────────────────────
+     `3xs` (2px, mobile headline → rotating word) and `gutter` (20px, the 12-column
+     grid gutter, reused as the capture-viewport inset) are the steps this page adds. */
+  --spacing-3xs: 2px;
+  --spacing-2xs: 4px;
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-gutter: 20px;
+  --spacing-md: 24px;
+  --spacing-lg: 32px;
+  --spacing-xl: 40px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 60px;
+  --spacing-4xl: 80px;
+
+  /* ── Layout ──────────────────────────────────────────────────────────────── */
+  --container-page: 1416px;
+
+  /* ── Motion — one curve for everything (DESIGN.md » motion) ─────────────── */
+  --ease-fluid: cubic-bezier(0.61, 0, 0.2, 1);
+
+  /* The splash "scene": the word roll and the three capture subjects run the same
+     10s loop (4 steps × [1.5s hold + 1s transition]) so they change together. The 2s
+     delay lets the page settle on step 0 — `manufacturing.` — before it starts. */
+  --animate-word-roll: word-roll 10s var(--ease-fluid) 2s infinite;
+  --animate-subject-a: subject-a 10s var(--ease-fluid) 2s infinite;
+  --animate-subject-b: subject-b 10s var(--ease-fluid) 2s infinite;
+  --animate-subject-c: subject-c 10s var(--ease-fluid) 2s infinite;
+
+  /* The reticle brackets ride the same 10s scene: each time the subject crossfades,
+     the four corner marks open outward by 2px and settle back — the instrument
+     re-acquiring focus on a new subject. Same clock, same curve, so it reads as one
+     movement rather than a second, competing animation. */
+  --animate-reticle-lock: reticle-lock 10s var(--ease-fluid) 2s infinite;
+
+  /* How far a capture subject travels on its way in and out. The word roll and the
+     subject are one movement, so the subject rises the way the word does — measured
+     off the reference at 20px against the word's own 63px row step. */
+  --subject-rise: 20px;
+}
+
+/* Step k occupies [25k%, 25(k+1)%]: hold to 15%, then a 10% (= 1s) eased move.
+   Step 3 repeats step 0's word and subject, so the loop seam is invisible. */
+@keyframes word-roll {
+  0%,
+  15% {
+    transform: translateY(0);
+  }
+  25%,
+  40% {
+    transform: translateY(calc(var(--roll-step) * -1));
+  }
+  50%,
+  65% {
+    transform: translateY(calc(var(--roll-step) * -2));
+  }
+  75%,
+  100% {
+    transform: translateY(calc(var(--roll-step) * -3));
+  }
+}
+
+/* The three subjects roll the way the word above them rolls — the outgoing one rises
+   out of frame as it fades, the incoming one rises into place as it fades up — on the
+   same steps and the same curve, so the pair reads as one movement rather than a slide
+   next to a dissolve. The extra keyframe in the middle of each subject's dark stretch
+   is the reset from "left upward" back to "waiting below": it happens at opacity 0. */
+
+/* manufacturing. — steps 0 and 3 */
+@keyframes subject-a {
+  0%,
+  15% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  25% {
+    opacity: 0;
+    transform: translate3d(0, calc(var(--subject-rise) * -1), 0);
+  }
+  40%,
+  65% {
+    opacity: 0;
+    transform: translate3d(0, var(--subject-rise), 0);
+  }
+  75%,
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* robotics. — step 1 */
+@keyframes subject-b {
+  0%,
+  15% {
+    opacity: 0;
+    transform: translate3d(0, var(--subject-rise), 0);
+  }
+  25%,
+  40% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    opacity: 0;
+    transform: translate3d(0, calc(var(--subject-rise) * -1), 0);
+  }
+  65%,
+  100% {
+    opacity: 0;
+    transform: translate3d(0, var(--subject-rise), 0);
+  }
+}
+
+/* entertainment. — step 2 */
+@keyframes subject-c {
+  0%,
+  40% {
+    opacity: 0;
+    transform: translate3d(0, var(--subject-rise), 0);
+  }
+  50%,
+  65% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  75% {
+    opacity: 0;
+    transform: translate3d(0, calc(var(--subject-rise) * -1), 0);
+  }
+  90%,
+  100% {
+    opacity: 0;
+    transform: translate3d(0, var(--subject-rise), 0);
+  }
+}
+
+/* Peaks at 20 / 45 / 70% — the midpoint of each 1s subject crossfade — and rests flat
+   everywhere else. Direction is per-bracket: each corner carries its own --lock-x/y so
+   one keyframe drives all four outward along their own diagonal. */
+@keyframes reticle-lock {
+  0%,
+  15%,
+  25%,
+  40%,
+  50%,
+  65%,
+  75%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  20%,
+  45%,
+  70% {
+    transform: translate3d(var(--lock-x), var(--lock-y), 0);
+  }
+}
+
+/* ── Hero sentence ────────────────────────────────────────────────────────────
+   The headline and the rotating word below it are one sentence, so they are one size.
+   That size is `heading-3` while the layout is stacked, and `heading-2` — the design's
+   48px — once the page is wide enough for the sentence to break the way it does in the
+   design.
+
+   That break is what sets the size, not the rotating word: the headline's second line,
+   "the physical world for", is 9.38em and its cap is 9.5625em (the design's 459px),
+   while the longest rotating word is `manufacturing.` at 6.71em. From `lg` the sentence
+   lives inside 5 of the 12 columns — `41.6667vw - 45px` — which is narrower than
+   9.5625em at 48px until about 1220px, so below that the size follows the column down
+   and the two-line break survives instead of the type staying at 48px and wrapping to
+   three. `4.31vw - 4.66px` is that ratio with a little slack. Every measurement in the
+   roll is stated in `em` for the same reason, so the row height and the step scale with
+   it. */
+.text-hero {
+  font-size: var(--text-heading-3);
+  font-weight: 378;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+@media (width >= 992px) {
+  .text-hero {
+    font-size: min(var(--text-heading-2), 4.31vw - 4.66px);
+  }
+}
+
+/* ── Entrance ──────────────────────────────────────────────────────────────────
+   The splash has no scroll, so the reveal happens once on load instead of on an
+   IntersectionObserver. Content rises on the 400ms interactive duration, staggered
+   40ms apart in reading order (brand → headline → word → CTA → viewport → credit),
+   so the whole choreography lands inside 600ms. The backdrop is a scene, not a
+   control, so it takes the 1000ms scene duration and only fades — moving a
+   full-bleed image would drag the eye away from the headline. */
+@keyframes enter-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes enter-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.enter {
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: enter-rise 400ms var(--ease-fluid) both;
+}
+
+.enter-scene {
+  opacity: 0;
+  will-change: opacity;
+  animation: enter-fade 1000ms var(--ease-fluid) both;
+}
+
+.enter-d1 {
+  animation-delay: 40ms;
+}
+.enter-d2 {
+  animation-delay: 80ms;
+}
+.enter-d3 {
+  animation-delay: 120ms;
+}
+.enter-d4 {
+  animation-delay: 160ms;
+}
+.enter-d5 {
+  animation-delay: 200ms;
+}
+.enter-d6 {
+  animation-delay: 240ms;
+}
+
+/* Mandatory, not optional: everything arrives at its resting state immediately. */
+@media (prefers-reduced-motion: reduce) {
+  .enter,
+  .enter-scene {
+    animation: none;
+    opacity: 1;
+    will-change: auto;
+  }
+}
+
+body {
+  background-color: var(--color-c-black);
+  color: var(--color-c-white);
+  font-family: var(--font-supreme);
+  font-weight: 400;
+}
