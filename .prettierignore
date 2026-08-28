@@ -1,0 +1,16 @@
+.next/
+out/
+node_modules/
+.devlooper/
+package-lock.json
+# devlooper artifacts (committed in the full dump, but not Prettier-checked)
+public/__dlp-picker.js
+babel.config.js
+babel-plugin-dl-source-loc.cjs
+dl-source-loc-loader.cjs
+dl-astro.config.mjs
+dl-source-loc.mjs
+dlpreview/
+dlpreview.tsx
+__dlpreview/
+__dlpreview.tsx

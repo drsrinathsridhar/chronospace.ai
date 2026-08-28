@@ -1,0 +1,3 @@
+:HL["/_next/static/chunks/31xplodp4a9ia.css","style"]
+:HL["/fonts/Nippo-Variable.woff2","font",{"crossOrigin":"anonymous","type":"font/woff2"}]
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"(home)","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"1CMdMJ5HmdZkF5iLj1Zcx"}
