@@ -7,9 +7,10 @@
  * Not a Figma node. It is a client addition, recorded in `docs/pages/page.md` under
  * "Copy as shipped" alongside the other deviations from the design file.
  *
- * Hover and focus take the standard 400ms fluid pairing to `c-orange-500`. The address
- * is the only text on the splash that is a link rather than a button, so it grows an
- * underline on hover instead of relying on colour alone.
+ * Hover and focus draw the underline in, on the standard 400ms fluid pairing — the text
+ * itself does not change colour. The address is the only text on the splash that is a
+ * link rather than a button, and the underline alone is the cue; `focus-visible` adds
+ * the 2px white ring on top, so keyboard users still get something colour-independent.
  */
 export function ContactEmail() {
   return (
@@ -22,7 +23,7 @@ export function ContactEmail() {
       </p>
       <a
         href="mailto:contact@chronospace.ai"
-        className="font-nippo text-label-1 text-c-white hover:text-c-orange-500 focus-visible:text-c-orange-500 focus-visible:outline-c-white ease-fluid underline decoration-transparent underline-offset-4 transition-colors duration-400 hover:decoration-current focus-visible:decoration-current focus-visible:outline-2 focus-visible:outline-offset-2 motion-reduce:transition-none"
+        className="font-nippo text-label-1 text-c-white focus-visible:outline-c-white ease-fluid underline decoration-transparent underline-offset-4 transition-colors duration-400 hover:decoration-current focus-visible:decoration-current focus-visible:outline-2 focus-visible:outline-offset-2 motion-reduce:transition-none"
       >
         contact@chronospace.ai
       </a>
