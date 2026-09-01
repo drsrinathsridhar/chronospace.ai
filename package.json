@@ -13,13 +13,15 @@
     "typecheck": "next typegen && tsc --noEmit",
     "lint:fix": "eslint --fix",
     "icons:generate": "node scripts/generate-icons.mjs",
-    "icons:check": "node scripts/generate-icons.mjs --check"
+    "icons:check": "node scripts/generate-icons.mjs --check",
+    "images:generate": "node scripts/optimize-images.mjs",
+    "images:check": "node scripts/optimize-images.mjs --check"
   },
   "dependencies": {
+    "clsx": "^2",
     "next": "16.3.3",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "clsx": "^2",
     "tailwind-merge": "^3"
   },
   "devDependencies": {
@@ -29,10 +31,11 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.3",
-    "tailwindcss": "^4",
-    "typescript": "^5",
     "prettier": "^3",
-    "prettier-plugin-tailwindcss": "^0.6"
+    "prettier-plugin-tailwindcss": "^0.6",
+    "sharp": "^0.35.4",
+    "tailwindcss": "^4",
+    "typescript": "^5"
   },
   "engines": {
     "node": ">=18.18.0"

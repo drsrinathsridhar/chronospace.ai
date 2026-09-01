@@ -60,13 +60,18 @@ export function CaptureViewport() {
         </div>
       </div>
 
-      {/* Subjects — absolute overlays above the crosshairs, one visible at a time. */}
+      {/* Subjects — absolute overlays above the crosshairs, one visible at a time.
+          Only the resting subject is worth bandwidth up front: it is on screen at first
+          paint, so it loads eagerly at high priority. The other two do not appear until
+          the crossfade reaches them, seconds later, and loading them eagerly meant the
+          browser fetched 112KB of invisible artwork while the visible one waited. */}
       <div className="animate-subject-a absolute top-[7.7878%] left-[22.0718%] h-[84.4244%] w-[55.8564%] motion-reduce:animate-none">
         <Image
           src={subjectManufacturing}
           alt=""
           fill
-          priority
+          loading="eager"
+          fetchPriority="high"
           sizes="(min-width: 992px) 320px, 200px"
           className="object-contain"
         />
@@ -76,7 +81,6 @@ export function CaptureViewport() {
           src={subjectRobotics}
           alt=""
           fill
-          loading="eager"
           sizes="(min-width: 992px) 230px, 145px"
           className="object-contain"
         />
@@ -89,7 +93,6 @@ export function CaptureViewport() {
           src={subjectEntertainment}
           alt=""
           fill
-          loading="eager"
           sizes="(min-width: 992px) 251px, 149px"
           className="object-contain"
         />

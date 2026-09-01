@@ -1,73 +1,122 @@
-# chronospace.ai
+# Sr 007 Chronospace
 
-The ChronoSpace splash page: a Next.js 16 (App Router) app, Tailwind v4, built
-against the design system in [`DESIGN.md`](DESIGN.md).
+Marketing site for Sr 007 Chronospace. Next.js, styled with Tailwind CSS, statically generated and hosted on Vercel.
 
-This replaces the previous hand-written HTML/CSS site.
+|           |                        |
+| --------- | ---------------------- |
+| Framework | Next.js + Tailwind CSS |
+| Hosting   | Vercel                 |
+| Analytics | None                   |
+| Forms     | None                   |
 
-## Why this repo has a site *and* a source tree in it
+## Before you start
 
-GitHub Pages for this repo is configured as **`build_type: legacy`, serving
-`main` at `/`**. That means Pages copies files straight out of the branch root —
-it does not run a build, and it does not run an Actions workflow. Switching it to
-"GitHub Actions" needs repo-admin rights.
+You need Node.js 20 or newer and a code editor. That is it.
 
-So the repo holds both:
+If you only want to change text or swap an image, you can do that on GitHub in the browser and skip the local setup entirely — see "Editing without installing anything" below. To add whole new pages, see "Building new pages with AI".
 
-| At the root | What it is |
-| --- | --- |
-| `index.html`, `404.html`, `_next/`, `fonts/`, `style-guide.html`, icons, `*.jpg` | The **built** site. This is what chronospace.ai actually serves. Generated — never hand-edit. |
-| `CNAME` | The custom domain. Sourced from `public/CNAME` so every export carries it. |
-| `.nojekyll` | Required. Without it Jekyll drops every path starting with `_`, which is all of `_next/` — the site would load with no CSS or JS. |
-| `src/`, `public/`, `docs/`, `package.json`, … | The **source**. Edit here. |
-
-If Pages is ever switched to the Actions build type, the committed output can be
-deleted and replaced with a normal deploy workflow.
-
-## Working on it
+## Running the site locally
 
 ```bash
 npm install
-npm run dev          # http://localhost:3000
+npm run dev
 ```
 
-Before calling a change done:
+Open http://localhost:3000. The page reloads as you save files.
+
+Two other commands worth knowing:
 
 ```bash
-npm run lint
-npm run typecheck
+npm run build   # production build, the same one Vercel runs
+npm run lint    # catches the mistakes that would fail the build
 ```
 
-## Publishing a change
+If `npm run build` passes locally, the deployment passes too.
 
-The built site is committed, so it does not update itself. After changing
-anything under `src/` or `public/`:
+## Changing content
 
-```bash
-npm run build:pages   # STATIC_EXPORT=1 next build -> out/
-cp -R out/. .         # copy the export over the repo root
+The copy lives in the section components under `src/components/`. Each section of the page is its own component, so a text change rarely touches more than one file. Edit the text, save, done.
+
+**Images** live in `public/`. To swap one, drop the new file in with the same name, or add a new file and update the path where it is used. Prefer `.webp` where you can and keep images under 500 KB so the page stays fast.
+
+**Page title, description and social preview** (the image shown when the link is shared) are set in the exported `metadata` object at the top of each `page.tsx`. Update these before any campaign — they are what people see in search results and on social.
+
+## Editing without installing anything
+
+For small text changes:
+
+1. Open the file on GitHub
+2. Click the pencil icon
+3. Make your change and click "Commit changes"
+4. Choose "Create a new branch and start a pull request"
+
+You get a preview link within a minute or two to check the result. Merge the pull request when it looks right and it goes live. If it looks wrong, close the pull request and nothing happens to the live site.
+
+## Adding a page
+
+Create `src/app/<route>/page.tsx`. The App Router turns it into `/<route>`. Copy an existing page as your starting point — it already has the layout, metadata and styling wired up. Add a link to it in the navigation and the footer, and give it its own title and description.
+
+## Adding a section to an existing page
+
+Sections are components in `src/components/`. Copy the closest existing one, rename it, add its content, and place it in the page in the order you want it to appear. Reaching for a copy before writing something from scratch is what keeps the site visually consistent.
+
+## Building new pages with AI
+
+Two context files ship in the repo root so an AI coding tool can extend this site without inventing its own style:
+
+| File        | What is in it                                                                                          |
+| ----------- | ------------------------------------------------------------------------------------------------------ |
+| `design.md` | Colours, typography scale, spacing, breakpoints, and the component rules the site is built on          |
+| `spec.md`   | What the site is, what each section is for, the voice and positioning, technical setup and constraints |
+
+Open the repo in your AI coding tool of choice and reference them in your prompt:
+
+```
+Read design.md and spec.md.
+Add a pricing page with three tiers, following the existing components and tone.
 ```
 
-Then commit both the source change and the regenerated output together, and push
-to `main`. Pages picks it up within a minute or so.
+The output comes back matching the rest of the site instead of looking like a generic template. Two habits worth keeping:
 
-`build:pages` differs from `build` only in setting `STATIC_EXPORT=1`, which turns
-on `output: "export"` in `next.config.ts`. Plain `npm run build` stays a normal
-server build, so the same source also deploys to a host like Vercel unchanged.
+- **Review the diff before merging.** Open it as a pull request, look at the preview URL, then merge. That is the whole safety net you need.
+- **Keep the two files current.** If your positioning or palette changes, update `design.md` and `spec.md` first — everything generated afterwards inherits the change.
 
-## Where things are
+## Deploying
 
-| Path | |
-| --- | --- |
-| `src/app/(home)/page.tsx` | The splash. One 12-column grid. |
-| `src/app/sections/` | One directory per section, each documenting its own decisions. |
-| `src/app/globals.css` | Design tokens, keyframes, the entrance. |
-| `DESIGN.md` | The design system: colour, type, spacing, motion. The source for those values. |
-| `docs/pages/page.md` | Why the page is built the way it is, including where it departs from the Figma file and why. |
-| `docs/design-system.md` | Read before changing anything. |
-| `/style-guide` | The system rendered live from the project's own tokens. `noindex`. |
+The repo is connected to Vercel:
+
+- **Push to `main`** and it deploys to production automatically, usually in under two minutes.
+- **Open a pull request** and you get a preview URL for that branch. Nothing reaches the live site until the pull request is merged.
+- **Rolling back**: in the Vercel dashboard open Deployments, find the last good one and click "Promote to Production". Takes seconds and needs no developer.
+
+## Environment variables
+
+If the project uses any, copy `.env.example` to `.env.local` for local development. The same variables are set in Vercel under Settings → Environment Variables. After changing one in Vercel you have to redeploy for it to take effect.
+
+## Forms
+
+_No form provider is wired up yet._ When you add one (Formspree, Basin, a serverless route, …), note here where submissions go and, if it sends email, that the sending-domain DNS records must move with the domain if you ever change DNS providers — otherwise submissions stop arriving.
 
 ## Analytics
 
-Google Analytics `G-9P2J929L7B`, in `src/app/layout.tsx` via `next/script`. It
-fires on load with no consent gate — the same behaviour as the previous site.
+_No analytics is installed yet._ When you add a tool (Vercel Analytics, Plausible, GA4, …), note it here and how to track a new event, so the next person does not have to reverse-engineer it. If it collects personal data, add the cookie/consent notice the law in your market requires.
+
+## Something is wrong
+
+**Build fails on Vercel.** Open the failing deployment and read the log — the error is usually the last few lines and names the file. Running `npm run build` locally reproduces it.
+
+**An image does not show up.** Check the path. A file at `public/logo.svg` is referenced as `/logo.svg`, without `public`.
+
+**A change is not visible on the live site.** Check that the deployment finished in Vercel, then hard refresh. If the deployment is green and the change is still missing, you are probably looking at a preview URL rather than production.
+
+## What this project is not
+
+- There is no CMS. Content changes go through this repo, as described above.
+- There are no user accounts, database or backend.
+- The site is statically generated, so it is fast and there is nothing to patch on a schedule.
+
+Extending any of this is straightforward — it just was not part of the original scope.
+
+## Questions
+
+_Add a contact here for whoever maintains this site._

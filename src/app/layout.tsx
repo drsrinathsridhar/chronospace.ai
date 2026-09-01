@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 
+import { nippo, supreme } from "./fonts";
+
 import "./globals.css";
 
 /** Absolute base for the share-card URLs. Set NEXT_PUBLIC_SITE_URL per environment;
@@ -44,29 +46,25 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className="bg-c-black h-full antialiased">
+    <html
+      lang="en"
+      className={`${nippo.variable} ${supreme.variable} bg-c-black h-full antialiased`}
+    >
       <body className="font-supreme text-c-white flex min-h-full flex-col">
-        {/* Nippo sets every string on the splash — preload it so the headline never
-            paints in a fallback face. React hoists this link into <head>. */}
-        <link
-          rel="preload"
-          href="/fonts/Nippo-Variable.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
         {children}
 
-        {/* Google Analytics. `afterInteractive` is the equivalent of the snippet's own
-            `async`: it keeps gtag.js off the critical path, which matters more than
-            usual here because the splash is one screen and the entrance runs on load.
-            The inline half has to be a `next/script` too — a bare <script> in a Server
-            Component is not executed — and it needs an `id` so Next can dedupe it. */}
+        {/* Google Analytics. `lazyOnload` rather than `afterInteractive`: the latter makes
+            Next emit an eager <link rel="preload" as="script">, which on a phone competes
+            for bandwidth with the backdrop the splash is waiting on. Waiting for the load
+            event costs a few hundred ms of reporting latency on a one-screen page with
+            nothing to instrument before then. The inline half has to be a `next/script`
+            too — a bare <script> in a Server Component is not executed — and it needs an
+            `id` so Next can dedupe it. */}
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
-        <Script id="google-analytics" strategy="afterInteractive">
+        <Script id="google-analytics" strategy="lazyOnload">
           {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
