@@ -28,8 +28,11 @@ export function HeroWordTicker() {
       data-figma-id="7235:904"
       className="enter enter-d2 text-hero mt-3xs h-[1.1em] w-full shrink-0 overflow-hidden [--roll-step:1.35em] lg:mt-[3px] lg:h-[1.10417em] lg:[--roll-step:1.3125em]"
     >
-      {/* the roll is decorative repetition — assistive tech reads the resting word once */}
-      <span className="sr-only">manufacturing.</span>
+      {/* The roll is decorative repetition — assistive tech reads the resting word once.
+          `font-nippo` is not cosmetic on a visually hidden span: it is the only string on
+          the splash the body's Supreme would otherwise lay out, and laying out one glyph
+          in Supreme costs the download of the whole family. */}
+      <span className="font-nippo sr-only">manufacturing.</span>
       <div
         aria-hidden="true"
         className="animate-word-roll flex flex-col gap-[0.25em] motion-reduce:animate-none lg:gap-[0.208333em]"

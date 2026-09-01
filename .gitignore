@@ -39,3 +39,20 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+node_modules/
+.devlooper/devlooper.cjs
+.devlooper/package.json
+.devlooper/node_modules/
+.devlooper/.env
+.devlooper/run.lock
+.devlooper/editor-uploads/
+babel.config.js
+babel-plugin-dl-source-loc.cjs
+dl-source-loc-loader.cjs
+dl-astro.config.mjs
+dl-source-loc.mjs
+public/__dlp-picker.js
+dlpreview/
+dlpreview.tsx
+__dlpreview/
+__dlpreview.tsx

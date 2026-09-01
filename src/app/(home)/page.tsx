@@ -49,7 +49,10 @@ export const metadata: Metadata = {
  */
 export default function HomePage() {
   return (
-    <main className="bg-c-black relative flex min-h-svh w-full flex-col md:h-svh">
+    // `font-nippo` overrides the body's Supreme for this route only. Nippo sets every
+    // string on the splash, and leaving Supreme as the inherited family is enough to make
+    // the browser fetch the whole family for glyphs that never render (docs/pages/page.md).
+    <main className="font-nippo bg-c-black relative flex min-h-svh w-full flex-col md:h-svh">
       <SplashBackdrop />
 
       {/* page margins outside the container, so the readable width really is

@@ -17,7 +17,7 @@ export function BrandMark() {
       <Image
         src={chronospaceLogo}
         alt="ChronoSpace"
-        priority
+        loading="eager"
         className="h-[32px] w-auto md:h-[56px]"
       />
     </div>

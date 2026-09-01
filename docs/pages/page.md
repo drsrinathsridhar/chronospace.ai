@@ -70,14 +70,14 @@ below. Do not hard-code 820px.
 
 ## Fonts
 
-Both families ship with the project as **variable fonts** in `public/fonts/`.
+Both families ship with the project as **variable fonts** in `src/assets/fonts/`.
 Neither is a web font from a CDN — do not load Nippo or Supreme from Google Fonts or
 Fontshare at runtime; self-host the supplied files.
 
-| File                                | Family (from the font's own name table) | Axis                              | Named instances                                                                                 |
-| ----------------------------------- | --------------------------------------- | --------------------------------- | ----------------------------------------------------------------------------------------------- |
-| `public/fonts/Nippo-Variable.woff2` | `Nippo Variable`                        | `wght` 200 → 700, **default 700** | Extralight 200 · Light 300 · **Regular 378** · Medium 500 · Bold 700                            |
-| `public/fonts/Supreme-Variable.ttf` | `Supreme Variable`                      | `wght` 100 → 800, **default 800** | Thin 100 · Extralight 200 · Light 300 · **Regular 400** · Medium 500 · Bold 700 · Extrabold 800 |
+| File                                      | Family (from the font's own name table) | Axis                              | Named instances                                                                                 |
+| ----------------------------------------- | --------------------------------------- | --------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `src/assets/fonts/Nippo-Variable.woff2`   | `Nippo Variable`                        | `wght` 200 → 700, **default 700** | Extralight 200 · Light 300 · **Regular 378** · Medium 500 · Bold 700                            |
+| `src/assets/fonts/Supreme-Variable.woff2` | `Supreme Variable`                      | `wght` 100 → 800, **default 800** | Thin 100 · Extralight 200 · Light 300 · **Regular 400** · Medium 500 · Bold 700 · Extrabold 800 |
 
 Two things follow from the table and both are easy to get wrong:
 
@@ -86,32 +86,35 @@ Two things follow from the table and both are easy to get wrong:
    instance (`wght = 378.0488`). Every heading and label on this page is set at 378.
 2. **Both files default to their heaviest instance** (Nippo 700, Supreme 800). If
    `font-weight` is not stated explicitly the text renders bold. Declare the axis
-   range in `@font-face` and set `font-weight` on every rule.
+   range where the face is loaded and set `font-weight` on every rule.
 
-```css
-@font-face {
-  font-family: "Nippo";
-  src: url("/fonts/Nippo-Variable.woff2") format("woff2-variations");
-  font-weight: 200 700;
-  font-style: normal;
-  font-display: swap;
-}
+They are loaded with `next/font/local` in `src/app/fonts.ts` — not with a hand-written
+`@font-face`. The loader self-hosts the files under a hashed URL, preloads Nippo, and
+generates the `size-adjust` / `ascent-override` descriptors that make the fallback face
+occupy the same box as the real one. Without those the swap reflows, and because the
+word ticker clips its window in `em`, the reflow lands on a different sub-pixel row on
+every operating system.
 
-@font-face {
-  font-family: "Supreme";
-  src: url("/fonts/Supreme-Variable.ttf") format("truetype-variations");
-  font-weight: 100 800;
-  font-style: normal;
-  font-display: swap;
-}
+```ts
+export const nippo = localFont({
+  src: "../assets/fonts/Nippo-Variable.woff2",
+  weight: "200 700",
+  display: "swap",
+  variable: "--font-nippo-loaded",
+  fallback: ["ui-sans-serif", "system-ui", "sans-serif"],
+});
 ```
 
-Reference them as `font-family: 'Nippo', sans-serif` and `font-family: 'Supreme', sans-serif`
-so the names match what the design calls them.
+`globals.css` maps the loader's variable onto the Tailwind token in an `@theme inline`
+block, so `font-nippo` and `font-supreme` keep working as utilities. The loader
+variable is named `--font-*-loaded` on purpose: a token defined as `var(itself)` is
+circular.
 
 **Supreme does not appear anywhere on this page.** Every string on the splash is
-Nippo. Supreme is still registered because it is the body face for the rest of the
-site, but if you are auditing this page only, a Supreme glyph on screen is a bug.
+Nippo, and `<main>` carries `font-nippo` so the body's Supreme is not inherited here —
+an inherited family is enough to make the browser download a face whose glyphs never
+render. Supreme stays registered as the body face for the rest of the site, but on
+this page a Supreme glyph on screen is a bug.
 
 ---
 

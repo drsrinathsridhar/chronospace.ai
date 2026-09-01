@@ -3,24 +3,15 @@
    names with slashes (e.g. body/rg-3) that Tailwind would emit as invalid CSS variables. */
 @source not "../../.devlooper";
 
-/* ── Brand fonts ─────────────────────────────────────────────────────────────
-   Self-hosted variable files from public/fonts/ (Fontshare ITF Free Font Licence:
-   https://www.fontshare.com/licenses/itf-ffl). Both files default to their HEAVIEST
-   named instance — Nippo 700, Supreme 800 — so the axis range is declared here and
-   every rule states its own weight. Nippo's "Regular" is 378, not 400. */
-@font-face {
-  font-family: "Nippo";
-  src: url("/fonts/Nippo-Variable.woff2") format("woff2-variations");
-  font-weight: 200 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Supreme";
-  src: url("/fonts/Supreme-Variable.ttf") format("truetype-variations");
-  font-weight: 100 800;
-  font-style: normal;
-  font-display: swap;
+/* ── Brand families ──────────────────────────────────────────────────────────
+   The @font-face rules live in src/app/fonts.ts, where next/font/local self-hosts the
+   files and reserves their metrics. `@theme inline` is what lets a Tailwind token point
+   at a variable defined outside the stylesheet: it inlines the reference into the
+   generated utilities instead of re-declaring it here, so `font-nippo` resolves against
+   the class next/font puts on <html>. The fallback stack lives in fonts.ts too. */
+@theme inline {
+  --font-nippo: var(--font-nippo-loaded);
+  --font-supreme: var(--font-supreme-loaded);
 }
 
 @theme {
@@ -48,10 +39,6 @@
   --color-c-grid-line: #1b1c25;
   --color-gradient-thermal-from: #fd7a39;
   --color-gradient-thermal-to: #ec168f;
-
-  /* ── Families ────────────────────────────────────────────────────────────── */
-  --font-nippo: "Nippo", ui-sans-serif, system-ui, sans-serif;
-  --font-supreme: "Supreme", ui-sans-serif, system-ui, sans-serif;
 
   /* ── Type scale — headings & labels are Nippo 378, paragraphs Supreme ────── */
   --text-heading-1: 56px;
@@ -313,10 +300,15 @@
    40ms apart in reading order (brand → headline → word → CTA → viewport → credit),
    so the whole choreography lands inside 600ms. The backdrop is a scene, not a
    control, so it takes the 1000ms scene duration and only fades — moving a
-   full-bleed image would drag the eye away from the headline. */
+   full-bleed image would drag the eye away from the headline.
+
+   The entrance starts at 0.01 rather than 0: a browser records no paint at all for
+   fully transparent content, which pushed Largest Contentful Paint out to the END of
+   the fade instead of its start. 1% of white on the near-black ground is below the
+   threshold of vision, so the choreography reads exactly as designed. */
 @keyframes enter-rise {
   from {
-    opacity: 0;
+    opacity: 0.01;
     transform: translate3d(0, 12px, 0);
   }
   to {
@@ -327,7 +319,7 @@
 
 @keyframes enter-fade {
   from {
-    opacity: 0;
+    opacity: 0.01;
   }
   to {
     opacity: 1;
@@ -335,13 +327,13 @@
 }
 
 .enter {
-  opacity: 0;
+  opacity: 0.01;
   will-change: transform, opacity;
   animation: enter-rise 400ms var(--ease-fluid) both;
 }
 
 .enter-scene {
-  opacity: 0;
+  opacity: 0.01;
   will-change: opacity;
   animation: enter-fade 1000ms var(--ease-fluid) both;
 }
