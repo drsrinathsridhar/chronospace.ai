@@ -38,8 +38,14 @@
   --shimmer-ink: var(--ink);
   --shimmer-flare: #ffffff;
 
-  /* Height of the fixed navbar; the hero and its room sit underneath it. */
-  --navbar-height: 3.75rem;
+  /*
+   * Height of the fixed navbar. The bar itself tightens once the page
+   * scrolls (below), but layout underneath it - the hero's top padding -
+   * measures against the resting height, so the page never reflows when
+   * the bar changes size over it.
+   */
+  --navbar-height-rest: 3.75rem;
+  --navbar-height: var(--navbar-height-rest);
   /* Page gutter. 40px at the 1496px design width, tightening on small screens. */
   --gutter: clamp(1.25rem, 2.674vw, 2.5rem);
 }
@@ -73,6 +79,7 @@
   --spacing-section: clamp(4rem, 8vw, 7rem);
   --spacing-gutter: var(--gutter);
   --spacing-navbar: var(--navbar-height);
+  --spacing-navbar-rest: var(--navbar-height-rest);
 }
 
 @layer base {

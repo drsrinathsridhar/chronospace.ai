@@ -28,8 +28,11 @@ const headline = [
 ];
 
 export function Hero() {
+  // Padded by the navbar's resting height, not its live one: the bar
+  // tightens on scroll, and tracking that here would shift the whole hero
+  // 12px the moment the page moves.
   return (
-    <section className="pt-navbar relative flex min-h-svh flex-col overflow-clip">
+    <section className="pt-navbar-rest relative flex min-h-svh flex-col overflow-clip">
       <HeroRoom />
 
       <div className="section-container relative flex flex-col items-center pt-24 text-center md:pt-40">
