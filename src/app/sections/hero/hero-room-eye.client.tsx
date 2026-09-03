@@ -135,19 +135,37 @@ export function HeroRoomEye() {
       wake();
     }
 
+    // The cards also ride the scroll, a touch faster than the page - the
+    // parallax of frames hung in front of the room. One unitless number,
+    // written straight (no chase: parallax is rigid coupling, and a lag
+    // here would read as the cards swimming), throttled to the frame.
+    let scrollFrame: number | undefined;
+
+    function onScroll() {
+      scrollFrame ??= requestAnimationFrame(() => {
+        scrollFrame = undefined;
+        float?.style.setProperty("--scroll-y", window.scrollY.toFixed(0));
+      });
+    }
+
     window.addEventListener("pointermove", onMove, { passive: true });
     document.addEventListener("pointerleave", onGone);
     window.addEventListener("blur", onGone);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
 
     return () => {
       if (frame !== undefined) cancelAnimationFrame(frame);
+      if (scrollFrame !== undefined) cancelAnimationFrame(scrollFrame);
       window.removeEventListener("pointermove", onMove);
       document.removeEventListener("pointerleave", onGone);
       window.removeEventListener("blur", onGone);
+      window.removeEventListener("scroll", onScroll);
       stage.style.removeProperty("--eye-x");
       stage.style.removeProperty("--eye-y");
       float?.style.removeProperty("--float-x");
       float?.style.removeProperty("--float-y");
+      float?.style.removeProperty("--scroll-y");
     };
   }, []);
 

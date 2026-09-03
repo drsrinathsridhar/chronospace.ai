@@ -1,7 +1,9 @@
 import { siteConfig } from "@/site.config";
 import { CtaLink } from "@/components/cta-link";
 import { A16zSpeedrunIcon } from "@/icons/generated";
+import { HeroBackingShine } from "./hero-backing-shine.client";
 import { HeroCards } from "./hero-cards";
+import backing from "./hero-backing.module.css";
 import { HeroRoom } from "./hero-room";
 import { HeroTimeline } from "./hero-timeline";
 
@@ -73,7 +75,22 @@ export function Hero() {
           style={{ "--reveal-index": 5 }}
         >
           <p className="type-nav text-muted">Backed by</p>
-          <A16zSpeedrunIcon width={170} height={24} className="text-ink" />
+          {/*
+           * The mark shines once on the way down - the navbar logotype's
+           * hover flare, fired by scroll instead of the pointer when the
+           * logo crosses the middle of the viewport.
+           */}
+          <span className={`${backing.mark} relative`}>
+            <A16zSpeedrunIcon width={170} height={24} className="text-ink" />
+            <span aria-hidden className={`${backing.flare} absolute inset-0`}>
+              <A16zSpeedrunIcon
+                width={170}
+                height={24}
+                className="text-accent"
+              />
+            </span>
+            <HeroBackingShine />
+          </span>
         </div>
       </div>
 

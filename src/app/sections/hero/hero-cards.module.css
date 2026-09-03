@@ -59,9 +59,18 @@
     left: var(--card-left);
     width: 11.1875rem;
     pointer-events: auto;
+    /*
+     * Two motions in one transform: the pointer float (the slow eye), and
+     * the scroll parallax - each card rises var(--card-lift) of the scroll
+     * on top of the page's own move, so leaving the hero pulls the cards
+     * away a touch faster than the room behind them.
+     */
     transform: translate3d(
       calc(var(--float-x, 0) * var(--card-drift, 10px)),
-      calc(var(--float-y, 0) * var(--card-drift, 10px)),
+      calc(
+        var(--float-y, 0) * var(--card-drift, 10px) - var(--scroll-y, 0) *
+          var(--card-lift, 0) * 1px
+      ),
       0
     );
   }

@@ -49,6 +49,8 @@ type FloatingCard = {
   top: string;
   /** How far one unit of eye travel moves this card - depth, per card. */
   drift: string;
+  /** Extra rise per scrolled pixel - the same depth, read vertically. */
+  lift: string;
   reveal: number;
 };
 
@@ -70,6 +72,7 @@ const cards: FloatingCard[] = [
     left: "6.95%",
     top: "139px",
     drift: "12px",
+    lift: "0.08",
     reveal: 7,
   },
   {
@@ -89,6 +92,7 @@ const cards: FloatingCard[] = [
     left: "20.72%",
     top: "418px",
     drift: "16px",
+    lift: "0.12",
     reveal: 8,
   },
   {
@@ -120,6 +124,7 @@ const cards: FloatingCard[] = [
     left: "79.81%",
     top: "257px",
     drift: "10px",
+    lift: "0.06",
     reveal: 9,
   },
 ];
@@ -166,6 +171,7 @@ export function HeroCards() {
             "--card-left": card.left,
             "--card-top": card.top,
             "--card-drift": card.drift,
+            "--card-lift": card.lift,
           }}
         >
           <header className="bg-paper border-line type-label text-ink flex items-baseline justify-between gap-2 border-b p-3">
