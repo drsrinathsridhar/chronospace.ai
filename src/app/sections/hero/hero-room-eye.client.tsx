@@ -33,6 +33,12 @@ import { useEffect, useRef } from "react";
  * past ~150 starts reading as lag rather than mass.
  */
 const TAU = 80;
+/**
+ * The cards' clock. The floating captures chase the same eye through
+ * `--float-x`/`--float-y`, but three times slower, so they trail the room's
+ * move the way frames hung in front of it would - slightly, and late.
+ */
+const TAU_FLOAT = 240;
 /** Longest step the chase will take, ms - a backgrounded tab must not jump. */
 const MAX_STEP = 64;
 /** Below this, the room is close enough to its target to stop the loop. */
@@ -46,6 +52,9 @@ export function HeroRoomEye() {
       ref.current?.parentElement?.querySelector<HTMLElement>("[data-stage]");
     const section = ref.current?.closest("section");
     if (!stage || !section) return;
+    // The floating cards, if the layout is showing them. Same eye, slower
+    // clock - see TAU_FLOAT.
+    const float = section.querySelector<HTMLElement>("[data-float]");
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     // A room that leans on tap and then stays leaning is worse than no room.
     if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches)
@@ -56,6 +65,8 @@ export function HeroRoomEye() {
     let tracking = false;
     let x = 0;
     let y = 0;
+    let floatX = 0;
+    let floatY = 0;
     let frame: number | undefined;
     let last = 0;
 
@@ -82,15 +93,26 @@ export function HeroRoomEye() {
       x += (targetX - x) * chase;
       y += (targetY - y) * chase;
 
+      const chaseFloat = 1 - Math.exp(-step / TAU_FLOAT);
+      floatX += (targetX - floatX) * chaseFloat;
+      floatY += (targetY - floatY) * chaseFloat;
+
       const settled =
-        Math.abs(targetX - x) < SETTLED && Math.abs(targetY - y) < SETTLED;
+        Math.abs(targetX - x) < SETTLED &&
+        Math.abs(targetY - y) < SETTLED &&
+        Math.abs(targetX - floatX) < SETTLED &&
+        Math.abs(targetY - floatY) < SETTLED;
       if (settled) {
         x = targetX;
         y = targetY;
+        floatX = targetX;
+        floatY = targetY;
       }
 
       stage!.style.setProperty("--eye-x", x.toFixed(4));
       stage!.style.setProperty("--eye-y", y.toFixed(4));
+      float?.style.setProperty("--float-x", floatX.toFixed(4));
+      float?.style.setProperty("--float-y", floatY.toFixed(4));
 
       frame = settled ? undefined : requestAnimationFrame(tick);
     }
@@ -124,6 +146,8 @@ export function HeroRoomEye() {
       window.removeEventListener("blur", onGone);
       stage.style.removeProperty("--eye-x");
       stage.style.removeProperty("--eye-y");
+      float?.style.removeProperty("--float-x");
+      float?.style.removeProperty("--float-y");
     };
   }, []);
 

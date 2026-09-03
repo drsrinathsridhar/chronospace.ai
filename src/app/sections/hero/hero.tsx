@@ -1,17 +1,19 @@
 import { siteConfig } from "@/site.config";
 import { CtaLink } from "@/components/cta-link";
 import { A16zSpeedrunIcon } from "@/icons/generated";
+import { HeroCards } from "./hero-cards";
 import { HeroRoom } from "./hero-room";
 import { HeroTimeline } from "./hero-timeline";
 
 // The first screen, and the whole argument in one view: a dark room with the
-// claim standing in the middle of it, and the evidence laid out below on a
-// timecode ruler - three captures parked at even beats along one timeline.
+// claim standing in the middle of it, the evidence hung around it - three
+// captures floating in front of the room, each subject printed back in
+// colour with its motion trail - and the timecode ruler underlining the
+// whole screen at its foot.
 //
 // The vertical rhythm is the comp's, to the pixel, at the 1496px design
 // width: 160 below the navbar to the eyebrow, 20 to the headline, 40 to the
-// action, 160 to the backing line, 80 to the strip, and 92 from the strip to
-// the foot of the section.
+// action, 160 to the backing line, and the ruler flush with the foot.
 //
 // Everything arrives on the same band of light, in reading order - see
 // `shimmer-reveal` / `sweep-reveal` in globals.css. `--reveal-index` is that
@@ -73,11 +75,13 @@ export function Hero() {
       </div>
 
       {/*
-       * The strip runs its own choreography - the ruler wipe and the card
-       * slides in hero-timeline.module.css - timed off the same reveal clock,
-       * so no sweep is layered on top of it here.
+       * The captures. At xl they hang at the comp's scatter positions over
+       * the whole section and drift with the pointer; below that they fall
+       * into a strip here, between the copy and the ruler.
        */}
-      <div className="section-container relative mt-auto pt-10 pb-10 md:pb-23">
+      <HeroCards />
+
+      <div className="section-container relative mt-auto pt-10 pb-2">
         <HeroTimeline />
       </div>
     </section>
