@@ -1,0 +1,51 @@
+/*
+ * The intro copy. At the 1496px design width the block starts 598/1416 into
+ * the content box and holds the hero headline's 698px measure; the blank
+ * line between the two paragraphs is exactly one line of the lede.
+ *
+ * --read-progress arrives from problem-read-progress.client.tsx as 0..1 and
+ * rests at 1, so with no script - or with reduced motion, where the island
+ * never attaches - the copy is simply read: settled ink throughout.
+ */
+
+.copy {
+  --read-progress: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2em;
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 48rem) {
+  .copy {
+    max-width: 43.625rem; /* 698px */
+    margin-top: 0;
+    margin-left: 42.23%;
+  }
+}
+
+/*
+ * One word of the read. The word is lit by how far the reading line has
+ * passed it: progress scaled to the word count, minus this word's index,
+ * clamped to one word's worth - so the boundary is always mid-word wide,
+ * the way the comp freezes it. Colour runs from the muted 32% to full ink,
+ * both taken from the ink token.
+ */
+.word {
+  color: color-mix(
+    in srgb,
+    var(--ink)
+      calc(
+        (
+            0.32 + 0.68 *
+              clamp(
+                0,
+                var(--read-progress) * var(--word-count) - var(--word-index),
+                1
+              )
+          ) *
+          100%
+      ),
+    transparent
+  );
+}

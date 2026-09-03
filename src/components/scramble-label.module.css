@@ -1,0 +1,30 @@
+/*
+ * A nav label that decodes on hover.
+ *
+ * The real string stays in the box and keeps setting the label's width; the
+ * shuffled copy is painted over it, pinned to the same origin. So however
+ * wide the stand-in glyphs happen to be, nothing around them moves - the
+ * label reads as characters resolving, not as text twitching.
+ */
+
+.label {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.shuffled {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.label[data-shuffling] .real {
+  opacity: 0;
+}
+
+.label[data-shuffling] .shuffled {
+  opacity: 1;
+}

@@ -1,0 +1,131 @@
+/*
+ * The timecode strip. At the 1496px design width the track is 1416 wide with
+ * three 178.826x180 cards whose centres sit on 25/50/75% of it; the labels
+ * row (13px) and its 8px gap put the ruler 98/180 into the card's height, so
+ * the line passes just below each card's midline the way the comp draws it.
+ *
+ * The choreography, all CSS and all off the page-reveal clock:
+ *
+ *   1. The label row arrives on the shared band of light (--reveal-index 6).
+ *   2. The ruler draws itself left to right - a clip wipe, so the accent
+ *      ticks appear as the playhead passes them rather than stretching.
+ *   3. Each card sets off from the ruler's origin and rides right to its
+ *      beat. Travel is measured in container widths (--card-travel is the
+ *      card's final centre), and durations stagger so arrivals read left to
+ *      right, the last card landing as the ruler finishes.
+ *
+ * Reduced motion collapses all of it through the global rule in globals.css:
+ * every animation runs `both`, so the strip simply sits in its final state.
+ */
+
+.strip {
+  container-type: inline-size;
+  position: relative;
+  /* The strip moves after the backing line, which holds --reveal-index 5. */
+  --strip-delay: calc(6 * var(--reveal-step));
+}
+
+.timecode {
+  position: absolute;
+  inset-inline: 0;
+  /* Labels top edge at 77/180 of the card height, per the comp. */
+  top: 42.8%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.track {
+  display: flex;
+  align-items: flex-end;
+  animation: track-grow 1.2s var(--reveal-ease) both;
+  animation-delay: var(--strip-delay);
+}
+
+.rule {
+  height: 1px;
+  background: var(--line);
+}
+
+.ruleShort {
+  /* The measured unit at the origin: 111px between its two ticks. */
+  flex: none;
+  width: 6.9375rem;
+}
+
+.ruleLong {
+  flex: 1;
+}
+
+@keyframes track-grow {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/*
+ * Three equal columns with the outer half-columns trimmed put the column
+ * centres exactly on 25/50/75% of the track. Below the medium breakpoint the
+ * trim goes and the cards use the full width instead of colliding.
+ */
+.cards {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+}
+
+@media (min-width: 48rem) {
+  .cards {
+    padding-inline: 12.5%;
+  }
+}
+
+.card {
+  display: flex;
+  width: 100%;
+  max-width: 11.1875rem; /* 178.826px */
+  flex-direction: column;
+  border: 1px solid var(--line);
+  animation: card-slide var(--card-duration, 1.2s) var(--reveal-ease) both;
+  animation-delay: var(--strip-delay);
+}
+
+/*
+ * `50% - travel` starts every card with its left edge on the ruler's origin;
+ * from there each one rides out to its own beat and fades up on the way.
+ */
+@keyframes card-slide {
+  from {
+    transform: translateX(calc(50% - var(--card-travel, 50cqw)));
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+.body {
+  position: relative;
+  flex: 1;
+  overflow: clip;
+  aspect-ratio: 176.826 / 139.565;
+  background: var(--surface);
+}
+
+/* Each plate hangs off the card body by the comp's fractions; height follows
+   the plate's own aspect ratio so the crop never drifts as the card scales. */
+.plate {
+  position: absolute;
+  top: var(--plate-top);
+  left: var(--plate-left);
+  width: var(--plate-width);
+  aspect-ratio: var(--plate-aspect);
+}

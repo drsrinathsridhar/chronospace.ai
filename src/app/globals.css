@@ -1,0 +1,356 @@
+@import "tailwindcss";
+
+:root {
+  /* Supreme carries reading copy; Nippo carries every piece of chrome. */
+  --font-sans-brand: var(--font-brand-sans, Arial, Helvetica, sans-serif);
+  --font-display-brand: var(--font-brand-display, var(--font-sans-brand));
+
+  /* Brand palette, straight off the Figma variables. */
+  --paper: #090b19; /* c-black */
+  --paper-ink: #0f1224;
+  --ink: #ffffff; /* c-white */
+  --muted: rgb(255 255 255 / 32%);
+  --surface: #0f1224;
+  --surface-strong: #30323e;
+  --line: #30323e; /* c-blue/900 */
+  --line-soft: rgb(255 255 255 / 16%);
+  --accent: #f25324; /* c-orange/500 */
+  --accent-foreground: #ffffff;
+  --ring: #f25324;
+
+  /*
+   * The hero room. The plate itself is a neutral grey box lit along its
+   * seams; --room-wash is the additive tint that turns it blue, and
+   * --room-floor is the black the room sinks into before the page ground
+   * (--paper) takes over. Both are consumed from section CSS rather than
+   * Tailwind, so they stay runtime variables.
+   */
+  --room-wash: #000420;
+  --room-floor: #020413;
+
+  /*
+   * The page reveal: a band of light that travels left to right and leaves
+   * each block behind it, staggered by `--reveal-index`.
+   */
+  --reveal-duration: 1.05s;
+  --reveal-step: 0.1s;
+  --reveal-ease: cubic-bezier(0.4, 0.1, 0.2, 1);
+  --shimmer-ink: var(--ink);
+  --shimmer-flare: #ffffff;
+
+  /* Height of the fixed navbar; the hero and its room sit underneath it. */
+  --navbar-height: 3.75rem;
+  /* Page gutter. 40px at the 1496px design width, tightening on small screens. */
+  --gutter: clamp(1.25rem, 2.674vw, 2.5rem);
+}
+
+/*
+ * Once the page leaves the top (site-header-scroll.client.tsx) the navbar
+ * tightens; everything sized off --navbar-height follows.
+ */
+:root[data-scrolled] {
+  --navbar-height: 3rem;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-ink: var(--paper-ink);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-surface: var(--surface);
+  --color-surface-strong: var(--surface-strong);
+  --color-line: var(--line);
+  --color-line-soft: var(--line-soft);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-ring: var(--ring);
+  --font-sans: var(--font-sans-brand);
+  --font-display: var(--font-display-brand);
+  --radius-card: 0;
+  --radius-panel: 0;
+  --radius-pill: 999px;
+  --shadow-soft: 0 16px 48px rgb(0 0 0 / 24%);
+  --spacing-section: clamp(4rem, 8vw, 7rem);
+  --spacing-gutter: var(--gutter);
+  --spacing-navbar: var(--navbar-height);
+}
+
+@layer base {
+  * {
+    border-color: var(--line);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans-brand);
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+}
+
+@utility section-container {
+  width: 100%;
+  padding-inline: var(--gutter);
+}
+
+/*
+ * The page reveal, in two flavours of the same gesture.
+ *
+ *   shimmer-reveal  for text. The band IS the type: the gradient is clipped
+ *                   to the glyphs, so a letter goes from absent, through the
+ *                   flare, to its settled colour. Set `--shimmer-ink` to the
+ *                   colour it lands on - the utility owns `color`, so a
+ *                   `text-*` class on the same element would not survive.
+ *   sweep-reveal    for everything else - a soft-edged wipe over the whole
+ *                   box, for blocks that are not one colour of type.
+ */
+@keyframes reveal-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+
+@keyframes reveal-sweep {
+  from {
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+  }
+  to {
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+  }
+}
+
+@utility shimmer-reveal {
+  color: transparent;
+  background-image: linear-gradient(
+    90deg,
+    var(--shimmer-ink) 0%,
+    var(--shimmer-ink) 34%,
+    var(--shimmer-flare) 42%,
+    var(--shimmer-ink) 50%,
+    transparent 60%
+  );
+  background-repeat: no-repeat;
+  background-size: 280% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: reveal-shimmer var(--reveal-duration) var(--reveal-ease) both;
+  animation-delay: calc(var(--reveal-index, 0) * var(--reveal-step));
+}
+
+@utility sweep-reveal {
+  --reveal-mask: linear-gradient(
+    90deg,
+    #000 0%,
+    #000 42%,
+    rgb(0 0 0 / 30%) 52%,
+    transparent 62%
+  );
+  -webkit-mask-image: var(--reveal-mask);
+  mask-image: var(--reveal-mask);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 280% 100%;
+  mask-size: 280% 100%;
+  -webkit-mask-position: 100% 0;
+  mask-position: 100% 0;
+  animation: reveal-sweep var(--reveal-duration) var(--reveal-ease) both;
+  animation-delay: calc(var(--reveal-index, 0) * var(--reveal-step));
+}
+
+/*
+ * Display type is Nippo at the weight the Figma text styles carry (378 on the
+ * 200-700 axis) with the design's -2% tracking and 1.1 leading.
+ */
+@utility type-display-2xl {
+  font-family: var(--font-display-brand);
+  font-size: 5rem;
+  font-weight: 378;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+@utility type-display-xl {
+  font-family: var(--font-display-brand);
+  font-size: 4rem;
+  font-weight: 378;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+@utility type-display-lg {
+  font-family: var(--font-display-brand);
+  font-size: 3.5rem;
+  font-weight: 378;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+@utility type-display-md {
+  font-family: var(--font-display-brand);
+  font-size: 3rem;
+  font-weight: 378;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+@utility type-display-sm {
+  font-family: var(--font-display-brand);
+  font-size: 2.5rem;
+  font-weight: 378;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+@utility type-display-xs {
+  font-family: var(--font-display-brand);
+  font-size: 2rem;
+  font-weight: 378;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+@utility type-title-lg {
+  font-family: var(--font-display-brand);
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+@utility type-title-md {
+  font-family: var(--font-display-brand);
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+@utility type-title-sm {
+  font-family: var(--font-display-brand);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+@utility type-body-xl {
+  font-family: var(--font-sans-brand);
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+
+@utility type-body-lg {
+  font-family: var(--font-sans-brand);
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+}
+
+@utility type-body-md {
+  font-family: var(--font-sans-brand);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+@utility type-body-sm {
+  font-family: var(--font-sans-brand);
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+/* The editorial lede: Supreme at 32px on the design's tight 1.2 leading, for
+   the big reading paragraphs that anchor a section. */
+@utility type-lede {
+  font-family: var(--font-sans-brand);
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+/*
+ * The label styles the design uses for chrome. All Nippo, all on 1.1 leading.
+ *   type-button   14px - the hero call to action (uppercase)
+ *   type-nav      12px - navbar cells, eyebrows, section labels (uppercase)
+ *   type-label    12px - card titles; sentence case with display tracking
+ *   type-caption  10px - HUD strips: the hero timecode readout (uppercase)
+ *   type-micro     6px - the tiny counters inside card headers (uppercase)
+ */
+@utility type-button {
+  font-family: var(--font-display-brand);
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+@utility type-nav {
+  font-family: var(--font-display-brand);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+@utility type-label {
+  font-family: var(--font-display-brand);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+@utility type-caption {
+  font-family: var(--font-display-brand);
+  font-size: 0.625rem;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+@utility type-micro {
+  font-family: var(--font-display-brand);
+  font-size: 0.375rem;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto;
+    animation-duration: 0.001ms;
+    /* The reveal is staggered with delays, so those have to collapse too,
+       or the page would sit blank for the length of the intro. */
+    animation-delay: 0.001ms;
+    animation-iteration-count: 1;
+    transition-duration: 0.001ms;
+  }
+}

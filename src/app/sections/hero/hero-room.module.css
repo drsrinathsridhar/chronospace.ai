@@ -1,0 +1,220 @@
+/*
+ * The hero room, built as an actual room.
+ *
+ * The comp ships this as a flat plate, but the plate is a photograph of a
+ * box in one-point perspective - five matte faces and a cove light running
+ * round the ceiling - so it can be rebuilt as the box it is and then looked
+ * into. Every number below is measured off that plate (1024x576):
+ *
+ *   back wall   x 214.25..806.2, y 119.1..500.55
+ *   vanishing point  (510.2, 421) - dead centre horizontally, low in the
+ *                    frame, because the camera sits about a fifth of the way
+ *                    up the room
+ *
+ * A single free parameter is left: how deep the room is. A photograph of a
+ * box cannot tell you that - the same picture is made by a short wide room
+ * and a long narrow one - so it is chosen for feel. r is the ratio the back
+ * wall shrinks by, 0.55, which puts the walls at 105.1 x 120.4 x 121.8 and
+ * the lens at a normal-ish 53 degrees.
+ *
+ * Layout is in container units so the whole box stretches with the plate the
+ * way the plate itself used to: x and z in cqw, y in cqh. Only the static
+ * 90-degree face rotations mix axes, and those are written so a rotation
+ * only ever maps cqw onto cqw.
+ */
+
+.room {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/*
+ * 1496x724 in the comp - 48.4% of the page width tall, and never less than
+ * the top three fifths of the hero, so a narrow screen gets a room rather
+ * than a letterbox. It is also the container everything below is measured
+ * against.
+ */
+/*
+ * The blue the whole room is lit in. The comp gets it from a #000420 wash
+ * blended over the top of the plate, but a blend layer has to re-rasterise
+ * its backdrop on every frame the eye moves - the most expensive thing on
+ * the screen, to tint something that can simply be tinted underneath. It
+ * sits behind the geometry rather than inside each face so that the hairline
+ * where two faces meet has something to show.
+ */
+.plate {
+  position: absolute;
+  inset: 0 0 auto;
+  height: max(60%, 48.4vw);
+  container-type: size;
+  background-color: var(--room-wash);
+  /*
+   * The projected faces are much larger than the box they sit in - a wall's
+   * near edge lands well below the plate once the perspective has had it -
+   * and unclipped they escape into the page as a lit band with a hard edge,
+   * past where the sink has already landed on the ground. The comp's room
+   * stops at the plate's foot, so the geometry is cut there too.
+   */
+  overflow: clip;
+}
+
+/*
+ * The camera. The eye moves sideways; it does not turn. A turn of the head
+ * is a pure homography and carries no depth at all, whereas a move slides
+ * the back wall against the near walls, which is the whole effect.
+ *
+ * The obvious way to write that is to animate `perspective-origin`, and the
+ * obvious way does not survive contact with real browsers: Safari drops the
+ * 3D context, and GPU-composited Chrome does not reliably repaint on it. So
+ * the same move is expressed with nothing but `transform`, which every
+ * engine composites and invalidates.
+ *
+ * It is the same picture, exactly. Shifting the eye by d moves a point at
+ * depth z by d * -z / (P - z). Translating every face by -d instead moves it
+ * by -d * P / (P - z), and those two differ by exactly -d, a constant - so
+ * translating the faces by -d and the stage back by +d reproduces the eye
+ * move identically. The plate's own plane still sits at z = 0 and so still
+ * never moves, which is why the room cannot tear away from its edges.
+ *
+ * The faces are direct children of the perspective, with no `preserve-3d`
+ * anywhere: they tile the view rather than intersecting one another, so they
+ * have no need to share a 3D space, and the construction most likely to
+ * survive every engine is the one that asks for the least.
+ *
+ * --eye-x / --eye-y arrive from hero-room-eye.client.tsx as -1..1 and rest
+ * at 0, so with no script, or for anyone who has asked for less motion, this
+ * is exactly the comp.
+ */
+.stage {
+  --eye-shift-x: calc(5cqw * var(--eye-x, 0));
+  --eye-shift-y: calc(3.2cqh * var(--eye-y, 0));
+  --eye: translate3d(
+    calc(-1 * var(--eye-shift-x)),
+    calc(-1 * var(--eye-shift-y)),
+    0
+  );
+
+  position: absolute;
+  inset: 0;
+  perspective: 100cqw;
+  perspective-origin: 49.82% 73.09%;
+  transform: translate3d(var(--eye-shift-x), var(--eye-shift-y), 0);
+}
+
+.stage > * {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+}
+
+/*
+ * The five faces. Shading is measured off the plate too, as white over
+ * black: every surface is darkest at the back and lifts toward the viewer,
+ * except the ceiling, which is in shadow throughout and only catches the
+ * cove at its edges.
+ */
+
+.back {
+  width: 105.11cqw;
+  height: 120.4cqh;
+  transform: var(--eye) translate3d(-2.735cqw, -22.2cqh, -81.82cqw);
+  background-image:
+    linear-gradient(
+      to right,
+      rgb(255 255 255 / 4.2%),
+      transparent 1.6%,
+      transparent 98.4%,
+      rgb(255 255 255 / 3.6%)
+    ),
+    linear-gradient(
+      to bottom,
+      rgb(255 255 255 / 7.8%),
+      rgb(255 255 255 / 4.7%) 3%,
+      rgb(255 255 255 / 1.75%) 9%,
+      rgb(255 255 255 / 4.8%)
+    );
+}
+
+/* Local +x runs from the near end of the room to the back wall. */
+.left {
+  width: 121.82cqw;
+  height: 120.4cqh;
+  transform: var(--eye) translate3d(-2.735cqw, -22.2cqh, 40cqw) rotateY(90deg);
+  background-image:
+    linear-gradient(to bottom, rgb(255 255 255 / 5%), transparent 6%),
+    linear-gradient(
+      to right,
+      rgb(255 255 255 / 8.5%),
+      rgb(255 255 255 / 2.9%) 97%,
+      rgb(255 255 255 / 4.4%)
+    );
+}
+
+/* Mirrored, so local +x runs from the back wall out toward the viewer. */
+.right {
+  width: 121.82cqw;
+  height: 120.4cqh;
+  transform: var(--eye) translate3d(102.375cqw, -22.2cqh, -81.82cqw)
+    rotateY(-90deg);
+  background-image:
+    linear-gradient(to bottom, rgb(255 255 255 / 5%), transparent 6%),
+    linear-gradient(
+      to right,
+      rgb(255 255 255 / 4.4%),
+      rgb(255 255 255 / 3.1%) 3%,
+      rgb(255 255 255 / 6.6%)
+    );
+}
+
+/* Local +y runs from the back wall toward the viewer for both of these. */
+.ceiling {
+  width: 105.11cqw;
+  height: 121.82cqw;
+  transform: var(--eye) translate3d(-2.735cqw, -22.2cqh, -81.82cqw)
+    rotateX(90deg);
+  background-image:
+    linear-gradient(to bottom, rgb(255 255 255 / 9%), transparent 5%),
+    linear-gradient(to right, rgb(255 255 255 / 7%), transparent 4%),
+    linear-gradient(to left, rgb(255 255 255 / 7%), transparent 4%),
+    linear-gradient(rgb(255 255 255 / 0.4%), rgb(255 255 255 / 0.4%));
+}
+
+.floor {
+  width: 105.11cqw;
+  height: 121.82cqw;
+  transform: var(--eye) translate3d(-2.735cqw, 98.2cqh, -81.82cqw)
+    rotateX(90deg);
+  background-image: linear-gradient(
+    to bottom,
+    rgb(255 255 255 / 2%),
+    rgb(255 255 255 / 5%)
+  );
+}
+
+/*
+ * Over the top of the room: it goes black over its bottom two thirds, and
+ * that black is handed back to the page ground.
+ *
+ * The comp lands the sink on --room-floor exactly where the plate stops,
+ * which leaves a hard step against the page ground underneath - small, four
+ * or five levels, but a straight line right across the screen. So the fall
+ * carries one stop further and lands on the ground itself.
+ */
+.sink {
+  position: absolute;
+  inset: 35.2% 0 0;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--room-floor) 75%,
+    var(--paper)
+  );
+}
+
+.ground {
+  position: absolute;
+  inset: 31.4% 0 0;
+  background: linear-gradient(to bottom, transparent 8.66%, var(--paper) 100%);
+}

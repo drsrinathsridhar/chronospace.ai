@@ -1,0 +1,119 @@
+/*
+ * The capture section's geometry and the player's chrome. At the 1496px
+ * design width the heading and player sit 598/1416 into the content box on
+ * the section's shared 698px measure - the same column the intro copy reads
+ * in - with the take held in a hairline frame and the transport bar hung
+ * off its bottom rule.
+ */
+
+.column {
+  position: relative;
+}
+
+@media (min-width: 48rem) {
+  .column {
+    max-width: 43.625rem; /* 698px */
+    margin-left: 42.23%;
+  }
+}
+
+.frame {
+  position: relative;
+  /*
+   * The blend needs its backdrop in the same stacking context, so the frame
+   * paints the page ground itself and isolates: the take blends with this
+   * paper and nothing behind it.
+   */
+  isolation: isolate;
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+
+/*
+ * The comp stylises the plate with a luminosity blend - only the video's
+ * light survives, and the page's blue does the colouring - so the same
+ * blend, over the same paper.
+ */
+.video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 640 / 368;
+  object-fit: cover;
+  mix-blend-mode: luminosity;
+}
+
+/*
+ * The scrub track. One custom property arrives from the island each frame,
+ * --capture-progress in 0..1, and the playhead rides it; the native range
+ * input stretched invisibly over the top owns every pointer and key.
+ */
+.track {
+  position: relative;
+  flex: 1;
+}
+
+.playhead {
+  position: absolute;
+  top: -0.3125rem;
+  left: calc(var(--capture-progress, 0) * 100%);
+  width: 1px;
+  height: 1rem;
+  background: var(--accent);
+}
+
+.playhead::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -1.5px;
+  width: 4px;
+  height: 4px;
+  background: var(--accent);
+}
+
+.range {
+  position: absolute;
+  inset: -0.5rem 0;
+  width: 100%;
+  margin: 0;
+  opacity: 0;
+  appearance: none;
+  cursor: pointer;
+}
+
+.track:has(.range:focus-visible) {
+  outline: 2px solid var(--ring);
+  outline-offset: 6px;
+}
+
+/* The transport glyphs, drawn rather than shipped: two bars and a wedge. */
+.pause {
+  position: relative;
+  width: 0.625rem;
+  height: 0.75rem;
+}
+
+.pause::before,
+.pause::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 0.25rem;
+  height: 100%;
+  background: currentColor;
+}
+
+.pause::before {
+  left: 0;
+}
+
+.pause::after {
+  right: 0;
+}
+
+.play {
+  width: 0.625rem;
+  height: 0.75rem;
+  background: currentColor;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}

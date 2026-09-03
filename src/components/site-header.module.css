@@ -1,0 +1,42 @@
+/*
+ * The logo's hover flare: an accent-coloured copy of the mark sits on top of
+ * it, masked down to a soft band that flies left to right on hover - the same
+ * band of light the hero copy arrives on, in orange. The animation ends with
+ * the band off the right edge, so the flare leaves no trace and replays on
+ * every hover.
+ */
+
+@keyframes logo-flare {
+  from {
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+  }
+  to {
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+  }
+}
+
+.flare {
+  --flare-mask: linear-gradient(
+    90deg,
+    transparent 35%,
+    rgb(0 0 0 / 85%) 46%,
+    #000 50%,
+    rgb(0 0 0 / 85%) 54%,
+    transparent 65%
+  );
+  opacity: 0;
+  -webkit-mask-image: var(--flare-mask);
+  mask-image: var(--flare-mask);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 300% 100%;
+  mask-size: 300% 100%;
+}
+
+a:hover .flare,
+a:focus-visible .flare {
+  opacity: 1;
+  animation: logo-flare 0.9s var(--reveal-ease) both;
+}
