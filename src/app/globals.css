@@ -179,6 +179,62 @@
 }
 
 /*
+ * The same two gestures, retriggerable: `shimmer-in` / `sweep-in` are the
+ * scroll-driven counterparts of the load-time reveals above. They rest on
+ * `--reveal` - 1 settled, 0 waiting - and transition between the two ends
+ * of the same gradient/mask whenever it flips, staggered by `--beat`.
+ * [data-reveal-scope] (reveal-scope.client.tsx) is the scroll trigger that
+ * flips the variable. Without scripting nothing is ever hidden, and reduced
+ * motion never leaves the settled state.
+ */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  [data-reveal-scope]:not([data-revealed]) {
+    --reveal: 0;
+  }
+}
+
+@utility shimmer-in {
+  color: transparent;
+  background-image: linear-gradient(
+    90deg,
+    var(--shimmer-ink) 0%,
+    var(--shimmer-ink) 34%,
+    var(--shimmer-flare) 42%,
+    var(--shimmer-ink) 50%,
+    transparent 60%
+  );
+  background-repeat: no-repeat;
+  background-size: 280% 100%;
+  background-position: calc((1 - var(--reveal, 1)) * 100%) 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  transition: background-position var(--reveal-duration) var(--reveal-ease);
+  transition-delay: calc(var(--beat, 0) * var(--reveal-step));
+}
+
+@utility sweep-in {
+  --sweep-mask: linear-gradient(
+    90deg,
+    #000 0%,
+    #000 42%,
+    rgb(0 0 0 / 30%) 52%,
+    transparent 62%
+  );
+  -webkit-mask-image: var(--sweep-mask);
+  mask-image: var(--sweep-mask);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 280% 100%;
+  mask-size: 280% 100%;
+  -webkit-mask-position: calc((1 - var(--reveal, 1)) * 100%) 0;
+  mask-position: calc((1 - var(--reveal, 1)) * 100%) 0;
+  transition:
+    -webkit-mask-position var(--reveal-duration) var(--reveal-ease),
+    mask-position var(--reveal-duration) var(--reveal-ease);
+  transition-delay: calc(var(--beat, 0) * var(--reveal-step));
+}
+
+/*
  * Display type is Nippo at the weight the Figma text styles carry (378 on the
  * 200-700 axis) with the design's -2% tracking and 1.1 leading.
  */

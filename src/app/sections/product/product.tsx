@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { StaticImageData } from "next/image";
+import { RevealScope } from "@/components/reveal-scope.client";
 import measurable from "./measurable.png";
 import navigable from "./navigable.png";
 import styles from "./product.module.css";
@@ -50,47 +51,61 @@ const cards: Card[] = [
 export function Product() {
   return (
     <section id="product" className="section-container relative pt-27 pb-30">
-      <p className="type-nav text-muted pt-2 md:absolute">(Product)</p>
-
-      <div className={styles.column}>
-        <h2 className="type-display-xs sm:type-display-sm lg:type-display-md mt-6 text-balance md:mt-0">
-          One capture, three things nobody else can hand you.
-        </h2>
-        <p className="type-body-xl text-ink/60 mt-6 max-w-115">
-          For anyone training models on the physical world, the capture itself
-          is the asset.
+      <RevealScope>
+        <p
+          className="type-nav shimmer-in pt-2 md:absolute"
+          style={{ "--beat": 0, "--shimmer-ink": "var(--muted)" }}
+        >
+          (Product)
         </p>
-      </div>
 
-      <div className="mt-20 grid grid-cols-1 gap-5.5 md:mt-38 md:grid-cols-3">
-        {cards.map((card) => (
-          <article
-            key={card.label}
-            className="border-line flex flex-col border"
+        <div className={styles.column}>
+          <h2
+            className="type-display-xs sm:type-display-sm lg:type-display-md shimmer-in mt-6 text-balance md:mt-0"
+            style={{ "--beat": 1 }}
           >
-            <header className="bg-paper border-line border-b p-8">
-              <p className="type-nav text-muted">{card.label}</p>
-            </header>
+            One capture, three things nobody else can hand you.
+          </h2>
+          <p
+            className="type-body-xl shimmer-in mt-6 max-w-115 opacity-60"
+            style={{ "--beat": 2 }}
+          >
+            For anyone training models on the physical world, the capture itself
+            is the asset.
+          </p>
+        </div>
 
-            <div className={styles.plate}>
-              <Image
-                src={card.image}
-                alt=""
-                fill
-                sizes="(min-width: 48rem) 33vw, 100vw"
-                className={card.imageClassName}
-              />
-            </div>
+        <div className="mt-20 grid grid-cols-1 gap-5.5 md:mt-38 md:grid-cols-3">
+          {cards.map((card, index) => (
+            <article
+              key={card.label}
+              className="border-line sweep-in flex flex-col border"
+              style={{ "--beat": 3 + index }}
+            >
+              <header className="bg-paper border-line border-b p-8">
+                <p className="type-nav text-muted">{card.label}</p>
+              </header>
 
-            <div className="border-line flex flex-1 flex-col gap-6 border-t px-8 py-10">
-              <h3 className="type-title-lg">{card.title}</h3>
-              <p className="type-body-lg leading-tight font-light">
-                {card.copy}
-              </p>
-            </div>
-          </article>
-        ))}
-      </div>
+              <div className={styles.plate}>
+                <Image
+                  src={card.image}
+                  alt=""
+                  fill
+                  sizes="(min-width: 48rem) 33vw, 100vw"
+                  className={card.imageClassName}
+                />
+              </div>
+
+              <div className="border-line flex flex-1 flex-col gap-6 border-t px-8 py-10">
+                <h3 className="type-title-lg">{card.title}</h3>
+                <p className="type-body-lg leading-tight font-light">
+                  {card.copy}
+                </p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </RevealScope>
     </section>
   );
 }
