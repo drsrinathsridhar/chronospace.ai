@@ -3,6 +3,7 @@ import { Hero } from "./sections/hero";
 import { Problem } from "./sections/problem";
 import { Product } from "./sections/product";
 import { Capture } from "./sections/capture";
+import { Team } from "./sections/team";
 
 export default function HomePage() {
   return (
@@ -13,6 +14,7 @@ export default function HomePage() {
         <Problem />
         <Product />
         <Capture />
+        <Team />
       </main>
     </>
   );
