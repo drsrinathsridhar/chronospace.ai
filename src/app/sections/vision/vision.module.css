@@ -1,0 +1,107 @@
+/*
+ * The vision tableau. Two 4D captures flank the claim - the dancer on the
+ * left, the robot arm on the right - each shown as its trail: the subject
+ * at full ink and three echoes stepped back at falling opacities, the
+ * hero cards' dancer trail blown up to set pieces.
+ *
+ * The reveal is the trail itself. At rest every copy sits collapsed on the
+ * subject's position at opacity 0; when the section's RevealScope flips
+ * --reveal, the subject fades up in place and the echoes slide out to
+ * their comp offsets one beat apart - the capture arriving, then smearing
+ * into its own history. Leaving the viewport folds it back farthest copy
+ * first, so scrolling back replays it, and with no script or with reduced
+ * motion --reveal rests at 1: the tableau is simply there, settled.
+ *
+ * Geometry is the comp's as fractions of the 1416px content box: the dancer
+ * cluster 495.84x410.64 with its copies on 70.71px steps, the arm cluster
+ * 501x428 on the comp's 56/70/66 steps, both hung on the section's centre
+ * line. Below xl the trails would sit in the claim's lap, so they stay off.
+ */
+
+.copy {
+  --read-progress: 1;
+}
+
+/*
+ * One word of the read - the same boundary the intro sweeps through its
+ * copy, here running through the claim: progress scaled to the word count,
+ * minus this word's index, clamped to one word's worth, colour from the
+ * muted 32% to full ink.
+ */
+.word {
+  color: color-mix(
+    in srgb,
+    var(--ink)
+      calc(
+        (
+            0.32 + 0.68 *
+              clamp(
+                0,
+                var(--read-progress) * var(--word-count) - var(--word-index),
+                1
+              )
+          ) *
+          100%
+      ),
+    transparent
+  );
+}
+
+.trail {
+  position: absolute;
+  top: 50%;
+  display: none;
+}
+
+@media (min-width: 80rem) {
+  .trail {
+    display: block;
+  }
+}
+
+.dancer {
+  left: -0.7%;
+  width: 35.02%;
+  aspect-ratio: 495.84 / 410.64;
+  transform: translateY(calc(-50% + 1.25rem));
+  overflow: clip;
+}
+
+.dancer .echo {
+  width: 55.5%;
+}
+
+.arm {
+  left: 71.61%;
+  width: 35.38%;
+  aspect-ratio: 501 / 428;
+  transform: translateY(-50%);
+}
+
+.arm .echo {
+  width: 61.68%;
+}
+
+/*
+ * One copy of a capture. --echo-shift is the signed distance back to the
+ * subject's position, in the copy's own width, so (1 - --reveal) rides it
+ * between collapsed and fanned; opacity scales the copy's resting value by
+ * the same flag. Delays run subject-first on the way in.
+ */
+.echo {
+  position: absolute;
+  top: 0;
+  left: var(--echo-left);
+  aspect-ratio: var(--echo-aspect);
+  opacity: calc(var(--reveal, 1) * var(--echo-opacity));
+  translate: calc((1 - var(--reveal, 1)) * var(--echo-shift)) 0;
+  transition:
+    opacity 0.7s var(--reveal-ease),
+    translate var(--reveal-duration) var(--reveal-ease);
+  transition-delay: calc(0.25s + var(--echo-index) * 0.22s);
+}
+
+/* Waiting: the trail folds back into the subject, farthest copy first. */
+[data-reveal-scope]:not([data-revealed]) .echo {
+  transition-delay: calc((3 - var(--echo-index)) * 0.1s);
+}

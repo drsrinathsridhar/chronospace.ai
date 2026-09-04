@@ -1,4 +1,4 @@
-import { ProblemReadProgress } from "./problem-read-progress.client";
+import { ReadProgress } from "@/components/read-progress.client";
 import styles from "./problem.module.css";
 
 // The intro: after the hero's claim, the argument in two paragraphs. The
@@ -9,7 +9,8 @@ import styles from "./problem.module.css";
 // playhead swept the timeline.
 //
 // The copy is split into words on the server, each one carrying its index;
-// a client island writes a single number, --read-progress, and the colour
+// a client island (read-progress.client.tsx, shared with the vision
+// section) writes a single number, --read-progress, and the colour
 // of every word falls out of a calc in problem.module.css. Without
 // JavaScript, or under reduced motion, the progress rests at 1 and the
 // copy simply reads as settled ink.
@@ -59,7 +60,7 @@ export function Problem() {
         ))}
       </div>
 
-      <ProblemReadProgress />
+      <ReadProgress />
     </section>
   );
 }

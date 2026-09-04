@@ -4,7 +4,9 @@ import { useEffect, useRef } from "react";
 
 // Writes the read. The copy's position in the viewport becomes a single
 // number on the block, --read-progress in 0..1, and every word's colour is
-// derived from it in CSS - the island never touches a word.
+// derived from it in CSS - the island never touches a word. It attaches to
+// the nearest [data-read-copy] sibling, so a section drops it next to the
+// block it should measure; the word colour calc lives in that section's CSS.
 //
 // The reading line: the copy starts being read when its top crosses 85% of
 // the viewport and is finished as its bottom passes 40%, so the boundary
@@ -17,7 +19,7 @@ import { useEffect, useRef } from "react";
 const START = 0.85;
 const END = 0.4;
 
-export function ProblemReadProgress() {
+export function ReadProgress() {
   const ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {

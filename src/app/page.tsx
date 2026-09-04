@@ -4,6 +4,7 @@ import { Problem } from "./sections/problem";
 import { Product } from "./sections/product";
 import { Capture } from "./sections/capture";
 import { Team } from "./sections/team";
+import { Vision } from "./sections/vision";
 
 export default function HomePage() {
   return (
@@ -15,6 +16,7 @@ export default function HomePage() {
         <Product />
         <Capture />
         <Team />
+        <Vision />
       </main>
     </>
   );
