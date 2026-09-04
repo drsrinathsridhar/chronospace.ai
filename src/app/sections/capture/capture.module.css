@@ -1,21 +1,7 @@
 /*
- * The capture section's geometry and the player's chrome. At the 1496px
- * design width the heading and player sit 598/1416 into the content box on
- * the section's shared 698px measure - the same column the intro copy reads
- * in - with the take held in a hairline frame and the transport bar hung
- * off its bottom rule.
+ * The viewer's chrome: the take held in a hairline frame on the section's
+ * centred 826px measure, with the transport bar hung off its bottom rule.
  */
-
-.column {
-  position: relative;
-}
-
-@media (min-width: 48rem) {
-  .column {
-    max-width: 43.625rem; /* 698px */
-    margin-left: 42.23%;
-  }
-}
 
 .frame {
   position: relative;
