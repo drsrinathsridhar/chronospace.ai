@@ -4,6 +4,7 @@ import { Problem } from "./sections/problem";
 import { Product } from "./sections/product";
 import { Capture } from "./sections/capture";
 import { Team } from "./sections/team";
+import { Science } from "./sections/science";
 import { Vision } from "./sections/vision";
 
 export default function HomePage() {
@@ -16,6 +17,7 @@ export default function HomePage() {
         <Product />
         <Capture />
         <Team />
+        <Science />
         <Vision />
       </main>
     </>

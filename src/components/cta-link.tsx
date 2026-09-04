@@ -3,14 +3,15 @@ import { CtaArrowIcon } from "@/icons/generated";
 import { cn } from "@/lib/utils";
 import { ScrambleLabel } from "./scramble-label.client";
 
-// The ChronoSpace call to action: a square orange block with an uppercase
-// label pinned low in the box and the play-head arrow at the far edge. It
-// appears twice on the page at two scales - as the last cell of the navbar
-// and as the hero's primary action - so the two sizes live here rather than
-// being re-derived at each call site.
+// The ChronoSpace call to action: a square block with an uppercase label
+// pinned low in the box and the play-head arrow at the far edge. It appears
+// across the page at three scales - the last cell of the navbar, the hero's
+// primary action, and the science section's row buttons - so the sizes live
+// here rather than being re-derived at each call site.
 //
 // The nav cell centres its pair on a tight 10px gap and fills the bar; the
-// hero block is a fixed 208x60 with the arrow pushed to the opposite edge.
+// hero block is a fixed 208x60 with the arrow pushed to the opposite edge;
+// the list block is the comp's 239x54 on the smaller nav label.
 
 // The arrow is sized in attributes rather than classes: SVGR emits every icon
 // at 1em square with no intrinsic ratio, so `w-auto` would render it square.
@@ -23,6 +24,11 @@ const sizes = {
   hero: {
     root: "h-15 w-52 items-center justify-between px-4 pt-8 pb-4",
     label: "type-button",
+    arrow: { width: 8, height: 10 },
+  },
+  list: {
+    root: "h-13.5 w-59.75 items-center justify-between px-4 pt-6 pb-4",
+    label: "type-nav",
     arrow: { width: 8, height: 10 },
   },
 } as const;
