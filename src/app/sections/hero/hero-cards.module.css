@@ -75,11 +75,16 @@
     width: 11.1875rem;
     pointer-events: auto;
     /*
-     * Two motions in one transform: the eye move at this card's depth, and
-     * then the stand itself - up by the card's own height onto its feet,
-     * and scaled for its depth from the bottom edge, which transform-origin
-     * keeps planted. No scroll parallax: the room does not have one, and
-     * the cards move exactly as the room does.
+     * Three moves in one transform: the eye move at this card's depth; the
+     * stand itself - up by the card's own height onto its feet, and scaled
+     * for its depth from the bottom edge, which transform-origin keeps
+     * planted; and the tilt. Each flanking card carries a standing angle
+     * (--card-tilt) that turns it toward the vanishing point the way its
+     * wall runs, and the eye adds a couple of degrees on top
+     * (--card-tilt-gain) - moving right, you see a little less of every
+     * card's right side, the same as you would of the walls. No scroll
+     * parallax: the room does not have one, and the cards move exactly as
+     * the room does.
      */
     transform-origin: 0 100%;
     transform: translate3d(
@@ -87,7 +92,13 @@
         calc(var(--float-y, 0) * var(--card-shift-y, 0px)),
         0
       )
-      translateY(-100%) scale(var(--card-scale, 1));
+      translateY(-100%) scale(var(--card-scale, 1)) perspective(56rem)
+      rotateY(
+        calc(
+          var(--card-tilt, 0deg) + var(--float-x, 0) *
+            var(--card-tilt-gain, 2deg)
+        )
+      );
   }
 }
 

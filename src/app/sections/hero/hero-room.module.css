@@ -120,6 +120,8 @@
   width: 105.11cqw;
   height: 120.4cqh;
   transform: var(--eye) translate3d(-2.735cqw, -22.2cqh, -81.82cqw);
+  /* The last stop lifts at the foot: the wall handing its light to the
+     floor seam. */
   background-image:
     linear-gradient(
       to right,
@@ -133,17 +135,19 @@
       rgb(255 255 255 / 7.8%),
       rgb(255 255 255 / 4.7%) 3%,
       rgb(255 255 255 / 1.75%) 9%,
-      rgb(255 255 255 / 4.8%)
+      rgb(255 255 255 / 8%)
     );
 }
 
-/* Local +x runs from the near end of the room to the back wall. */
+/* Local +x runs from the near end of the room to the back wall. Both side
+   walls carry a lit foot - the floor lines running to the back corners. */
 .left {
   width: 121.82cqw;
   height: 120.4cqh;
   transform: var(--eye) translate3d(-2.735cqw, -22.2cqh, 40cqw) rotateY(90deg);
   background-image:
     linear-gradient(to bottom, rgb(255 255 255 / 5%), transparent 6%),
+    linear-gradient(to top, rgb(255 255 255 / 8%), transparent 7%),
     linear-gradient(
       to right,
       rgb(255 255 255 / 8.5%),
@@ -160,6 +164,7 @@
     rotateY(-90deg);
   background-image:
     linear-gradient(to bottom, rgb(255 255 255 / 5%), transparent 6%),
+    linear-gradient(to top, rgb(255 255 255 / 8%), transparent 7%),
     linear-gradient(
       to right,
       rgb(255 255 255 / 4.4%),

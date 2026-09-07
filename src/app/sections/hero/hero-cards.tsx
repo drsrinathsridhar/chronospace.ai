@@ -61,6 +61,10 @@ type StandingCard = {
   /** One unit of eye travel at this card's depth, per axis. */
   shiftX: string;
   shiftY: string;
+  /** The standing angle: turned toward the vanishing point, like its wall. */
+  tilt: string;
+  /** How many degrees one unit of eye travel adds to the tilt. */
+  tiltGain: string;
   reveal: number;
 };
 
@@ -81,6 +85,8 @@ const cards: StandingCard[] = [
     scale: 1.153,
     shiftX: "1.86vw",
     shiftY: "0.58vw",
+    tilt: "7deg",
+    tiltGain: "2deg",
     reveal: 7,
   },
   {
@@ -97,8 +103,14 @@ const cards: StandingCard[] = [
     left: "41.71%",
     feet: 1.0917,
     scale: 1.386,
-    shiftX: "-2.19vw",
-    shiftY: "-0.68vw",
+    // Physically this card, nearest of the three, would take the biggest
+    // move (-2.19vw / -0.68vw at its depth) - but front and centre, the
+    // full value reads as restless rather than deep, so it takes a calmer
+    // fraction of it and barely turns.
+    shiftX: "-0.9vw",
+    shiftY: "-0.28vw",
+    tilt: "0deg",
+    tiltGain: "0.8deg",
     reveal: 8,
   },
   {
@@ -123,6 +135,8 @@ const cards: StandingCard[] = [
     scale: 1.153,
     shiftX: "1.83vw",
     shiftY: "0.57vw",
+    tilt: "-7deg",
+    tiltGain: "2deg",
     reveal: 9,
   },
 ];
@@ -170,6 +184,8 @@ export function HeroCards() {
             "--card-scale": card.scale,
             "--card-shift-x": card.shiftX,
             "--card-shift-y": card.shiftY,
+            "--card-tilt": card.tilt,
+            "--card-tilt-gain": card.tiltGain,
           }}
         >
           <header className="bg-paper border-line type-label text-ink flex items-baseline justify-between gap-2 border-b p-3">
