@@ -82,6 +82,15 @@
  * have no need to share a 3D space, and the construction most likely to
  * survive every engine is the one that asks for the least.
  *
+ * One number below is deliberately wrong. The side walls, ceiling and floor
+ * stand at 89.99 degrees, not 90: Safari culls any plane at exactly 90 - it
+ * decides edge-on means invisible before the perspective, which is the only
+ * thing making these faces visible, has had its say - and the room loses
+ * everything but its back wall. (Not a flattening artefact: preserve-3d,
+ * px units, overflow and layer promotion all leave the cull in place; only
+ * the angle moves it.) A hundredth of a degree puts the far edge of a wall
+ * less than half a pixel off true, and Safari draws all five faces.
+ *
  * --eye-x / --eye-y arrive from hero-room-eye.client.tsx as -1..1 and rest
  * at 0, so with no script, or for anyone who has asked for less motion, this
  * is exactly the comp.
@@ -144,7 +153,8 @@
 .left {
   width: 121.82cqw;
   height: 120.4cqh;
-  transform: var(--eye) translate3d(-2.735cqw, -22.2cqh, 40cqw) rotateY(90deg);
+  transform: var(--eye) translate3d(-2.735cqw, -22.2cqh, 40cqw)
+    rotateY(89.99deg);
   background-image:
     linear-gradient(to bottom, rgb(255 255 255 / 5%), transparent 6%),
     linear-gradient(to top, rgb(255 255 255 / 8%), transparent 7%),
@@ -161,7 +171,7 @@
   width: 121.82cqw;
   height: 120.4cqh;
   transform: var(--eye) translate3d(102.375cqw, -22.2cqh, -81.82cqw)
-    rotateY(-90deg);
+    rotateY(-89.99deg);
   background-image:
     linear-gradient(to bottom, rgb(255 255 255 / 5%), transparent 6%),
     linear-gradient(to top, rgb(255 255 255 / 8%), transparent 7%),
@@ -178,7 +188,7 @@
   width: 105.11cqw;
   height: 121.82cqw;
   transform: var(--eye) translate3d(-2.735cqw, -22.2cqh, -81.82cqw)
-    rotateX(90deg);
+    rotateX(89.99deg);
   background-image:
     linear-gradient(to bottom, rgb(255 255 255 / 9%), transparent 5%),
     linear-gradient(to right, rgb(255 255 255 / 7%), transparent 4%),
@@ -190,7 +200,7 @@
   width: 105.11cqw;
   height: 121.82cqw;
   transform: var(--eye) translate3d(-2.735cqw, 98.2cqh, -81.82cqw)
-    rotateX(90deg);
+    rotateX(89.99deg);
   /*
    * Brighter than the comp's plate, and seamed: the cards stand on this,
    * so the ground has to actually read as one. The first stop is the cove
