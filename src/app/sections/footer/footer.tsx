@@ -131,11 +131,18 @@ export function Footer() {
 
       <RevealScope className="border-line relative flex flex-col border-t border-b lg:flex-row">
         <div className="px-gutter flex min-w-0 flex-1 flex-col gap-6 py-10">
+          {/*
+           * The generated icon ships width/height="1em", which gives the svg
+           * a 1:1 intrinsic ratio - `h-auto` alone would render it square,
+           * and the ratio also feeds the flex item's automatic minimum, so
+           * the lockup's real viewBox ratio is restated and the minimum
+           * released.
+           */}
           <ChronospaceLogoIcon
             role="img"
             aria-label="ChronoSpace"
-            className="text-ink sweep-in h-auto w-full"
-            style={{ "--beat": 0 }}
+            className="text-ink sweep-in aspect-(--logo-aspect) h-auto min-h-0 w-full"
+            style={{ "--logo-aspect": "167.381 / 32", "--beat": 0 }}
           />
           <div
             aria-hidden
