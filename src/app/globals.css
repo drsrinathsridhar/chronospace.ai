@@ -48,6 +48,14 @@
   --navbar-height: var(--navbar-height-rest);
   /* Page gutter. 40px at the 1496px design width, tightening on small screens. */
   --gutter: clamp(1.25rem, 2.674vw, 2.5rem);
+
+  /*
+   * Height of the backing band under the hero (sections/backers). A runtime
+   * variable rather than a bare theme token because the hero measures
+   * against it too: it gives up exactly this much of the viewport so the
+   * band closes the first screen with the ruler as its top border.
+   */
+  --backing-band-height: 5.75rem;
 }
 
 /*
@@ -80,6 +88,7 @@
   --spacing-gutter: var(--gutter);
   --spacing-navbar: var(--navbar-height);
   --spacing-navbar-rest: var(--navbar-height-rest);
+  --spacing-backing-band: var(--backing-band-height);
 }
 
 @layer base {

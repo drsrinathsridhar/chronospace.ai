@@ -11,7 +11,7 @@
  */
 
 .band {
-  --band-fade: 6rem;
+  --band-fade: 4rem;
   -webkit-mask-image: linear-gradient(
     90deg,
     transparent,

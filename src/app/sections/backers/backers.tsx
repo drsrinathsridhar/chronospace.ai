@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { RevealScope } from "@/components/reveal-scope.client";
 import {
   A16zSpeedrunIcon,
   BrownAngelGroupIcon,
@@ -8,17 +7,20 @@ import {
 } from "@/icons/generated";
 import styles from "./backers.module.css";
 
-// The backing band: directly under the hero, before the page settles into
-// reading copy - one full-bleed strip of the firms and programs behind the
-// company, moving the way everything in the hero moved, left along the
-// timeline. The strip is framed by the same hairlines as the section rows
-// later on, so it reads as another instrument in the HUD rather than a
-// gallery.
+// The backing band: the last row of the first screen. The hero gives up
+// exactly `--spacing-backing-band` of the viewport (hero.tsx), so the band
+// closes the fold with the timecode ruler as its top border - the strip
+// shares the ruler's section-container width, and a plain hairline closes
+// it underneath. The label rides inside the strip the way "Timecode" rides
+// the ruler; the marks travel past it as a conveyor, left along the
+// timeline like everything else on this screen.
 //
-// The marks travel as a conveyor (backers.module.css): several identical
-// tracks laid end to end, each translating its own width, enough copies that
-// the band never runs dry on wide screens. Only the first track is exposed
-// to assistive tech; the copies are scenery.
+// The conveyor (backers.module.css) is several identical tracks laid end to
+// end, each translating its own width, enough copies that the band never
+// runs dry on wide screens. Only the first track is exposed to assistive
+// tech; the copies are scenery. The band is on screen at load, so it joins
+// the page's own reveal clock (--reveal-index) after the ruler instead of
+// waiting on a scroll trigger.
 //
 // NVIDIA Inception has no single wordmark lockup we can ship, so the cell
 // pairs the NVIDIA mark with the program's name set in the band's own
@@ -64,24 +66,23 @@ const trackCopies = 4;
 
 export function Backers() {
   return (
-    <section aria-label="Backed by" className="relative py-14 md:py-16">
-      <RevealScope>
-        <p
-          className="type-nav shimmer-in section-container"
-          style={{ "--beat": 0, "--shimmer-ink": "var(--muted)" }}
-        >
+    <section aria-label="Backed by" className="section-container">
+      <div
+        className="border-line sweep-reveal h-backing-band flex items-center border-b"
+        style={{ "--reveal-index": 7 }}
+      >
+        <p className="type-nav text-muted flex-none pr-6 md:pr-10">
           (Backed by)
         </p>
 
         <div
-          className={`${styles.band} border-line sweep-in mt-8 flex overflow-hidden border-y`}
-          style={{ "--beat": 1 }}
+          className={`${styles.band} flex h-full items-center overflow-hidden`}
         >
           {Array.from({ length: trackCopies }, (_, copy) => (
             <ul
               key={copy}
               aria-hidden={copy > 0 || undefined}
-              className={`${styles.track} flex flex-none items-center gap-16 py-7 pl-16 md:gap-24 md:pl-24`}
+              className={`${styles.track} flex flex-none items-center gap-16 pl-16 md:gap-24 md:pl-24`}
             >
               {backers.map((backer) => (
                 <li
@@ -95,7 +96,7 @@ export function Backers() {
             </ul>
           ))}
         </div>
-      </RevealScope>
+      </div>
     </section>
   );
 }
