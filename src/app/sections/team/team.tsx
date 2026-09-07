@@ -13,9 +13,9 @@ import tamarKreitman from "./tamar-kreitman.png";
 // portrait and credentials above a rule, and the links below it as bordered
 // tiles, one per profile.
 //
-// Geometry is the comp's at the 1496px design width: the label 24 above the
-// heading, the lede 20 under it on a 577px measure, and the cards in a
-// full-width row of three on a 22px gap with the comp's 153px portraits.
+// Geometry is the comp's at the 1496px design width: the lede 20 under the
+// heading on a 577px measure, and the cards in a full-width row of three on
+// a 22px gap with the comp's 153px portraits.
 
 type Founder = {
   name: string;
@@ -81,29 +81,20 @@ export function Team() {
   return (
     <section id="team" className="section-container relative pt-20 pb-30">
       <RevealScope>
-        <div className="flex flex-col items-center gap-6 text-center">
-          <p
-            className="type-nav shimmer-in"
-            style={{ "--beat": 0, "--shimmer-ink": "var(--muted)" }}
+        <div className="flex flex-col items-center gap-5 text-center">
+          <h2
+            className="type-display-xs sm:type-display-sm lg:type-display-md shimmer-in max-w-174.5 text-balance"
+            style={{ "--beat": 0 }}
           >
-            (Our team)
+            Meet the founders.
+          </h2>
+          <p
+            className="type-body-xl shimmer-in max-w-144.25 text-pretty opacity-60"
+            style={{ "--beat": 1 }}
+          >
+            Years of frontier research on reconstructing the physical world, now
+            building the infrastructure for it.
           </p>
-
-          <div className="flex flex-col items-center gap-5">
-            <h2
-              className="type-display-xs sm:type-display-sm lg:type-display-md shimmer-in max-w-174.5 text-balance"
-              style={{ "--beat": 1 }}
-            >
-              Meet the founders.
-            </h2>
-            <p
-              className="type-body-xl shimmer-in max-w-144.25 text-pretty opacity-60"
-              style={{ "--beat": 2 }}
-            >
-              Years of frontier research on reconstructing the physical world,
-              now building the infrastructure for it.
-            </p>
-          </div>
         </div>
 
         <div className="mt-16 grid grid-cols-1 gap-5.5 md:grid-cols-3">
@@ -111,7 +102,7 @@ export function Team() {
             <article
               key={founder.name}
               className="border-line sweep-in flex flex-col border"
-              style={{ "--beat": 3 + index }}
+              style={{ "--beat": 2 + index }}
             >
               <div className="flex flex-1 flex-col gap-6 px-8 py-6">
                 <Image

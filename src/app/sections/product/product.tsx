@@ -11,10 +11,10 @@ import wild from "./wild.png";
 // measurable afterwards - one card each, all built the same way: a labelled
 // header strip, the evidence plate, and the claim under it.
 //
-// Geometry is the comp's at the 1496px design width: the label on the
-// gutter, the heading and lede 598/1416 into the content box on the
-// section's shared 698px measure, and the cards in a full-width row of
-// three on a 22px gap, each plate held at the comp's 577/310.
+// Geometry is the comp's at the 1496px design width: the heading and lede
+// 598/1416 into the content box on the section's shared 698px measure, and
+// the cards in a full-width row of three on a 22px gap, each plate held at
+// the comp's 577/310.
 
 type Card = {
   label: string;
@@ -52,23 +52,16 @@ export function Product() {
   return (
     <section id="product" className="section-container relative pt-27 pb-30">
       <RevealScope>
-        <p
-          className="type-nav shimmer-in pt-2 md:absolute"
-          style={{ "--beat": 0, "--shimmer-ink": "var(--muted)" }}
-        >
-          (Product)
-        </p>
-
         <div className={styles.column}>
           <h2
-            className="type-display-xs sm:type-display-sm lg:type-display-md shimmer-in mt-6 text-balance md:mt-0"
-            style={{ "--beat": 1 }}
+            className="type-display-xs sm:type-display-sm lg:type-display-md shimmer-in text-balance"
+            style={{ "--beat": 0 }}
           >
             One capture, three things nobody else can hand you.
           </h2>
           <p
             className="type-body-xl shimmer-in mt-6 max-w-115 opacity-60"
-            style={{ "--beat": 2 }}
+            style={{ "--beat": 1 }}
           >
             For anyone training models on the physical world, the capture itself
             is the asset.
@@ -80,7 +73,7 @@ export function Product() {
             <article
               key={card.label}
               className="border-line sweep-in flex flex-col border"
-              style={{ "--beat": 3 + index }}
+              style={{ "--beat": 2 + index }}
             >
               <header className="bg-paper border-line border-b p-8">
                 <p className="type-nav text-muted">{card.label}</p>

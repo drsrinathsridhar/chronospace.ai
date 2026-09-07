@@ -92,13 +92,6 @@ export function Vision() {
         <Trail echoes={armTrail} className={styles.arm} />
 
         <div className="relative flex flex-col items-center gap-6 text-center">
-          <p
-            className="type-nav shimmer-in"
-            style={{ "--beat": 0, "--shimmer-ink": "var(--muted)" }}
-          >
-            (Our vision)
-          </p>
-
           <h2
             className={`${styles.copy} type-display-xs sm:type-display-sm lg:type-display-md max-w-152.75 text-balance`}
             data-read-copy
@@ -121,7 +114,7 @@ export function Vision() {
           <CtaLink
             href={siteConfig.links.contact}
             className="sweep-in"
-            style={{ "--beat": 1 }}
+            style={{ "--beat": 0 }}
           >
             Connect with us
           </CtaLink>

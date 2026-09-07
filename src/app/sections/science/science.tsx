@@ -8,9 +8,9 @@ import { RevealScope } from "@/components/reveal-scope.client";
 // with its date on the gutter label style, and the row's action in the
 // call-to-action grammar at the list scale.
 //
-// Geometry is the comp's at the 1496px design width: the label 24 above
-// the heading, the lede 20 under it, 80 from the header to the ledger,
-// and 92-tall rows on 32 padding with the date and title on an 80 gap.
+// Geometry is the comp's at the 1496px design width: the lede 20 under
+// the heading, 80 from the header to the ledger, and 92-tall rows on 32
+// padding with the date and title on an 80 gap.
 //
 // The rows sweep in on the section's reveal, one beat after the header's
 // shimmer, top to bottom - the ledger filling in entry order.
@@ -43,28 +43,19 @@ export function Science() {
   return (
     <section id="science" className="section-container relative pt-18 pb-30">
       <RevealScope>
-        <div className="flex flex-col items-center gap-6 text-center">
-          <p
-            className="type-nav shimmer-in"
-            style={{ "--beat": 0, "--shimmer-ink": "var(--muted)" }}
+        <div className="flex flex-col items-center gap-5 text-center">
+          <h2
+            className="type-display-xs sm:type-display-sm lg:type-display-md shimmer-in max-w-174.5 text-balance"
+            style={{ "--beat": 0 }}
           >
-            (Science)
+            The work behind the capture.
+          </h2>
+          <p
+            className="type-body-xl shimmer-in text-pretty opacity-60"
+            style={{ "--beat": 1 }}
+          >
+            Papers, technical notes and results from the team.
           </p>
-
-          <div className="flex flex-col items-center gap-5">
-            <h2
-              className="type-display-xs sm:type-display-sm lg:type-display-md shimmer-in max-w-174.5 text-balance"
-              style={{ "--beat": 1 }}
-            >
-              The work behind the capture.
-            </h2>
-            <p
-              className="type-body-xl shimmer-in text-pretty opacity-60"
-              style={{ "--beat": 2 }}
-            >
-              Papers, technical notes and results from the team.
-            </p>
-          </div>
         </div>
 
         {/* The rules run full-bleed; the rows step back into the content box. */}
@@ -74,7 +65,7 @@ export function Science() {
               <li
                 key={paper.title}
                 className="border-line sweep-in flex flex-col gap-6 border-r border-b border-l p-6 last:border-b-0 md:flex-row md:items-center md:p-8"
-                style={{ "--beat": 3 + index }}
+                style={{ "--beat": 2 + index }}
               >
                 <span className="flex flex-col gap-2 md:flex-row md:items-baseline md:gap-20">
                   <span className="type-nav text-muted shrink-0">

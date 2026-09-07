@@ -16,8 +16,8 @@ import styles from "./problem.module.css";
 // copy simply reads as settled ink.
 //
 // Geometry is the comp's at the 1496px design width: 120 of padding above
-// and below, the label on the gutter, and the copy 598/1416 into the
-// content box at the hero headline's 698px measure.
+// and below, and the copy 598/1416 into the content box at the hero
+// headline's 698px measure.
 
 const paragraphs = [
   "Frontier models have consumed everything that was already digital. The physical world - where the work actually happens - was never recorded in a form a machine can use.",
@@ -32,8 +32,6 @@ export function Problem() {
 
   return (
     <section id="problem" className="section-container relative py-30">
-      <p className="type-nav text-muted pt-2 md:absolute">(Intro)</p>
-
       <div
         className={styles.copy}
         data-read-copy
