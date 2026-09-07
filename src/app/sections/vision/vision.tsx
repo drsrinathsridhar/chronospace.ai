@@ -4,6 +4,7 @@ import { siteConfig } from "@/site.config";
 import { CtaLink } from "@/components/cta-link";
 import { ReadProgress } from "@/components/read-progress.client";
 import { RevealScope } from "@/components/reveal-scope.client";
+import { VisionParallax } from "./vision-parallax.client";
 import arm from "./arm.png";
 import dancer1 from "./dancer-1.png";
 import dancer2 from "./dancer-2.png";
@@ -88,8 +89,10 @@ export function Vision() {
   return (
     <section id="vision" className="section-container overflow-clip py-30">
       <RevealScope className="relative flex flex-col items-center justify-center xl:min-h-110">
-        <Trail echoes={dancerTrail} className={styles.dancer} />
-        <Trail echoes={armTrail} className={styles.arm} />
+        <VisionParallax>
+          <Trail echoes={dancerTrail} className={styles.dancer} />
+          <Trail echoes={armTrail} className={styles.arm} />
+        </VisionParallax>
 
         <div className="relative flex flex-col items-center gap-6 text-center">
           <h2

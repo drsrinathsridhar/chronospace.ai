@@ -59,11 +59,20 @@
   }
 }
 
+/*
+ * The pointer drift (vision-parallax.client.tsx): both trails ease against
+ * the pointer on --drift-x/--drift-y, the arm at full measure and the
+ * dancer at just over half, so the two hang at their own depths behind the
+ * claim. Without the island the variables rest at 0 and the comp holds.
+ */
 .dancer {
   left: -0.7%;
   width: 35.02%;
   aspect-ratio: 495.84 / 410.64;
-  transform: translateY(calc(-50% + 1.25rem));
+  transform: translate(
+    calc(var(--drift-x, 0px) * 0.6),
+    calc(-50% + 1.25rem + var(--drift-y, 0px) * 0.6)
+  );
   overflow: clip;
 }
 
@@ -75,7 +84,7 @@
   left: 71.61%;
   width: 35.38%;
   aspect-ratio: 501 / 428;
-  transform: translateY(-50%);
+  transform: translate(var(--drift-x, 0px), calc(-50% + var(--drift-y, 0px)));
 }
 
 .arm .echo {
