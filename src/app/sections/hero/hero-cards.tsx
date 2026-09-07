@@ -1,9 +1,9 @@
 import Image from "next/image";
 import type { StaticImageData } from "next/image";
-import manufacturingFigure from "./manufacturing-figure.png";
-import roboticsArmFigure from "./robotics-arm-figure.png";
-import roboticsManFigure from "./robotics-man-figure.png";
-import sportsFigure from "./sports-figure.png";
+import manufacturingSubject from "./manufacturing-subject.png";
+import roboticsArm from "./robotics-arm.png";
+import roboticsMan from "./robotics-man.png";
+import sportsSubject from "./sports-subject.png";
 import styles from "./hero-cards.module.css";
 
 // The three captures, standing in the room. Same card grammar as ever - a
@@ -11,6 +11,12 @@ import styles from "./hero-cards.module.css";
 // no plate behind the subject, so the room shows straight through and the
 // figure reads as standing inside it, held by the frame rather than printed
 // on a card.
+//
+// The subjects are the coloured cutouts, resting desaturated: the capture
+// filed in the room's own grey until the pointer asks about it, when the
+// colour comes back with the trail - the film run, not just the frame. The
+// desaturation is a filter (hero-cards.module.css), so the hover trades one
+// filter for none and the echoes inherit the same colour for free.
 //
 // The stand is the anchor: each card's bottom edge is pinned to a fraction
 // of the room plate's height (--card-feet), so the frame sits on the floor
@@ -33,14 +39,14 @@ import styles from "./hero-cards.module.css";
 //   always staggered.
 //
 // Geometry is the comp's at 1496: cards on 17.38%/41.71%/68.85% with their
-// feet at 88.87%/109.17%/89.03% of the plate height and scales of
-// 1.153/1.386/1.153 over the base 178.826px card. The feet lines put the
-// two flanking captures about 58cqw into the room and the manufacturing
-// line 30cqw in front of the plate plane, which is where the shift factors
-// come from: eyeshift * -z / (P - z) with the room's P of 100cqw and its
-// 5cqw / 3.2cqh eye travel. Below the xl breakpoint the scatter would
-// collide with the headline, so the cards fall into a three-column strip
-// above the ruler.
+// feet at 95.77%/109.17%/95.93% of the plate height - the flanking pair
+// dropped 50px from the comp to sit deeper into the floor - and scales of
+// 1.153/1.386/1.153 over the base 178.826px card. The shift factors keep
+// the comp's original depths: eyeshift * -z / (P - z) with the room's P of
+// 100cqw and its 5cqw / 3.2cqh eye travel, the flanking captures about
+// 58cqw into the room and the manufacturing line 30cqw in front of the
+// plate plane. Below the xl breakpoint the scatter would collide with the
+// headline, so the cards fall into a three-column strip above the ruler.
 
 type Piece = {
   image: StaticImageData;
@@ -74,18 +80,18 @@ const cards: StandingCard[] = [
     count: "(01)",
     pieces: [
       {
-        image: sportsFigure,
+        image: sportsSubject,
         left: "25.96%",
         width: "47.5%",
         aspect: "97 / 135",
       },
     ],
     left: "17.38%",
-    feet: 0.8887,
+    feet: 0.9577,
     scale: 1.153,
     shiftX: "1.86vw",
     shiftY: "0.58vw",
-    tilt: "7deg",
+    tilt: "9deg",
     tiltGain: "2deg",
     reveal: 7,
   },
@@ -94,7 +100,7 @@ const cards: StandingCard[] = [
     count: "(02)",
     pieces: [
       {
-        image: manufacturingFigure,
+        image: manufacturingSubject,
         left: "-1.47%",
         width: "102.83%",
         aspect: "252.352 / 109.353",
@@ -118,24 +124,24 @@ const cards: StandingCard[] = [
     count: "(03)",
     pieces: [
       {
-        image: roboticsArmFigure,
+        image: roboticsArm,
         left: "-0.12%",
         width: "50.71%",
         aspect: "103.554 / 143.242",
       },
       {
-        image: roboticsManFigure,
+        image: roboticsMan,
         left: "71.25%",
         width: "11.2%",
         aspect: "22.87 / 68.61",
       },
     ],
     left: "68.85%",
-    feet: 0.8903,
+    feet: 0.9593,
     scale: 1.153,
     shiftX: "1.83vw",
     shiftY: "0.57vw",
-    tilt: "-7deg",
+    tilt: "-9deg",
     tiltGain: "2deg",
     reveal: 9,
   },

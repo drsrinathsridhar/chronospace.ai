@@ -120,6 +120,21 @@
   aspect-ratio: var(--piece-aspect);
 }
 
+/*
+ * The capture at rest and the capture asked about: the coloured subject is
+ * desaturated into the room's grey by default, and hovering the card hands
+ * the colour back - to the subject and, because the echoes are copies of
+ * the same pieces, to the whole trail as it grows out.
+ */
+.piece img {
+  filter: grayscale(1) brightness(1.4);
+  transition: filter 0.35s ease;
+}
+
+.card:hover .piece img {
+  filter: none;
+}
+
 /* One copy of the subject - the figure and every echo of it. */
 .subject,
 .echo {
