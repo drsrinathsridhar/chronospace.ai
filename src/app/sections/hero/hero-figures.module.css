@@ -1,0 +1,67 @@
+/*
+ * The figures standing in the hero room. Each one is two planes hung in the
+ * stage's perspective from a zero-size anchor (.spot):
+ *
+ *   .figure  the subject, a billboard facing the camera. Translated to its
+ *            spot on the floor and pulled up by its own height, so the feet
+ *            sit exactly on the floor line whatever the image's aspect.
+ *   .shadow  the contact pool, rotated flat onto the floor plane and
+ *            centred under the feet.
+ *
+ * Both carry the same `--eye` counter-move the walls do, so the eye slides
+ * the figures against the room with true parallax - a figure at z = -30
+ * moves less than the near walls and more than the back one.
+ *
+ * The whiteness is a filter rather than an asset: the coloured cutouts are
+ * lifted to grey-white in place, which keeps their internal light and lets
+ * the room's blue do the colouring, the same argument as the viewer's
+ * luminosity blend - but a filter rasterises once, where a blend would
+ * re-rasterise on every frame the eye moves.
+ */
+
+.spot {
+  /* A zero-size anchor: all geometry hangs off the transforms below. */
+  width: 0;
+  height: 0;
+}
+
+.figure {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--figure-width);
+  aspect-ratio: var(--figure-aspect);
+  transform: var(--eye) translate3d(var(--figure-x), 98.2cqh, var(--figure-z))
+    translateY(-100%);
+  transform-origin: 0 0;
+}
+
+.figure img {
+  filter: grayscale(1) brightness(1.5);
+}
+
+.shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--figure-shadow);
+  height: 6cqw;
+  transform: var(--eye)
+    translate3d(
+      calc(var(--figure-x) + (var(--figure-width) - var(--figure-shadow)) / 2),
+      98.2cqh,
+      calc(var(--figure-z) - 3cqw)
+    )
+    rotateX(90deg);
+  transform-origin: 0 0;
+  /*
+   * A pool of light rather than of shade: the floor is nearly black, so a
+   * dark shadow has nothing to darken - what grounds a white-lit figure
+   * here is the little of its light the floor gives back.
+   */
+  background: radial-gradient(
+    50% 50% at 50% 50%,
+    rgb(255 255 255 / 9%),
+    transparent 72%
+  );
+}

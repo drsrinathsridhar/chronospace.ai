@@ -2,16 +2,15 @@ import { siteConfig } from "@/site.config";
 import { CtaLink } from "@/components/cta-link";
 import { A16zSpeedrunIcon } from "@/icons/generated";
 import { HeroBackingShine } from "./hero-backing-shine.client";
-import { HeroCards } from "./hero-cards";
 import backing from "./hero-backing.module.css";
 import { HeroRoom } from "./hero-room";
 import { HeroTimeline } from "./hero-timeline";
 
 // The first screen, and the whole argument in one view: a dark room with the
-// claim standing in the middle of it, the evidence hung around it - three
-// captures floating in front of the room, each subject printed back in
-// colour with its motion trail - and the timecode ruler underlining the
-// whole screen at its foot.
+// claim standing in the middle of it and the evidence standing inside it -
+// the three application subjects, white figures on the room's own floor
+// (hero-figures.tsx, rendered within the room's stage) - and the timecode
+// ruler underlining the whole screen at its foot.
 //
 // The vertical rhythm is the comp's, to the pixel, at the 1496px design
 // width: 160 below the navbar to the eyebrow, 20 to the headline, 40 to the
@@ -93,13 +92,6 @@ export function Hero() {
           </span>
         </div>
       </div>
-
-      {/*
-       * The captures. At xl they hang at the comp's scatter positions over
-       * the whole section and drift with the pointer; below that they fall
-       * into a strip here, between the copy and the ruler.
-       */}
-      <HeroCards />
 
       <div className="section-container relative mt-auto pt-10 pb-2">
         <HeroTimeline />

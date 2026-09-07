@@ -194,27 +194,26 @@
 }
 
 /*
- * Over the top of the room: it goes black over its bottom two thirds, and
- * that black is handed back to the page ground.
- *
- * The comp lands the sink on --room-floor exactly where the plate stops,
- * which leaves a hard step against the page ground underneath - small, four
- * or five levels, but a straight line right across the screen. So the fall
- * carries one stop further and lands on the ground itself.
+ * Over the top of the room: the fall into the page ground. The comp's room
+ * sank into black over its bottom two thirds, but with the figures standing
+ * on it the whole cube shows - so the sink starts well below the floor line
+ * and stays translucent until the last stop, where it still has to land on
+ * the paper exactly at the plate's foot or a hard step cuts across the
+ * screen.
  */
 .sink {
   position: absolute;
-  inset: 35.2% 0 0;
+  inset: 62% 0 0;
   background: linear-gradient(
     to bottom,
     transparent,
-    var(--room-floor) 75%,
+    color-mix(in srgb, var(--room-floor) 45%, transparent) 62%,
     var(--paper)
   );
 }
 
 .ground {
   position: absolute;
-  inset: 31.4% 0 0;
-  background: linear-gradient(to bottom, transparent 8.66%, var(--paper) 100%);
+  inset: 55% 0 0;
+  background: linear-gradient(to bottom, transparent 62%, var(--paper) 100%);
 }

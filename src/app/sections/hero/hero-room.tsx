@@ -1,3 +1,4 @@
+import { HeroFigures } from "./hero-figures";
 import { HeroRoomEye } from "./hero-room-eye.client";
 import styles from "./hero-room.module.css";
 
@@ -6,6 +7,10 @@ import styles from "./hero-room.module.css";
 // plate, so the eye can move through the section and the back wall slides
 // against the near walls the way it would if you leaned - see the note at
 // the top of hero-room.module.css for where every number comes from.
+//
+// The three application subjects stand inside it as planes in the same
+// perspective - see hero-figures.tsx - so the whole cube shows, floor
+// included, with the captures standing on it.
 //
 // Decorative throughout, and never interactive.
 
@@ -19,6 +24,7 @@ export function HeroRoom() {
           <span className={styles.left} />
           <span className={styles.right} />
           <span className={styles.back} />
+          <HeroFigures />
         </div>
         <span className={styles.sink} />
       </div>
