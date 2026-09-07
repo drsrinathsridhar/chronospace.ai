@@ -186,10 +186,12 @@
   height: 121.82cqw;
   transform: var(--eye) translate3d(-2.735cqw, 98.2cqh, -81.82cqw)
     rotateX(90deg);
+  /* A stop brighter than the comp's plate: the cards stand on this, so the
+     ground has to actually read as one. */
   background-image: linear-gradient(
     to bottom,
-    rgb(255 255 255 / 2%),
-    rgb(255 255 255 / 5%)
+    rgb(255 255 255 / 3.5%),
+    rgb(255 255 255 / 7%)
   );
 }
 

@@ -2,19 +2,22 @@ import { siteConfig } from "@/site.config";
 import { CtaLink } from "@/components/cta-link";
 import { A16zSpeedrunIcon } from "@/icons/generated";
 import { HeroBackingShine } from "./hero-backing-shine.client";
+import { HeroCards } from "./hero-cards";
 import backing from "./hero-backing.module.css";
 import { HeroRoom } from "./hero-room";
 import { HeroTimeline } from "./hero-timeline";
 
 // The first screen, and the whole argument in one view: a dark room with the
 // claim standing in the middle of it and the evidence standing inside it -
-// the three application subjects, white figures on the room's own floor
-// (hero-figures.tsx, rendered within the room's stage) - and the timecode
-// ruler underlining the whole screen at its foot.
+// three framed captures on the room's own floor, each figure open to the
+// room behind it (hero-cards.tsx) - and the timecode ruler underlining the
+// whole screen at its foot.
 //
 // The vertical rhythm is the comp's, to the pixel, at the 1496px design
-// width: 160 below the navbar to the eyebrow, 20 to the headline, 40 to the
-// action, 160 to the backing line, and the ruler flush with the foot.
+// width: 104 below the navbar to the eyebrow, 20 to the headline, 40 to the
+// action, 40 to the backing line - the whole stack pulled up so the
+// manufacturing capture can stand clear of it - and the ruler flush with
+// the foot.
 //
 // Everything arrives on the same band of light, in reading order - see
 // `shimmer-reveal` / `sweep-reveal` in globals.css. `--reveal-index` is that
@@ -36,7 +39,7 @@ export function Hero() {
     <section className="pt-navbar-rest relative flex min-h-svh flex-col overflow-clip">
       <HeroRoom />
 
-      <div className="section-container relative flex flex-col items-center pt-24 text-center md:pt-40">
+      <div className="section-container relative flex flex-col items-center pt-24 text-center md:pt-26">
         <p
           className="type-nav text-muted shimmer-reveal"
           style={{ "--reveal-index": 1, "--shimmer-ink": "var(--muted)" }}
@@ -70,7 +73,7 @@ export function Hero() {
         </CtaLink>
 
         <div
-          className="sweep-reveal mt-20 flex flex-col items-center gap-4 md:mt-40"
+          className="sweep-reveal mt-20 flex flex-col items-center gap-4 md:mt-10"
           style={{ "--reveal-index": 5 }}
         >
           <p className="type-nav text-muted">Backed by</p>
@@ -92,6 +95,13 @@ export function Hero() {
           </span>
         </div>
       </div>
+
+      {/*
+       * The captures. At xl they stand on the room's floor at the comp's
+       * positions and drift with the pointer; below that they fall into a
+       * strip here, between the copy and the ruler.
+       */}
+      <HeroCards />
 
       <div className="section-container relative mt-auto pt-10 pb-2">
         <HeroTimeline />

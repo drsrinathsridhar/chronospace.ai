@@ -1,0 +1,141 @@
+/*
+ * The standing captures. Card anatomy is the strip's - a 178.826px-wide
+ * frame, header over a measured body - but the body is transparent, the
+ * room showing through around the figure, and at xl the card stands on the
+ * room's floor:
+ *
+ *   The stand. The card's bottom edge is pinned at a fraction of the plate
+ *   height - top: plate * --card-feet, pulled up by the card's own height -
+ *   and the card scales from that edge by --card-scale, so a nearer capture
+ *   is a larger frame whose feet stay put.
+ *
+ *   The float. --float-x/--float-y arrive from hero-room-eye.client.tsx as
+ *   the same -1..1 eye the room reads, chased on a slower clock - so the
+ *   cards trail the room's move, slightly and late.
+ *
+ *   The echo. Each subject ships with its trail - three copies stepped back
+ *   6.5% of the body apiece at falling opacities, the reference build's
+ *   dancer trail. On load the trail holds while the page reveals, then
+ *   collapses copy by copy from the farthest in (echo-intro, fill
+ *   backwards so it falls back to the resting opacity of 0 and never
+ *   blocks the hover). Hover grows it back nearest-first; leave collapses
+ *   it farthest-first. All of it is opacity only.
+ *
+ * Below the xl breakpoint the scatter would sit in the headline's lap, so
+ * the cards fall back into a three-column strip in the flow.
+ */
+
+.cards {
+  --echo-hold: 2.4s;
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  justify-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding-inline: var(--gutter);
+  margin-top: 3rem;
+}
+
+.card {
+  display: flex;
+  width: 100%;
+  max-width: 11.1875rem; /* 178.826px */
+  flex-direction: column;
+  border: 1px solid var(--line);
+}
+
+@media (min-width: 80rem) {
+  .cards {
+    position: absolute;
+    inset: 0;
+    display: block;
+    margin: 0;
+    padding: 0;
+    /* The layer spans the hero; only the cards themselves take the eye. */
+    pointer-events: none;
+  }
+
+  .card {
+    position: absolute;
+    /*
+     * The feet on the floor: the plate is max(60%, 48.4vw) of the hero tall
+     * (hero-room.module.css), and the card's bottom edge sits at its
+     * fraction of that, whatever the card's own height - the translate
+     * pulls it up by exactly itself.
+     */
+    top: calc(max(60%, 48.4vw) * var(--card-feet));
+    left: var(--card-left);
+    width: 11.1875rem;
+    pointer-events: auto;
+    /*
+     * Three motions in one transform: the pointer float (the slow eye), the
+     * scroll parallax - each card rises var(--card-lift) of the scroll on
+     * top of the page's own move - and then the stand itself: up by the
+     * card's own height onto its feet, and scaled for its depth from the
+     * bottom edge, which transform-origin keeps planted.
+     */
+    transform-origin: 0 100%;
+    transform: translate3d(
+        calc(var(--float-x, 0) * var(--card-drift, 10px)),
+        calc(
+          var(--float-y, 0) * var(--card-drift, 10px) - var(--scroll-y, 0) *
+            var(--card-lift, 0) * 1px
+        ),
+        0
+      )
+      translateY(-100%) scale(var(--card-scale, 1));
+  }
+}
+
+/* The body: a measured window with nothing behind it - the room is the
+   ground the figure stands against. */
+.body {
+  position: relative;
+  aspect-ratio: 176.826 / 139.565;
+  overflow: clip;
+}
+
+.piece {
+  position: absolute;
+  top: var(--piece-top);
+  left: var(--piece-left);
+  width: var(--piece-width);
+  aspect-ratio: var(--piece-aspect);
+}
+
+/* One copy of the subject - the figure and every echo of it. */
+.subject,
+.echo {
+  position: absolute;
+  inset: 0;
+}
+
+.echo {
+  opacity: 0;
+  transform: translateX(calc(var(--echo-index) * -6.5%));
+  transition: opacity 0.35s ease;
+  /* Leaving: the farthest copy folds away first. */
+  transition-delay: calc((3 - var(--echo-index)) * 90ms);
+  animation: echo-intro 0.45s var(--reveal-ease) backwards;
+  /* Arriving: hold the full trail while the page reveals, then collapse it
+     from the farthest copy in. `backwards` shows the trail through the hold
+     and hands the property back afterwards, so hover still owns it. */
+  animation-delay: calc(var(--echo-hold) + (3 - var(--echo-index)) * 0.15s);
+}
+
+.card:hover .echo {
+  opacity: var(--echo-opacity);
+  /* Entering: the trail grows back out from the subject. */
+  transition-delay: calc((var(--echo-index) - 1) * 90ms);
+}
+
+@keyframes echo-intro {
+  from {
+    opacity: var(--echo-opacity);
+  }
+  to {
+    opacity: 0;
+  }
+}
