@@ -5,15 +5,20 @@ export const siteConfig = {
   url: env.NEXT_PUBLIC_SITE_URL,
   description:
     "ChronoSpace is building AI to digitize the physical world - full 4D capture of real geometry over time, from any angle, at any moment.",
+  // Root-anchored so the anchors also work from routes other than the home
+  // page (the contact page renders the same header).
   nav: [
-    { href: "#problem", label: "Problem" },
-    { href: "#how-it-works", label: "How it works" },
-    { href: "#applications", label: "Applications" },
-    { href: "#research", label: "Research" },
+    { href: "/#problem", label: "Problem" },
+    { href: "/#how-it-works", label: "How it works" },
+    { href: "/#applications", label: "Applications" },
+    { href: "/#research", label: "Research" },
   ],
   links: {
-    // TODO: swap for the real enquiry destination once it exists.
-    contact: "mailto:hello@chronospace.ai",
+    contact: "/contact",
+    // TODO: swap for the real enquiry inbox once it exists.
+    email: "mailto:hello@chronospace.ai",
+    // TODO: swap for the real scheduling link once it exists.
+    calendly: "https://calendly.com/chronospace/intro",
     // TODO: point at the real company profile once it exists.
     linkedin: "https://www.linkedin.com/company/chronospace-ai",
     // TODO: link the legal documents once they are published.
