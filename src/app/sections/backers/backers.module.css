@@ -1,0 +1,49 @@
+/*
+ * The backing band's one gesture: a conveyor of marks crossing the screen
+ * right to left, the way the hero's playhead crossed the timeline. Two
+ * identical tracks sit side by side and both travel their own width, so the
+ * second is exactly where the first began when the loop restarts - no seam.
+ *
+ * The band's edges are masked to nothing, so marks enter and leave through
+ * a fade instead of a hard clip. Hovering anywhere on the band holds the
+ * conveyor for reading; reduced motion parks it entirely, leaving the first
+ * track standing as a plain row.
+ */
+
+.band {
+  --band-fade: 6rem;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 var(--band-fade),
+    #000 calc(100% - var(--band-fade)),
+    transparent
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 var(--band-fade),
+    #000 calc(100% - var(--band-fade)),
+    transparent
+  );
+}
+
+@keyframes conveyor {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.track {
+  animation: conveyor var(--band-duration, 36s) linear infinite;
+}
+
+.band:hover .track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+  }
+}
