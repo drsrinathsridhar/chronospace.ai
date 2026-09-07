@@ -186,36 +186,37 @@
   height: 121.82cqw;
   transform: var(--eye) translate3d(-2.735cqw, 98.2cqh, -81.82cqw)
     rotateX(90deg);
-  /* A stop brighter than the comp's plate: the cards stand on this, so the
-     ground has to actually read as one. */
+  /*
+   * Brighter than the comp's plate, and seamed: the cards stand on this,
+   * so the ground has to actually read as one. The first stop is the cove
+   * light landing along the back wall's foot - the line that tells the eye
+   * where the floor starts - and the lift toward the viewer is what makes
+   * the rest of it read as a surface rather than haze.
+   */
   background-image: linear-gradient(
     to bottom,
-    rgb(255 255 255 / 3.5%),
-    rgb(255 255 255 / 7%)
+    rgb(255 255 255 / 12%),
+    rgb(255 255 255 / 4.5%) 7%,
+    rgb(255 255 255 / 9%)
   );
 }
 
 /*
  * Over the top of the room: the fall into the page ground. The comp's room
- * sank into black over its bottom two thirds, but with the figures standing
- * on it the whole cube shows - so the sink starts well below the floor line
- * and stays translucent until the last stop, where it still has to land on
- * the paper exactly at the plate's foot or a hard step cuts across the
- * screen.
+ * sank into black over its bottom two thirds, but the cards stand on the
+ * floor now, so the whole cube has to show - the sink covers only the last
+ * band of the plate, stays nearly transparent until its final stop, and
+ * lands on the paper exactly at the plate's foot so no hard step cuts
+ * across the screen. Below the plate the page is already the paper, so
+ * nothing else is needed.
  */
 .sink {
   position: absolute;
-  inset: 62% 0 0;
+  inset: 78% 0 0;
   background: linear-gradient(
     to bottom,
     transparent,
-    color-mix(in srgb, var(--room-floor) 45%, transparent) 62%,
+    color-mix(in srgb, var(--room-floor) 30%, transparent) 60%,
     var(--paper)
   );
-}
-
-.ground {
-  position: absolute;
-  inset: 55% 0 0;
-  background: linear-gradient(to bottom, transparent 62%, var(--paper) 100%);
 }

@@ -27,7 +27,6 @@ export function HeroRoom() {
         </div>
         <span className={styles.sink} />
       </div>
-      <span className={styles.ground} />
       <HeroRoomEye />
     </div>
   );

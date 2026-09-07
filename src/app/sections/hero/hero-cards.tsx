@@ -20,10 +20,11 @@ import styles from "./hero-cards.module.css";
 //
 // Two kinds of motion, both defined in hero-cards.module.css:
 //
-//   The float. The cards drift with the pointer off the same chase the room
-//   runs on, but through a slower, softer pair of numbers (--float-x/y,
-//   written by hero-room-eye.client.tsx), so they read as standing in the
-//   room rather than bolted to it.
+//   The move. The cards ride the same eye the room does, at the same speed
+//   (--float-x/y, written by hero-room-eye.client.tsx on the room's own
+//   clock), each scaled by the parallax factor at its depth - so the cards
+//   move exactly as the room's geometry moves, standing in it rather than
+//   floating over it.
 //
 //   The echo. On arrival each subject carries its motion trail - offset
 //   copies at falling opacities, the reference build's dancer trail - which
@@ -33,14 +34,17 @@ import styles from "./hero-cards.module.css";
 //
 // Geometry is the comp's at 1496: cards on 17.38%/41.71%/68.85% with their
 // feet at 88.87%/109.17%/89.03% of the plate height and scales of
-// 1.153/1.386/1.153 over the base 178.826px card. Below the xl breakpoint
-// the scatter would collide with the headline, so the cards fall into a
-// three-column strip above the ruler.
+// 1.153/1.386/1.153 over the base 178.826px card. The feet lines put the
+// two flanking captures about 58cqw into the room and the manufacturing
+// line 30cqw in front of the plate plane, which is where the shift factors
+// come from: eyeshift * -z / (P - z) with the room's P of 100cqw and its
+// 5cqw / 3.2cqh eye travel. Below the xl breakpoint the scatter would
+// collide with the headline, so the cards fall into a three-column strip
+// above the ruler.
 
 type Piece = {
   image: StaticImageData;
   left: string;
-  top: string;
   width: string;
   aspect: string;
 };
@@ -54,10 +58,9 @@ type StandingCard = {
   feet: number;
   /** The card's size for its depth, scaled from the bottom edge. */
   scale: number;
-  /** How far one unit of eye travel moves this card - depth, per card. */
-  drift: string;
-  /** Extra rise per scrolled pixel - the same depth, read vertically. */
-  lift: string;
+  /** One unit of eye travel at this card's depth, per axis. */
+  shiftX: string;
+  shiftY: string;
   reveal: number;
 };
 
@@ -69,7 +72,6 @@ const cards: StandingCard[] = [
       {
         image: sportsFigure,
         left: "25.96%",
-        top: "5.69%",
         width: "47.5%",
         aspect: "97 / 135",
       },
@@ -77,8 +79,8 @@ const cards: StandingCard[] = [
     left: "17.38%",
     feet: 0.8887,
     scale: 1.153,
-    drift: "12px",
-    lift: "0.08",
+    shiftX: "1.86vw",
+    shiftY: "0.58vw",
     reveal: 7,
   },
   {
@@ -88,7 +90,6 @@ const cards: StandingCard[] = [
       {
         image: manufacturingFigure,
         left: "-1.47%",
-        top: "21.89%",
         width: "102.83%",
         aspect: "252.352 / 109.353",
       },
@@ -96,8 +97,8 @@ const cards: StandingCard[] = [
     left: "41.71%",
     feet: 1.0917,
     scale: 1.386,
-    drift: "16px",
-    lift: "0.12",
+    shiftX: "-2.19vw",
+    shiftY: "-0.68vw",
     reveal: 8,
   },
   {
@@ -107,14 +108,12 @@ const cards: StandingCard[] = [
       {
         image: roboticsArmFigure,
         left: "-0.12%",
-        top: "3.26%",
         width: "50.71%",
         aspect: "103.554 / 143.242",
       },
       {
         image: roboticsManFigure,
         left: "71.25%",
-        top: "47.85%",
         width: "11.2%",
         aspect: "22.87 / 68.61",
       },
@@ -122,8 +121,8 @@ const cards: StandingCard[] = [
     left: "68.85%",
     feet: 0.8903,
     scale: 1.153,
-    drift: "10px",
-    lift: "0.06",
+    shiftX: "1.83vw",
+    shiftY: "0.57vw",
     reveal: 9,
   },
 ];
@@ -142,7 +141,6 @@ function Pieces({ pieces }: { pieces: Piece[] }) {
       className={styles.piece}
       style={{
         "--piece-left": piece.left,
-        "--piece-top": piece.top,
         "--piece-width": piece.width,
         "--piece-aspect": piece.aspect,
       }}
@@ -170,8 +168,8 @@ export function HeroCards() {
             "--card-left": card.left,
             "--card-feet": card.feet,
             "--card-scale": card.scale,
-            "--card-drift": card.drift,
-            "--card-lift": card.lift,
+            "--card-shift-x": card.shiftX,
+            "--card-shift-y": card.shiftY,
           }}
         >
           <header className="bg-paper border-line type-label text-ink flex items-baseline justify-between gap-2 border-b p-3">

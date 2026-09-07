@@ -9,9 +9,14 @@
  *   and the card scales from that edge by --card-scale, so a nearer capture
  *   is a larger frame whose feet stay put.
  *
- *   The float. --float-x/--float-y arrive from hero-room-eye.client.tsx as
- *   the same -1..1 eye the room reads, chased on a slower clock - so the
- *   cards trail the room's move, slightly and late.
+ *   The move. --float-x/--float-y arrive from hero-room-eye.client.tsx as
+ *   the same -1..1 eye the room reads, on the same clock - the cards are
+ *   geometry in the room, not frames hung in front of it. Each card scales
+ *   the eye by its own --card-shift-x/y: the room's move displaces a point
+ *   at depth z by eyeshift * -z / (P - z) (see the survey in
+ *   hero-room.module.css), so a card's shift is that factor at the depth
+ *   its feet stand - the two far captures ride gently with the eye, and
+ *   the manufacturing line, nearer than the plate plane, moves against it.
  *
  *   The echo. Each subject ships with its trail - three copies stepped back
  *   6.5% of the body apiece at falling opacities, the reference build's
@@ -70,19 +75,16 @@
     width: 11.1875rem;
     pointer-events: auto;
     /*
-     * Three motions in one transform: the pointer float (the slow eye), the
-     * scroll parallax - each card rises var(--card-lift) of the scroll on
-     * top of the page's own move - and then the stand itself: up by the
-     * card's own height onto its feet, and scaled for its depth from the
-     * bottom edge, which transform-origin keeps planted.
+     * Two motions in one transform: the eye move at this card's depth, and
+     * then the stand itself - up by the card's own height onto its feet,
+     * and scaled for its depth from the bottom edge, which transform-origin
+     * keeps planted. No scroll parallax: the room does not have one, and
+     * the cards move exactly as the room does.
      */
     transform-origin: 0 100%;
     transform: translate3d(
-        calc(var(--float-x, 0) * var(--card-drift, 10px)),
-        calc(
-          var(--float-y, 0) * var(--card-drift, 10px) - var(--scroll-y, 0) *
-            var(--card-lift, 0) * 1px
-        ),
+        calc(var(--float-x, 0) * var(--card-shift-x, 0px)),
+        calc(var(--float-y, 0) * var(--card-shift-y, 0px)),
         0
       )
       translateY(-100%) scale(var(--card-scale, 1));
@@ -97,9 +99,11 @@
   overflow: clip;
 }
 
+/* Every subject stands: feet on the body's bottom edge, which is the same
+   line the card itself stands on - the room's floor. */
 .piece {
   position: absolute;
-  top: var(--piece-top);
+  bottom: 0;
   left: var(--piece-left);
   width: var(--piece-width);
   aspect-ratio: var(--piece-aspect);
