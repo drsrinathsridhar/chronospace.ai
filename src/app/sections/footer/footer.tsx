@@ -4,6 +4,7 @@ import { CtaLink } from "@/components/cta-link";
 import { RevealScope } from "@/components/reveal-scope.client";
 import { ScrambleLabel } from "@/components/scramble-label.client";
 import { ChronospaceLogoIcon, TimelineTickIcon } from "@/icons/generated";
+import { FooterParallax } from "./footer-parallax.client";
 import echoRepeater from "./echo-repeater.png";
 
 // The close of the page: the partnership ask over the echo-repeater - a
@@ -84,13 +85,14 @@ function Measure({
 
 export function Footer() {
   return (
-    <footer className="relative">
+    <footer className="relative overflow-clip">
       {/*
        * The echo-repeater. The comp stretches the plate to the section's
        * full box - the fins widen with the page - so it fills rather than
-       * covers, and the alpha plate leaves the paper showing through.
+       * covers, and the alpha plate leaves the paper showing through. The
+       * plate drifts against the pointer (footer-parallax.client.tsx).
        */}
-      <div aria-hidden className="pointer-events-none absolute inset-0">
+      <FooterParallax>
         <Image
           src={echoRepeater}
           alt=""
@@ -98,7 +100,7 @@ export function Footer() {
           sizes="100vw"
           className="object-fill"
         />
-      </div>
+      </FooterParallax>
 
       <section className="border-line section-container relative border-t pt-28 pb-10 lg:pt-48.5">
         <RevealScope className="flex flex-col items-start gap-10">
