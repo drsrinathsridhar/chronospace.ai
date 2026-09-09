@@ -180,7 +180,7 @@ export function HeroCards() {
       {cards.map((card) => (
         <article
           key={card.label}
-          className={`${styles.card} sweep-reveal`}
+          className={styles.card}
           style={{
             "--reveal-index": card.reveal,
             "--card-left": card.left,
@@ -199,12 +199,17 @@ export function HeroCards() {
            * (hero-cards.module.css). The trail gets no shadow: one per
            * figure is what the eye expects, and three would read as a
            * puddle.
+           *
+           * The reveal is split: the body takes the sweep, but the sweep's
+           * mask clips its element to its own box, and the shadow lies
+           * entirely outside the card's - so the shadow arrives by plain
+           * opacity on the same beat instead (hero-cards.module.css).
            */}
           <span aria-hidden className={styles.shadow}>
             <Pieces pieces={card.pieces} />
           </span>
 
-          <div className={styles.body}>
+          <div className={`${styles.body} sweep-reveal`}>
             {echoes.map((echo) => (
               <span
                 key={echo.index}

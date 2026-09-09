@@ -162,7 +162,11 @@
  * throw their shadows away from the room's centre line, the way the cove
  * light overhead would, and the centre capture drops its own straight down.
  * The body's overflow clip would cut the shadow off at the feet, so it
- * lives on the card, not in the body.
+ * lives on the card, not in the body - and the card itself must NOT carry
+ * the sweep-reveal: that utility's mask clips the card to its own box, and
+ * the whole shadow lies below it. The shadow's own mask is safe: a mask is
+ * applied in the element's local space, before the flip carries the result
+ * outside the box. It arrives by plain opacity on the card's reveal beat.
  */
 .shadow {
   position: absolute;
@@ -173,6 +177,17 @@
   opacity: 0.5;
   filter: brightness(0) blur(6px);
   mask-image: linear-gradient(to top, rgb(0 0 0 / 85%), transparent 60%);
+  animation: shadow-in var(--reveal-duration) var(--reveal-ease) both;
+  animation-delay: calc(var(--reveal-index, 0) * var(--reveal-step));
+}
+
+@keyframes shadow-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.5;
+  }
 }
 
 .echo {
