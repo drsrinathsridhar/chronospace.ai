@@ -44,6 +44,9 @@
 }
 
 .card {
+  /* Positioned so the shadow copy can pin itself to the card's own box in
+     the strip layout too, where the card is a plain flex item. */
+  position: relative;
   display: flex;
   width: 100%;
   max-width: 11.1875rem; /* 178.826px */
@@ -148,6 +151,28 @@
 .echo {
   position: absolute;
   inset: 0;
+}
+
+/*
+ * The faked floor shadow: the same pieces once more, flipped about the feet
+ * line and squashed to a third of their height, so the copy lies down the
+ * floor toward the viewer - then flattened to black, blurred soft, and
+ * masked so it is densest at the contact point and gone before it reaches
+ * far. It shears by the card's own standing angle: the flanking captures
+ * throw their shadows away from the room's centre line, the way the cove
+ * light overhead would, and the centre capture drops its own straight down.
+ * The body's overflow clip would cut the shadow off at the feet, so it
+ * lives on the card, not in the body.
+ */
+.shadow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transform-origin: 50% 100%;
+  transform: scaleY(-0.32) skewX(var(--card-tilt, 0deg));
+  opacity: 0.5;
+  filter: brightness(0) blur(6px);
+  mask-image: linear-gradient(to top, rgb(0 0 0 / 85%), transparent 60%);
 }
 
 .echo {

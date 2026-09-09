@@ -192,6 +192,18 @@ export function HeroCards() {
             "--card-tilt-gain": card.tiltGain,
           }}
         >
+          {/*
+           * The faked floor shadow: one more copy of the subject, flipped
+           * about the feet line and squashed onto the floor - blackened,
+           * blurred and fading as it reaches toward the viewer
+           * (hero-cards.module.css). The trail gets no shadow: one per
+           * figure is what the eye expects, and three would read as a
+           * puddle.
+           */}
+          <span aria-hidden className={styles.shadow}>
+            <Pieces pieces={card.pieces} />
+          </span>
+
           <div className={styles.body}>
             {echoes.map((echo) => (
               <span
