@@ -154,29 +154,33 @@
 }
 
 /*
- * The faked floor shadow: the same pieces once more, flipped about the feet
- * line and squashed to a third of their height, so the copy lies down the
- * floor toward the viewer - then flattened to black, blurred soft, and
- * masked so it is densest at the contact point and gone before it reaches
- * far. It shears by the card's own standing angle: the flanking captures
- * throw their shadows away from the room's centre line, the way the cove
- * light overhead would, and the centre capture drops its own straight down.
- * The body's overflow clip would cut the shadow off at the feet, so it
- * lives on the card, not in the body - and the card itself must NOT carry
- * the sweep-reveal: that utility's mask clips the card to its own box, and
- * the whole shadow lies below it. The shadow's own mask is safe: a mask is
- * applied in the element's local space, before the flip carries the result
- * outside the box. It arrives by plain opacity on the card's reveal beat.
+ * The faked floor shadow: the same pieces once more, kept upright with the
+ * feet planted, squashed to two fifths of their height and sheared hard
+ * left - so the silhouette lies back and to the left across the floor, as
+ * if the light stood front-right of the room. Head-end up-screen IS away
+ * from the camera on this floor, so no flip: the projection keeps the feet
+ * at the contact point and lands the head behind. Flattened to black,
+ * blurred soft, masked so it is densest at the feet and gone before it
+ * reaches far, and painted before the body so the figure stands on top of
+ * its own shadow. Each card adds its standing angle to the shear, so the
+ * three shadows agree with the three stances.
+ *
+ * It lives on the card, not in the body, whose overflow clip would cut it
+ * at the frame - and the card itself must NOT carry the sweep-reveal: that
+ * utility's mask clips the card to its own box, and the shadow shears past
+ * it. The shadow's own mask is safe: a mask applies in the element's local
+ * space, before the transform carries the result outside the box. It
+ * arrives by plain opacity on the card's reveal beat.
  */
 .shadow {
   position: absolute;
   inset: 0;
   pointer-events: none;
   transform-origin: 50% 100%;
-  transform: scaleY(-0.32) skewX(var(--card-tilt, 0deg));
-  opacity: 0.5;
-  filter: brightness(0) blur(6px);
-  mask-image: linear-gradient(to top, rgb(0 0 0 / 85%), transparent 60%);
+  transform: skewX(calc(48deg + var(--card-tilt, 0deg))) scaleY(0.4);
+  opacity: 0.7;
+  filter: brightness(0) blur(5px);
+  mask-image: linear-gradient(to top, rgb(0 0 0 / 95%), transparent 72%);
   animation: shadow-in var(--reveal-duration) var(--reveal-ease) both;
   animation-delay: calc(var(--reveal-index, 0) * var(--reveal-step));
 }
@@ -186,7 +190,7 @@
     opacity: 0;
   }
   to {
-    opacity: 0.5;
+    opacity: 0.7;
   }
 }
 
