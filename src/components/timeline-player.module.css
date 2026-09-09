@@ -5,9 +5,8 @@
  *
  * Two builds of the same instrument. Framed (the capture viewer) draws its
  * own hairline and hangs the transport off it; embedded (the product
- * cards) draws no outline of its own - the card owns the frame - and the
- * transport keeps only its top rule so it reads as one plate inside the
- * card's border.
+ * columns) draws no outline at all - the take stands on the page and the
+ * transport keeps only its top rule, the tick track doing the drawing.
  */
 
 .frame {
@@ -53,7 +52,7 @@
 }
 
 .embedded .transport {
-  /* The card draws the sides and the body's top rule closes the bottom. */
+  /* Only the top rule - the bar stands open, no box around it. */
   border-right: 0;
   border-bottom: 0;
   border-left: 0;

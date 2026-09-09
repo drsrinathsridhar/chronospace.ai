@@ -8,15 +8,21 @@ import wildPoster from "./wild-poster.jpg";
 
 // The product: the intro's argument split into the three properties a
 // capture actually ships with - taken in the wild, navigable in 4D,
-// measurable afterwards - one card each, all built the same way: a labelled
-// header strip, the evidence plate, and the claim under it.
+// measurable afterwards - one column each, all built the same way: the
+// evidence take on top, the claim directly under it.
 //
-// The evidence plates are takes now, not stills (client feedback): each
-// card runs a short capture in the compact build of the shared timeline
-// player - the same instrument as the viewer below, same luminosity blend
-// over the same paper, scaled down to sit inside the card's border. The
-// takes wait for the scroll: preload="none" and play-on-arrival, so three
-// videos in a row cost nothing until the section shows.
+// The evidence plates are takes, not stills (client feedback): each column
+// runs a short capture in the compact build of the shared timeline player -
+// the same instrument as the viewer below, same luminosity blend over the
+// same paper. The takes wait for the scroll: preload="none" and
+// play-on-arrival, so three videos in a row cost nothing until the section
+// shows.
+//
+// No chrome around the column (client feedback again): no label strip, no
+// border, no padding - the take and its transport stand on the page, and
+// the title and copy hang straight under them on the plate's own left edge.
+// The label survives in the data: it keys the list and names the take in
+// the player's control labels.
 //
 // Geometry is the comp's at the 1496px design width: the heading and lede
 // 598/1416 into the content box on the section's shared 698px measure, and
@@ -85,13 +91,9 @@ export function Product() {
           {cards.map((card, index) => (
             <article
               key={card.label}
-              className="border-line sweep-in flex flex-col border"
+              className="sweep-in flex flex-col"
               style={{ "--beat": 2 + index }}
             >
-              <header className="bg-paper border-line border-b p-8">
-                <p className="type-nav text-muted">{card.label}</p>
-              </header>
-
               <TimelinePlayer
                 src={card.video}
                 poster={card.poster.src}
@@ -102,7 +104,7 @@ export function Product() {
                 preload="none"
               />
 
-              <div className="border-line flex flex-1 flex-col gap-6 border-t px-8 py-10">
+              <div className="mt-8 flex flex-col gap-6">
                 <h3 className="type-title-lg">{card.title}</h3>
                 <p className="type-body-lg leading-tight font-light">
                   {card.copy}
