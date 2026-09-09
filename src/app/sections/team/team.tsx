@@ -2,16 +2,18 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 import type { StaticImageData } from "next/image";
 import { RevealScope } from "@/components/reveal-scope.client";
-import { GithubIcon, LinkedinIcon } from "@/icons/generated";
+import { LinkedinIcon } from "@/icons/generated";
 import aashishRai from "./aashish-rai.png";
 import srinathSridhar from "./srinath-sridhar.png";
 import tamarKreitman from "./tamar-kreitman.png";
 
 // The team: the claim behind the claims. The header stacks on the centre
-// line like the viewer's, and under it the three founders sit in the same
-// card grammar as the product section - a bordered column per person, the
-// portrait and credentials above a rule, and the links below it as bordered
-// tiles, one per profile.
+// line like the viewer's, and under it the three founders sit in open
+// columns - no frame around the person; the portrait and credentials stand
+// above a rule, and the profile link sits below it as a bordered tile.
+//
+// Each person leads with their company role and carries their credential
+// under it - the company first, the research pedigree as the support.
 //
 // Geometry is the comp's at the 1496px design width: the lede 20 under the
 // heading on a 577px measure, and the cards in a full-width row of three on
@@ -19,7 +21,10 @@ import tamarKreitman from "./tamar-kreitman.png";
 
 type Founder = {
   name: string;
+  /** The company role, leading. */
   role: string;
+  /** The research credential, supporting. */
+  credential: string;
   org: string;
   photo: StaticImageData;
   links: { label: string; href: string; icon: ReactNode }[];
@@ -28,15 +33,11 @@ type Founder = {
 const founders: Founder[] = [
   {
     name: "Srinath Sridhar",
-    role: "John E. Savage Assistant Professor",
+    role: "CEO",
+    credential: "Assoc Professor at Brown Uni",
     org: "Brown IVL",
     photo: srinathSridhar,
     links: [
-      {
-        label: "GitHub",
-        href: "https://github.com/drsrinathsridhar",
-        icon: <GithubIcon width={24.666} height={24} />,
-      },
       {
         label: "LinkedIn",
         href: "https://www.linkedin.com/in/srinathsridhar",
@@ -46,7 +47,8 @@ const founders: Founder[] = [
   },
   {
     name: "Tamar Kreitman",
-    role: "Lead Hardware Design Engineer",
+    role: "Head of Systems",
+    credential: "Lead Hardware Design Engineer",
     org: "Brown IVL",
     photo: tamarKreitman,
     links: [
@@ -59,15 +61,11 @@ const founders: Founder[] = [
   },
   {
     name: "Aashish Rai",
-    role: "Computer Science Ph.D.",
+    role: "Head of Spatial AI",
+    credential: "Computer Science Ph.D.",
     org: "Brown IVL",
     photo: aashishRai,
     links: [
-      {
-        label: "GitHub",
-        href: "https://github.com/aashishrai3799",
-        icon: <GithubIcon width={24.666} height={24} />,
-      },
       {
         label: "LinkedIn",
         href: "https://www.linkedin.com/in/aashishrai3799",
@@ -101,7 +99,7 @@ export function Team() {
           {founders.map((founder, index) => (
             <article
               key={founder.name}
-              className="border-line sweep-in flex flex-col border"
+              className="sweep-in flex flex-col"
               style={{ "--beat": 2 + index }}
             >
               <div className="flex flex-1 flex-col gap-6 px-8 py-6">
@@ -115,10 +113,14 @@ export function Team() {
                   <p className="type-body-md leading-tight font-light">
                     {founder.role}
                   </p>
+                  <p className="type-body-md leading-tight font-light opacity-60">
+                    {founder.credential}
+                  </p>
                   <p className="type-nav text-muted">{founder.org}</p>
                 </div>
               </div>
 
+              {/* The rule the column stands on; the tile hangs from it. */}
               <div className="border-line flex border-t">
                 {founder.links.map((link) => (
                   <a
@@ -126,7 +128,7 @@ export function Team() {
                     href={link.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="border-line hover:bg-ink/10 flex flex-col items-center gap-2.5 border-r px-8.75 py-8 transition-colors"
+                    className="border-line hover:bg-ink/10 flex flex-col items-center gap-2.5 border-r border-b border-l px-8.75 py-8 transition-colors"
                   >
                     {link.icon}
                     <span className="type-nav">{link.label}</span>
