@@ -25,7 +25,7 @@ import { HeroTimeline } from "./hero-timeline";
 // Two spans rather than one string with a break: each line is picked up by
 // the shimmer on its own beat, and the break stays where the comp puts it
 // instead of wherever the measure happens to fall.
-const headline = ["ChronoSpace builds AI", "to digitize the physical world."];
+const headline = ["ChronoSpace builds AI", "to digitize the physical world"];
 
 export function Hero() {
   // Padded by the navbar's resting height, not its live one: the bar

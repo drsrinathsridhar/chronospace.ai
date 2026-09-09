@@ -28,7 +28,7 @@ export function Connect() {
             className="type-display-xs sm:type-display-sm lg:type-display-lg shimmer-in mt-5 text-balance"
             style={{ "--beat": 1 }}
           >
-            Tell us where you sit.
+            Tell us where you sit
           </h1>
 
           <p

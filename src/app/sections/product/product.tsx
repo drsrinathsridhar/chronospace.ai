@@ -57,7 +57,7 @@ export function Product() {
             className="type-display-xs sm:type-display-sm lg:type-display-md shimmer-in text-balance"
             style={{ "--beat": 0 }}
           >
-            One capture, three things nobody else can hand you.
+            One capture, three things nobody else can hand you
           </h2>
           <p
             className="type-body-xl shimmer-in mt-6 max-w-115 opacity-60"

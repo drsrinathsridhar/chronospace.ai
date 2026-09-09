@@ -28,7 +28,7 @@ import styles from "./vision.module.css";
 // arm's are the comp's repeated plate. Both mirror the comp's flip.
 
 const heading =
-  "A world where every physical process can be replayed, measured and learned from.";
+  "A world where every physical process can be replayed, measured and learned from";
 const words = heading.split(" ");
 
 type Echo = {

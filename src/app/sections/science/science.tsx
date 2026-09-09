@@ -62,7 +62,7 @@ export function Science() {
             className="type-display-xs sm:type-display-sm lg:type-display-md shimmer-in max-w-174.5 text-balance"
             style={{ "--beat": 0 }}
           >
-            Research &amp; Insights.
+            Research &amp; Insights
           </h2>
           <p
             className="type-body-xl shimmer-in text-pretty opacity-60"

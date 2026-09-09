@@ -108,7 +108,7 @@ export function Footer() {
           >
             Bring the studio
             <br />
-            to your world.
+            to your world
           </h2>
           <p
             className="type-body-xl shimmer-in max-w-117.25 text-pretty opacity-60"

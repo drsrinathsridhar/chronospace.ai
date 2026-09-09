@@ -30,7 +30,7 @@ export function ConnectForm() {
         aria-live="polite"
         className="border-line flex h-full flex-col justify-center gap-6 border p-10"
       >
-        <h2 className="type-title-lg">Logged. We&apos;ll be in touch.</h2>
+        <h2 className="type-title-lg">Logged. We&apos;ll be in touch</h2>
         <p className="type-body-lg opacity-60">
           Your note is with the team - expect a reply within a few days with the
           next step, or a capture proposal where the fit is already clear.
