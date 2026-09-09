@@ -44,7 +44,7 @@ import styles from "./hero-cards.module.css";
 // the design width grown 1.6x and measured in viewport units so the
 // figures keep their proportion to the room on any display. The shift factors keep
 // the comp's original depths: eyeshift * -z / (P - z) with the room's P of
-// 100cqw and its 5cqw / 3.2cqh eye travel, the flanking captures about
+// 100cqw and its 8cqw / 5.1cqh eye travel, the flanking captures about
 // 58cqw into the room and the manufacturing line 30cqw in front of the
 // plate plane. Below the xl breakpoint the scatter would collide with the
 // headline, so the cards fall into a three-column strip above the ruler.
@@ -88,11 +88,11 @@ const cards: StandingCard[] = [
     ],
     left: "17.38%",
     feet: 0.9577,
-    scale: 1.153,
-    shiftX: "1.86vw",
-    shiftY: "0.58vw",
+    scale: 1.3,
+    shiftX: "2.98vw",
+    shiftY: "0.93vw",
     tilt: "9deg",
-    tiltGain: "2deg",
+    tiltGain: "3.2deg",
     reveal: 7,
   },
   {
@@ -109,13 +109,13 @@ const cards: StandingCard[] = [
     feet: 1.0917,
     scale: 1.386,
     // Physically this card, nearest of the three, would take the biggest
-    // move (-2.19vw / -0.68vw at its depth) - but front and centre, the
+    // move (-3.5vw / -1.09vw at its depth) - but front and centre, the
     // full value reads as restless rather than deep, so it takes a calmer
     // fraction of it and barely turns.
-    shiftX: "-0.9vw",
-    shiftY: "-0.28vw",
+    shiftX: "-1.44vw",
+    shiftY: "-0.45vw",
     tilt: "0deg",
-    tiltGain: "0.8deg",
+    tiltGain: "1.28deg",
     reveal: 8,
   },
   {
@@ -136,11 +136,11 @@ const cards: StandingCard[] = [
     ],
     left: "68.85%",
     feet: 0.9593,
-    scale: 1.153,
-    shiftX: "1.83vw",
-    shiftY: "0.57vw",
+    scale: 1.3,
+    shiftX: "2.93vw",
+    shiftY: "0.91vw",
     tilt: "-9deg",
-    tiltGain: "2deg",
+    tiltGain: "3.2deg",
     reveal: 9,
   },
 ];

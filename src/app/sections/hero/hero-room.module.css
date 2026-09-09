@@ -96,8 +96,8 @@
  * is exactly the comp.
  */
 .stage {
-  --eye-shift-x: calc(5cqw * var(--eye-x, 0));
-  --eye-shift-y: calc(3.2cqh * var(--eye-y, 0));
+  --eye-shift-x: calc(8cqw * var(--eye-x, 0));
+  --eye-shift-y: calc(5.1cqh * var(--eye-y, 0));
   --eye: translate3d(
     calc(-1 * var(--eye-shift-x)),
     calc(-1 * var(--eye-shift-y)),
