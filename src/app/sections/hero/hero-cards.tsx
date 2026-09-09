@@ -40,7 +40,9 @@ import styles from "./hero-cards.module.css";
 // Geometry is the comp's at 1496: cards on 17.38%/41.71%/68.85% with their
 // feet at 95.77%/109.17%/95.93% of the plate height - the flanking pair
 // dropped 50px from the comp to sit deeper into the floor - and scales of
-// 1.153/1.386/1.153 over the base 178.826px card. The shift factors keep
+// 1.153/1.386/1.153 over a base card of 19.1vw, the comp's 178.826px at
+// the design width grown 1.6x and measured in viewport units so the
+// figures keep their proportion to the room on any display. The shift factors keep
 // the comp's original depths: eyeshift * -z / (P - z) with the room's P of
 // 100cqw and its 5cqw / 3.2cqh eye travel, the flanking captures about
 // 58cqw into the room and the manufacturing line 30cqw in front of the
@@ -165,7 +167,7 @@ function Pieces({ pieces }: { pieces: Piece[] }) {
         src={piece.image}
         alt=""
         fill
-        sizes="260px"
+        sizes="(min-width: 80rem) 30vw, 180px"
         className="object-cover"
       />
     </span>
