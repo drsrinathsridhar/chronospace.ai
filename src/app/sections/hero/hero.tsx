@@ -11,9 +11,9 @@ import { HeroTimeline } from "./hero-timeline";
 // whole screen at its foot.
 //
 // The vertical rhythm is the comp's, to the pixel, at the 1496px design
-// width: 104 below the navbar to the eyebrow, 20 to the headline, 40 to the
-// action - the whole stack pulled up so the manufacturing capture can stand
-// clear of it - and the ruler flush with the foot. The backing marks left
+// width: 104 below the navbar to the headline, 40 to the action - the whole
+// stack pulled up so the manufacturing capture can stand clear of it - and
+// the ruler flush with the foot. The backing marks left
 // the hero for the band directly under it (sections/backers): the hero
 // yields exactly the band's height of the viewport, so hero + band close
 // the first screen together, with the ruler as the band's top border.
@@ -25,10 +25,7 @@ import { HeroTimeline } from "./hero-timeline";
 // Two spans rather than one string with a break: each line is picked up by
 // the shimmer on its own beat, and the break stays where the comp puts it
 // instead of wherever the measure happens to fall.
-const headline = [
-  "ChronoSpace is building AI",
-  "to digitize the physical world.",
-];
+const headline = ["ChronoSpace builds AI", "to digitize the physical world."];
 
 export function Hero() {
   // Padded by the navbar's resting height, not its live one: the bar
@@ -46,14 +43,7 @@ export function Hero() {
       <HeroRoom />
 
       <div className="section-container relative flex flex-col items-center pt-24 text-center md:pt-26">
-        <p
-          className="type-nav text-muted shimmer-reveal"
-          style={{ "--reveal-index": 1, "--shimmer-ink": "var(--muted)" }}
-        >
-          4D capture infrastructure
-        </p>
-
-        <h1 className="type-display-xs sm:type-display-sm lg:type-display-md mt-4 flex max-w-174.5 flex-col md:mt-5">
+        <h1 className="type-display-xs sm:type-display-sm lg:type-display-md flex max-w-174.5 flex-col">
           {/*
            * `text-balance` only has anything to do below the design width,
            * where a line has to break again: it splits the remainder evenly
@@ -63,7 +53,7 @@ export function Hero() {
             <span
               key={line}
               className="shimmer-reveal text-balance"
-              style={{ "--reveal-index": index + 2 }}
+              style={{ "--reveal-index": index + 1 }}
             >
               {line}
             </span>
@@ -73,7 +63,7 @@ export function Hero() {
         <CtaLink
           href={siteConfig.links.contact}
           className="sweep-reveal mt-8 md:mt-10"
-          style={{ "--reveal-index": 4 }}
+          style={{ "--reveal-index": 3 }}
         >
           Connect with us
         </CtaLink>

@@ -8,8 +8,8 @@ import styles from "./site-header.module.css";
 
 // The navbar floats over the hero rather than sitting above it: a 60px bar
 // with nothing but a blur behind it, so the room keeps its light. It carries
-// no rule of its own - the ruled cells in its right half are the only lines
-// in the bar, and `-mr-px` collapses each pair of touching borders into one.
+// no rule of its own - the links are bare labels, and the CTA's accent fill
+// is the only block in the bar.
 //
 // The bar is on screen from the first frame; its contents lead the page
 // reveal at index 0. On hover a cell fills with the page ground and its
@@ -21,7 +21,7 @@ import styles from "./site-header.module.css";
 // reveal, played as a flare (site-header.module.css).
 
 const navCell =
-  "border-line hover:bg-paper focus-visible:bg-paper -mr-px flex h-full items-end border-r border-b border-l transition-colors duration-150 ease-out last:mr-0";
+  "hover:bg-paper focus-visible:bg-paper flex h-full items-end transition-colors duration-150 ease-out";
 
 export function SiteHeader() {
   return (
@@ -34,14 +34,14 @@ export function SiteHeader() {
           aria-label={`${siteConfig.name} home`}
         >
           <ChronospaceLogoIcon
-            width={126}
-            height={24}
+            width={168}
+            height={32}
             className="text-ink shrink-0"
           />
           <span aria-hidden className={`${styles.flare} absolute inset-0`}>
             <ChronospaceLogoIcon
-              width={126}
-              height={24}
+              width={168}
+              height={32}
               className="text-accent shrink-0"
             />
           </span>

@@ -8,10 +8,10 @@ export const siteConfig = {
   // Root-anchored so the anchors also work from routes other than the home
   // page (the contact page renders the same header).
   nav: [
-    { href: "/#problem", label: "Problem" },
-    { href: "/#how-it-works", label: "How it works" },
-    { href: "/#applications", label: "Applications" },
-    { href: "/#research", label: "Research" },
+    { href: "/#problem", label: "About" },
+    { href: "/#how-it-works", label: "Features" },
+    { href: "/#applications", label: "Research and Insights" },
+    { href: "/#research", label: "Team" },
   ],
   links: {
     contact: "/contact",
