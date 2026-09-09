@@ -10,7 +10,6 @@ import dancer1 from "./dancer-1.png";
 import dancer2 from "./dancer-2.png";
 import dancer3 from "./dancer-3.png";
 import dancerMain from "./dancer-main.png";
-import echoRepeater from "./echo-repeater.png";
 import styles from "./vision.module.css";
 
 // The vision, and the close: the claim in the middle - a world where every
@@ -26,13 +25,9 @@ import styles from "./vision.module.css";
 // The trails are the reveal - see vision.module.css: the subjects arrive in
 // place, then their echoes fan out copy by copy. The dancer's echoes are
 // genuinely different frames of the take, so the fan reads as motion; the
-// arm's are the comp's repeated plate. Both mirror the comp's flip.
-//
-// Behind all of it, the echo-repeater: a capture's colour smeared into a
-// cascade of fins, inherited from the footer when its duplicate ask was
-// removed - this is the page's one connect moment, so the artwork closes
-// it. It stretches to the section's box, and its alpha plate leaves the
-// paper showing through.
+// arm's are the comp's repeated plate. Both mirror the comp's flip. The
+// trails stand on the bare paper: this is the page's one connect moment,
+// and the two captures are its whole backdrop.
 
 const heading =
   "A world where every physical process can be replayed, measured and learned from";
@@ -94,20 +89,7 @@ function Trail({ echoes, className }: { echoes: Echo[]; className: string }) {
 
 export function Vision() {
   return (
-    <section
-      id="vision"
-      className="section-container relative overflow-clip py-30"
-    >
-      <div aria-hidden className="pointer-events-none absolute inset-0">
-        <Image
-          src={echoRepeater}
-          alt=""
-          fill
-          sizes="100vw"
-          className="object-fill"
-        />
-      </div>
-
+    <section id="vision" className="section-container overflow-clip py-30">
       <RevealScope className="relative flex flex-col items-center justify-center xl:min-h-110">
         <VisionParallax>
           <Trail echoes={dancerTrail} className={styles.dancer} />
