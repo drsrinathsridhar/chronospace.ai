@@ -20,9 +20,11 @@ import wildPoster from "./wild-poster.jpg";
 //
 // No chrome around the column (client feedback again): no label strip, no
 // border, no padding - the take and its transport stand on the page, and
-// the title and copy hang straight under them on the plate's own left edge.
-// The label survives in the data: it keys the list and names the take in
-// the player's control labels.
+// the claim hangs straight under them on the plate's own left edge, set to
+// comp node 7802:8456: a full-width rule off the transport, the title and
+// copy on a 12px gap inside 24px of vertical padding. The label survives in
+// the data: it keys the list and names the take in the player's control
+// labels.
 //
 // Geometry is the comp's at the 1496px design width: the heading and lede
 // 598/1416 into the content box on the section's shared 698px measure, and
@@ -104,7 +106,7 @@ export function Product() {
                 preload="none"
               />
 
-              <div className="mt-8 flex flex-col gap-6">
+              <div className="border-line flex flex-col gap-3 border-t py-6">
                 <h3 className="type-title-lg">{card.title}</h3>
                 <p className="type-body-lg leading-tight font-light">
                   {card.copy}
