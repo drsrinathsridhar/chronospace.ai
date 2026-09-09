@@ -3,8 +3,13 @@ import {
   A16zSpeedrunIcon,
   BrownAngelGroupIcon,
   NvidiaIcon,
+  TekVenturesIcon,
   VelaIcon,
 } from "@/icons/generated";
+// The marks borrow the navbar logo's hover flare - one gesture, one source
+// (see the note atop site-header.module.css). CSS modules make the import
+// safe: the same class composes to the same generated name.
+import flare from "@/components/site-header.module.css";
 import styles from "./backers.module.css";
 
 // The backing band: the last row of the first screen. The hero gives up
@@ -24,12 +29,17 @@ import styles from "./backers.module.css";
 //
 // NVIDIA Inception has no single wordmark lockup we can ship, so the cell
 // pairs the NVIDIA mark with the program's name set in the band's own
-// chrome type. Tech Ventures is typeset outright until the client sends
-// the mark.
+// chrome type. TekVentures gets the same treatment: their V mark
+// (tek.ventures) beside the name - the mark's three reds translated into
+// three tones of the band's own ink in the icon source.
+//
+// Every mark is a link to the backer's site, opening in a new tab; hover
+// hands the mark the navbar logo's orange flare and lifts it to full ink.
 
-const backers: { name: string; mark: ReactNode }[] = [
+const backers: { name: string; href: string; mark: ReactNode }[] = [
   {
     name: "NVIDIA Inception",
+    href: "https://www.nvidia.com/en-us/startups/",
     mark: (
       <span className="flex items-center gap-3">
         <NvidiaIcon width={85} height={16} />
@@ -39,18 +49,27 @@ const backers: { name: string; mark: ReactNode }[] = [
   },
   {
     name: "a16z speedrun",
+    href: "https://speedrun.a16z.com/",
     mark: <A16zSpeedrunIcon width={156} height={22} />,
   },
   {
-    name: "Tech Ventures",
-    mark: <span className="type-title-sm uppercase">Tech Ventures</span>,
+    name: "TekVentures",
+    href: "https://www.tek.ventures/",
+    mark: (
+      <span className="flex items-center gap-3">
+        <TekVenturesIcon width={26} height={26} />
+        <span className="type-nav">TekVentures</span>
+      </span>
+    ),
   },
   {
     name: "Brown Angel Group",
+    href: "https://www.brownangelgroup.org/",
     mark: <BrownAngelGroupIcon width={88} height={36} />,
   },
   {
     name: "Vela Partners",
+    href: "https://vela.partners/",
     mark: (
       <span className="flex items-center gap-3">
         <VelaIcon width={74} height={28} />
@@ -85,12 +104,30 @@ export function Backers() {
               className={`${styles.track} flex flex-none items-center gap-16 pl-16 md:gap-24 md:pl-24`}
             >
               {backers.map((backer) => (
-                <li
-                  key={backer.name}
-                  className="text-ink flex flex-none items-center opacity-60"
-                >
-                  {copy === 0 && <span className="sr-only">{backer.name}</span>}
-                  <span aria-hidden>{backer.mark}</span>
+                <li key={backer.name} className="flex flex-none items-center">
+                  {/*
+                   * Duplicate tracks are aria-hidden scenery, but hidden
+                   * links would still catch the keyboard - so only the
+                   * first track's links are tabbable.
+                   */}
+                  <a
+                    href={backer.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    tabIndex={copy > 0 ? -1 : undefined}
+                    className="text-ink focus-visible:outline-ink relative flex items-center opacity-60 transition-opacity duration-150 ease-out hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2"
+                  >
+                    {copy === 0 && (
+                      <span className="sr-only">{backer.name}</span>
+                    )}
+                    <span aria-hidden>{backer.mark}</span>
+                    <span
+                      aria-hidden
+                      className={`${flare.flare} text-accent absolute inset-0 flex items-center`}
+                    >
+                      {backer.mark}
+                    </span>
+                  </a>
                 </li>
               ))}
             </ul>

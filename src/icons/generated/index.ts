@@ -6,5 +6,6 @@ export { GithubIcon } from "./github";
 export { LinkedinIcon } from "./linkedin";
 export { MeasureBracketIcon } from "./measure-bracket";
 export { NvidiaIcon } from "./nvidia";
+export { TekVenturesIcon } from "./tek-ventures";
 export { TimelineTickIcon } from "./timeline-tick";
 export { VelaIcon } from "./vela";

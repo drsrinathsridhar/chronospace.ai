@@ -4,6 +4,9 @@
  * band of light the hero copy arrives on, in orange. The animation ends with
  * the band off the right edge, so the flare leaves no trace and replays on
  * every hover.
+ *
+ * Shared: the backers strip (app/sections/backers) imports this module and
+ * gives its investor marks the same flare, so the gesture stays one gesture.
  */
 
 @keyframes logo-flare {
