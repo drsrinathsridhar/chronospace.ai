@@ -178,9 +178,9 @@
   pointer-events: none;
   transform-origin: 50% 100%;
   transform: skewX(calc(48deg + var(--card-tilt, 0deg))) scaleY(0.4);
-  opacity: 0.7;
+  opacity: 0.85;
   filter: brightness(0) blur(5px);
-  mask-image: linear-gradient(to top, rgb(0 0 0 / 95%), transparent 72%);
+  mask-image: linear-gradient(to top, rgb(0 0 0 / 100%), transparent 80%);
   animation: shadow-in var(--reveal-duration) var(--reveal-ease) both;
   animation-delay: calc(var(--reveal-index, 0) * var(--reveal-step));
 }
@@ -190,7 +190,7 @@
     opacity: 0;
   }
   to {
-    opacity: 0.7;
+    opacity: 0.85;
   }
 }
 
