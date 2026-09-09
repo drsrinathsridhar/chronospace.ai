@@ -47,3 +47,5 @@ next-env.d.ts
 public/team-fixes.png
 # raw client video masters - encoded copies ship from public/videos
 public/new-videos/
+# raw client favicon export - served from src/app icon files
+public/09/
