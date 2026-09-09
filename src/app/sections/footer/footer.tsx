@@ -1,26 +1,22 @@
-import Image from "next/image";
 import { siteConfig } from "@/site.config";
-import { CtaLink } from "@/components/cta-link";
 import { RevealScope } from "@/components/reveal-scope.client";
 import { ScrambleLabel } from "@/components/scramble-label.client";
 import { ChronospaceLogoIcon, TimelineTickIcon } from "@/icons/generated";
-import echoRepeater from "./echo-repeater.png";
 
-// The close of the page: the partnership ask over the echo-repeater - a
-// capture's colour smeared into a cascade of fins that falls from the top
-// rule down behind the footer - and under it the sign-off band, where the
-// wordmark is laid out at full measure and annotated like a figure in a
-// spec sheet, with the utility links filed as ruled cells on the right.
+// The close of the page: the sign-off band alone. The partnership ask that
+// used to sit above it duplicated the vision section's connect action, so
+// the ask is gone and the echo-repeater artwork moved up to back the vision
+// section (sections/vision) - one connect moment, one backdrop.
 //
-// Geometry is the comp's at the 1496px design width: the CTA copy 194 under
-// the section rule on 40px gaps, the 339-wide action, then the 325-tall band
-// with the logo on 40px padding and the five 65px link cells flush to the
-// page edge. The figure brackets under the wordmark measure its parts - the
-// mark, "Chrono", "Space" - so their widths are percentages of the logo's
-// own width and travel with it across breakpoints.
+// The band carries no rules: the wordmark is laid out at two thirds of its
+// column and annotated like a figure in a spec sheet, with the utility
+// links filed as plain cells on the right. The figure brackets under the
+// wordmark measure its parts - the mark, "Chrono", "Space" - so their
+// widths are percentages of the logo's own width and travel with it across
+// breakpoints; the logo itself is a percentage of its column, so the whole
+// lockup scales with the screen instead of sitting at a fixed size.
 //
-// Both halves reveal on their own scroll beats: the ask shimmers in line by
-// line, then the band sweeps in mark-first, cells following in file order.
+// The band sweeps in mark-first, cells following in file order.
 
 // Figure widths from the comp: 164 / 427 / 368 of the 1017px wordmark,
 // with 42 and 16 gaps. The last figure pins to the logo's right edge.
@@ -85,83 +81,44 @@ function Measure({
 export function Footer() {
   return (
     <footer className="relative">
-      {/*
-       * The echo-repeater. The comp stretches the plate to the section's
-       * full box - the fins widen with the page - so it fills rather than
-       * covers, and the alpha plate leaves the paper showing through.
-       */}
-      <div aria-hidden className="pointer-events-none absolute inset-0">
-        <Image
-          src={echoRepeater}
-          alt=""
-          fill
-          sizes="100vw"
-          className="object-fill"
-        />
-      </div>
-
-      <section className="border-line section-container relative border-t pt-28 pb-10 lg:pt-48.5">
-        <RevealScope className="flex flex-col items-start gap-10">
-          <h2
-            className="type-display-xs sm:type-display-sm lg:type-display-lg shimmer-in"
-            style={{ "--beat": 0 }}
-          >
-            Bring the studio
-            <br />
-            to your world
-          </h2>
-          <p
-            className="type-body-xl shimmer-in max-w-117.25 text-pretty opacity-60"
-            style={{ "--beat": 1 }}
-          >
-            We&apos;re looking for partners - teams with a physical process
-            worth recording, and teams training models that need real-world 4D
-            data. Tell us where you sit and we&apos;ll come back with a capture
-            proposal.
-          </p>
-          <CtaLink
-            href={siteConfig.links.contact}
-            className="sweep-in w-full max-w-84.75"
-            style={{ "--beat": 2 }}
-          >
-            Connect with us
-          </CtaLink>
-        </RevealScope>
-      </section>
-
-      <RevealScope className="border-line relative flex flex-col border-t border-b lg:flex-row">
-        <div className="px-gutter flex min-w-0 flex-1 flex-col gap-6 py-10">
-          {/*
-           * The generated icon ships width/height="1em", which gives the svg
-           * a 1:1 intrinsic ratio - `h-auto` alone would render it square,
-           * and the ratio also feeds the flex item's automatic minimum, so
-           * the lockup's real viewBox ratio is restated and the minimum
-           * released.
-           */}
-          <ChronospaceLogoIcon
-            role="img"
-            aria-label="ChronoSpace"
-            className="text-ink sweep-in aspect-(--logo-aspect) h-auto min-h-0 w-full"
-            style={{ "--logo-aspect": "167.381 / 32", "--beat": 0 }}
-          />
-          <div
-            aria-hidden
-            className="sweep-in hidden sm:flex"
-            style={{ "--beat": 1 }}
-          >
-            {figures.map((figure) => (
-              <Measure
-                key={figure.label}
-                label={figure.label}
-                width={figure.width}
-                gap={figure.gap}
-                className={figure.last ? "ml-auto" : "ml-(--fig-gap)"}
-              />
-            ))}
+      <RevealScope className="relative flex flex-col pt-10 lg:flex-row">
+        <div className="px-gutter flex min-w-0 flex-1 flex-col py-10">
+          {/* Two thirds of the column, so the closing wordmark reads as a
+              sign-off rather than a billboard - and still a percentage, so
+              it keeps scaling with the screen. */}
+          <div className="flex w-2/3 flex-col gap-6">
+            {/*
+             * The generated icon ships width/height="1em", which gives the
+             * svg a 1:1 intrinsic ratio - `h-auto` alone would render it
+             * square, and the ratio also feeds the flex item's automatic
+             * minimum, so the lockup's real viewBox ratio is restated and
+             * the minimum released.
+             */}
+            <ChronospaceLogoIcon
+              role="img"
+              aria-label="ChronoSpace"
+              className="text-ink sweep-in aspect-(--logo-aspect) h-auto min-h-0 w-full"
+              style={{ "--logo-aspect": "167.381 / 32", "--beat": 0 }}
+            />
+            <div
+              aria-hidden
+              className="sweep-in hidden sm:flex"
+              style={{ "--beat": 1 }}
+            >
+              {figures.map((figure) => (
+                <Measure
+                  key={figure.label}
+                  label={figure.label}
+                  width={figure.width}
+                  gap={figure.gap}
+                  className={figure.last ? "ml-auto" : "ml-(--fig-gap)"}
+                />
+              ))}
+            </div>
           </div>
         </div>
 
-        <ul className="border-line divide-line flex flex-col divide-y border-t lg:w-99.75 lg:flex-none lg:border-x lg:border-t-0">
+        <ul className="flex flex-col lg:w-99.75 lg:flex-none">
           {rows.map((row, index) => (
             <li
               key={row.label}

@@ -87,7 +87,7 @@ export function Backers() {
   return (
     <section aria-label="Backed by" className="section-container">
       <div
-        className="border-line sweep-reveal h-backing-band flex items-center border-b"
+        className="sweep-reveal h-backing-band flex items-center"
         style={{ "--reveal-index": 7 }}
       >
         <p className="type-nav text-muted flex-none pr-6 md:pr-10">Backed by</p>
