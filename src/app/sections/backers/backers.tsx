@@ -90,9 +90,7 @@ export function Backers() {
         className="border-line sweep-reveal h-backing-band flex items-center border-b"
         style={{ "--reveal-index": 7 }}
       >
-        <p className="type-nav text-muted flex-none pr-6 md:pr-10">
-          (Backed by)
-        </p>
+        <p className="type-nav text-muted flex-none pr-6 md:pr-10">Backed by</p>
 
         <div
           className={`${styles.band} flex h-full items-center overflow-hidden`}

@@ -9,9 +9,9 @@ export const siteConfig = {
   // page (the contact page renders the same header).
   nav: [
     { href: "/#problem", label: "About" },
-    { href: "/#how-it-works", label: "Features" },
-    { href: "/#applications", label: "Research and Insights" },
-    { href: "/#research", label: "Team" },
+    { href: "/#product", label: "Features" },
+    { href: "/#science", label: "Research and Insights" },
+    { href: "/#team", label: "Team" },
   ],
   links: {
     contact: "/contact",

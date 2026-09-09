@@ -86,7 +86,7 @@ export function Team() {
             className="type-display-xs sm:type-display-sm lg:type-display-md shimmer-in max-w-174.5 text-balance"
             style={{ "--beat": 0 }}
           >
-            Meet the founders.
+            Meet Team.
           </h2>
           <p
             className="type-body-xl shimmer-in max-w-144.25 text-pretty opacity-60"
