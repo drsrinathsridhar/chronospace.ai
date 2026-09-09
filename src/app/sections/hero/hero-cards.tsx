@@ -37,7 +37,10 @@ import styles from "./hero-cards.module.css";
 //   replays it: the trail grows back out, and folds away again on leave,
 //   always staggered.
 //
-// Geometry is the comp's at 1496: cards on 17.38%/41.71%/68.85% with their
+// Geometry is the comp's at 1496: cards on 17.38%/39.71%/68.85% - the
+// manufacturing line nudged 2% left of the comp's 41.71% on client
+// feedback, and the flanking captures swapped (robot left, dancer right,
+// also client feedback) while keeping the comp's slot geometry - with their
 // feet at 95.77%/109.17%/95.93% of the plate height - the flanking pair
 // dropped 50px from the comp to sit deeper into the floor - and scales of
 // 1.153/1.386/1.153 over a base card of 19.1vw, the comp's 178.826px at
@@ -77,13 +80,19 @@ type StandingCard = {
 
 const cards: StandingCard[] = [
   {
-    label: "Sports & entertainment",
+    label: "Robotics",
     pieces: [
       {
-        image: sportsSubject,
-        left: "25.96%",
-        width: "47.5%",
-        aspect: "97 / 135",
+        image: roboticsArm,
+        left: "-0.12%",
+        width: "50.71%",
+        aspect: "103.554 / 143.242",
+      },
+      {
+        image: roboticsMan,
+        left: "71.25%",
+        width: "11.2%",
+        aspect: "22.87 / 68.61",
       },
     ],
     left: "17.38%",
@@ -105,7 +114,7 @@ const cards: StandingCard[] = [
         aspect: "252.352 / 109.353",
       },
     ],
-    left: "41.71%",
+    left: "39.71%",
     feet: 1.0917,
     scale: 1.386,
     // Physically this card, nearest of the three, would take the biggest
@@ -119,19 +128,13 @@ const cards: StandingCard[] = [
     reveal: 8,
   },
   {
-    label: "Robotics",
+    label: "Sports & entertainment",
     pieces: [
       {
-        image: roboticsArm,
-        left: "-0.12%",
-        width: "50.71%",
-        aspect: "103.554 / 143.242",
-      },
-      {
-        image: roboticsMan,
-        left: "71.25%",
-        width: "11.2%",
-        aspect: "22.87 / 68.61",
+        image: sportsSubject,
+        left: "25.96%",
+        width: "47.5%",
+        aspect: "97 / 135",
       },
     ],
     left: "68.85%",
