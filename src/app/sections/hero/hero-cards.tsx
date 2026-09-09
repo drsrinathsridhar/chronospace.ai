@@ -6,11 +6,10 @@ import roboticsMan from "./robotics-man.png";
 import sportsSubject from "./sports-subject.png";
 import styles from "./hero-cards.module.css";
 
-// The three captures, standing in the room. Same card grammar as ever - a
-// hairline frame with a labelled header - but the body is now transparent:
-// no plate behind the subject, so the room shows straight through and the
-// figure reads as standing inside it, held by the frame rather than printed
-// on a card.
+// The three captures, standing in the room. No frame, no label - each card
+// is just an invisible measured window with the subject standing in it, so
+// the room shows straight through and the figure reads as standing inside
+// it rather than printed on a card.
 //
 // The subjects are the coloured cutouts, resting desaturated: the capture
 // filed in the room's own grey until the pointer asks about it, when the
@@ -56,8 +55,8 @@ type Piece = {
 };
 
 type StandingCard = {
+  /** Not rendered - names the capture in the data and keys the list. */
   label: string;
-  count: string;
   pieces: Piece[];
   left: string;
   /** Where the card's bottom edge sits, as a fraction of the plate height. */
@@ -77,7 +76,6 @@ type StandingCard = {
 const cards: StandingCard[] = [
   {
     label: "Sports & entertainment",
-    count: "(01)",
     pieces: [
       {
         image: sportsSubject,
@@ -97,7 +95,6 @@ const cards: StandingCard[] = [
   },
   {
     label: "Manufacturing",
-    count: "(02)",
     pieces: [
       {
         image: manufacturingSubject,
@@ -121,7 +118,6 @@ const cards: StandingCard[] = [
   },
   {
     label: "Robotics",
-    count: "(03)",
     pieces: [
       {
         image: roboticsArm,
@@ -194,11 +190,6 @@ export function HeroCards() {
             "--card-tilt-gain": card.tiltGain,
           }}
         >
-          <header className="bg-paper border-line type-label text-ink flex items-baseline justify-between gap-2 border-b p-3">
-            <span>{card.label}</span>
-            <span className="type-micro text-muted">{card.count}</span>
-          </header>
-
           <div className={styles.body}>
             {echoes.map((echo) => (
               <span

@@ -1,7 +1,7 @@
 /*
- * The standing captures. Card anatomy is the strip's - a 178.826px-wide
- * frame, header over a measured body - but the body is transparent, the
- * room showing through around the figure, and at xl the card stands on the
+ * The standing captures. Each card is a 178.826px-wide measured window
+ * with no frame or header of its own - the body is transparent, the room
+ * showing through around the figure - and at xl the card stands on the
  * room's floor:
  *
  *   The stand. The card's bottom edge is pinned at a fraction of the plate
@@ -48,7 +48,6 @@
   width: 100%;
   max-width: 11.1875rem; /* 178.826px */
   flex-direction: column;
-  border: 1px solid var(--line);
 }
 
 @media (min-width: 80rem) {
@@ -127,7 +126,7 @@
  * the same pieces, to the whole trail as it grows out.
  */
 .piece img {
-  filter: grayscale(1) brightness(1.4);
+  filter: grayscale(1) brightness(1.75);
   transition: filter 0.35s ease;
 }
 
