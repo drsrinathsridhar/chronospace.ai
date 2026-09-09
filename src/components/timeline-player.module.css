@@ -28,12 +28,20 @@
  * The comp stylises the plate with a luminosity blend - only the video's
  * light survives, and the page's blue does the colouring - so the same
  * blend, over the same paper, whichever section holds it.
+ *
+ * Safari never composites a blend on a video layer (WebKit bug 163958), so
+ * the desaturation itself rides a filter: grayscale() reduces with the same
+ * Rec.709 luma the blend's Lum() uses, which leaves Chrome's output
+ * untouched - the blend re-applies the paper's cast over the grey exactly
+ * as it did over the colour - while Safari shows the grey plate straight,
+ * short only the paper's whisper of blue (+5% at this near-black ground).
  */
 .video {
   display: block;
   width: 100%;
   aspect-ratio: var(--player-aspect);
   object-fit: cover;
+  filter: grayscale(1);
   mix-blend-mode: luminosity;
 }
 
