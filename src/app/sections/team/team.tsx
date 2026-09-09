@@ -9,8 +9,9 @@ import tamarKreitman from "./tamar-kreitman.png";
 
 // The team: the claim behind the claims. The header stacks on the centre
 // line like the viewer's, and under it the three founders sit in open
-// columns - no frame around the person; the portrait and credentials stand
-// above a rule, and the profile link sits below it as a bordered tile.
+// columns - no frame around the person, no rule; the portrait and
+// credentials stack, and the profile link closes the column as one compact
+// bordered tile (comp node 7802:8912).
 //
 // Each person leads with their company role and carries their credential
 // under it - the company first, the research pedigree as the support.
@@ -41,7 +42,7 @@ const founders: Founder[] = [
       {
         label: "LinkedIn",
         href: "https://www.linkedin.com/in/srinathsridhar",
-        icon: <LinkedinIcon width={24} height={24} />,
+        icon: <LinkedinIcon width={20} height={20} />,
       },
     ],
   },
@@ -55,7 +56,7 @@ const founders: Founder[] = [
       {
         label: "LinkedIn",
         href: "https://www.linkedin.com/in/tamar-kreitman",
-        icon: <LinkedinIcon width={24} height={24} />,
+        icon: <LinkedinIcon width={20} height={20} />,
       },
     ],
   },
@@ -69,7 +70,7 @@ const founders: Founder[] = [
       {
         label: "LinkedIn",
         href: "https://www.linkedin.com/in/aashishrai3799",
-        icon: <LinkedinIcon width={24} height={24} />,
+        icon: <LinkedinIcon width={20} height={20} />,
       },
     ],
   },
@@ -120,15 +121,17 @@ export function Team() {
                 </div>
               </div>
 
-              {/* The rule the column stands on; the tile hangs from it. */}
-              <div className="border-line flex border-t">
+              {/* The profile tile: a compact bordered square under the
+                  credentials - the comp's 12px padding on a 10px gap with
+                  the mark at 20. */}
+              <div className="flex gap-3 px-8">
                 {founder.links.map((link) => (
                   <a
                     key={link.label}
                     href={link.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="border-line hover:bg-ink/10 flex flex-col items-center gap-2.5 border-r border-b border-l px-8.75 py-8 transition-colors"
+                    className="border-line hover:bg-ink/10 flex flex-col items-center justify-center gap-2.5 border p-3 transition-colors"
                   >
                     {link.icon}
                     <span className="type-nav">{link.label}</span>
