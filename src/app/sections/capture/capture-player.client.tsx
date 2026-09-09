@@ -1,23 +1,19 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import { TimelinePlayer } from "@/components/timeline-player.client";
 import echoPoster from "./echo-poster.jpg";
-import styles from "./capture.module.css";
 
-// The player, and the point of it: the HUD is not a caption, it is a live
+// The viewer, and the point of it: the HUD is not a caption, it is a live
 // readout. Every reading is a deterministic function of the take's clock,
 // anchored on the comp's resting values, so the numbers move while the take
 // plays and land wherever the scrubber is dropped - measurable at any t,
 // which is the sentence above the player.
 //
-// One rAF loop owns all the motion: it writes the playhead as a single
-// custom property, keeps the (invisible, native, keyboard-accessible) range
-// input in step, and re-renders the HUD only when a decisecond boundary
-// passes. The loop runs while the take plays and takes one frame to settle
-// after a pause or a seek, the same wake discipline as the hero's eye.
-//
-// Autoplay is a motion preference, decided here against
-// prefers-reduced-motion; the pause button and the scrubber work either way.
+// The instrument itself - the blended plate, the transport, the rAF clock -
+// is the shared timeline player (src/components/timeline-player.client.tsx),
+// which the product cards also run; this island only owns the readings,
+// re-rendered on the player's decisecond tick and nothing else.
 
 const FALLBACK_DURATION = 4.94;
 
@@ -49,147 +45,25 @@ function measure(t: number, duration: number): [string, string][] {
 }
 
 export function CapturePlayer() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const rangeRef = useRef<HTMLInputElement>(null);
-  // Paused until the take actually plays - the play event flips it, so the
-  // button is honest with or without autoplay, script, or reduced motion.
-  const [paused, setPaused] = useState(true);
   const [readout, setReadout] = useState(resting);
 
-  useEffect(() => {
-    const video = videoRef.current;
-    const track = trackRef.current;
-    const range = rangeRef.current;
-    if (!video || !track || !range) return;
-
-    let frame: number | undefined;
-    let lastTick = -1;
-
-    function sync() {
-      frame = undefined;
-      if (!video || !track || !range) return;
-
-      const duration = video.duration || FALLBACK_DURATION;
-      const t = video.currentTime;
-      const progress = Math.min(1, t / duration);
-
-      track.style.setProperty("--capture-progress", progress.toFixed(4));
-      if (document.activeElement !== range) {
-        range.value = String(Math.round(progress * 1000));
-      }
-
-      const tick = Math.floor(t * 10);
-      if (tick !== lastTick) {
-        lastTick = tick;
-        setReadout(measure(t, duration));
-      }
-
-      if (!video.paused) wake();
-    }
-
-    function wake() {
-      frame ??= requestAnimationFrame(sync);
-    }
-
-    function onPlay() {
-      setPaused(false);
-      wake();
-    }
-
-    function onPause() {
-      setPaused(true);
-      wake();
-    }
-
-    video.addEventListener("play", onPlay);
-    video.addEventListener("pause", onPause);
-    video.addEventListener("seeked", wake);
-
-    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      video.play().catch(() => {});
-    }
-    wake();
-
-    return () => {
-      if (frame !== undefined) cancelAnimationFrame(frame);
-      video.removeEventListener("play", onPlay);
-      video.removeEventListener("pause", onPause);
-      video.removeEventListener("seeked", wake);
-    };
-  }, []);
-
-  function toggle() {
-    const video = videoRef.current;
-    if (!video) return;
-    if (video.paused) {
-      video.play().catch(() => {});
-    } else {
-      video.pause();
-    }
-  }
-
-  function seek(value: string) {
-    const video = videoRef.current;
-    if (!video) return;
-    const duration = video.duration || FALLBACK_DURATION;
-    video.currentTime = (Number(value) / 1000) * duration;
-  }
-
   return (
-    <div>
-      <div className={styles.frame}>
-        <video
-          ref={videoRef}
-          src="/videos/echo.mp4"
-          poster={echoPoster.src}
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          className={styles.video}
-        />
-
-        <dl className="type-caption absolute right-2.5 bottom-2.5 flex w-42.75 max-w-full flex-col gap-1">
-          {readout.map(([term, value]) => (
-            <div key={term} className="flex items-center justify-between gap-4">
-              <dt className="text-muted">{term}</dt>
-              <dd className="text-ink text-right">{value}</dd>
-            </div>
-          ))}
-        </dl>
-      </div>
-
-      <div className="border-line bg-ink/5 -mt-px flex items-center gap-5 border py-3 pr-5 pl-3">
-        <button
-          type="button"
-          onClick={toggle}
-          aria-label={paused ? "Play the capture" : "Pause the capture"}
-          className="border-line text-ink hover:bg-ink/10 flex size-10 shrink-0 items-center justify-center border transition-colors"
-        >
-          <span aria-hidden className={paused ? styles.play : styles.pause} />
-        </button>
-
-        <div ref={trackRef} className={styles.track}>
-          <span aria-hidden className="bg-line block h-px w-full" />
-          <span aria-hidden className="flex h-1.5 w-full justify-between">
-            {Array.from({ length: 21 }, (_, index) => (
-              <span key={index} className="bg-line h-1.5 w-px" />
-            ))}
-          </span>
-          <span aria-hidden className={styles.playhead} />
-          <input
-            ref={rangeRef}
-            type="range"
-            min={0}
-            max={1000}
-            defaultValue={0}
-            onInput={(event) => seek(event.currentTarget.value)}
-            aria-label="Scrub the capture"
-            className={styles.range}
-          />
-        </div>
-      </div>
-    </div>
+    <TimelinePlayer
+      src="/videos/echo.mp4"
+      poster={echoPoster.src}
+      fallbackDuration={FALLBACK_DURATION}
+      aspect="640 / 368"
+      name="the capture"
+      onTick={(t, duration) => setReadout(measure(t, duration))}
+    >
+      <dl className="type-caption absolute right-2.5 bottom-2.5 flex w-42.75 max-w-full flex-col gap-1">
+        {readout.map(([term, value]) => (
+          <div key={term} className="flex items-center justify-between gap-4">
+            <dt className="text-muted">{term}</dt>
+            <dd className="text-ink text-right">{value}</dd>
+          </div>
+        ))}
+      </dl>
+    </TimelinePlayer>
   );
 }

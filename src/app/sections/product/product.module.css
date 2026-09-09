@@ -14,13 +14,3 @@
     margin-left: 42.23%;
   }
 }
-
-/*
- * The evidence plate: the comp's 577/310 window with its faint blue ground
- * (rgba(10, 15, 56, 0.3) over the paper) showing until the image paints.
- */
-.plate {
-  position: relative;
-  aspect-ratio: 577 / 310;
-  background: rgb(10 15 56 / 30%);
-}

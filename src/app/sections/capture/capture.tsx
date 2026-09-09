@@ -8,8 +8,8 @@ import { CapturePlayer } from "./capture-player.client";
 //
 // The plate is a colour video; the comp runs it through a luminosity blend
 // so only its light survives and the page's blue does the colouring. The
-// same blend, in CSS, on the same background - see .video in
-// capture.module.css.
+// same blend, in CSS, on the same background - see .video in the shared
+// timeline-player.module.css, which the product cards run too.
 //
 // Geometry is the comp's at the 1496px design width: the heading and lede
 // stacked on the centre line - the lede 20 under the heading on a 651px

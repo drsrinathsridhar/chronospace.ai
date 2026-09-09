@@ -45,3 +45,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 public/team-fixes.png
+# raw client video masters - encoded copies ship from public/videos
+public/new-videos/

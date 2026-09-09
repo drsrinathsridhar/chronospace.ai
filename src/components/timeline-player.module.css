@@ -1,0 +1,195 @@
+/*
+ * The timeline player's chrome, shared by the capture viewer and the
+ * product cards: the take held over the page's paper with the transport
+ * bar hung off its bottom rule.
+ *
+ * Two builds of the same instrument. Framed (the capture viewer) draws its
+ * own hairline and hangs the transport off it; embedded (the product
+ * cards) draws no outline of its own - the card owns the frame - and the
+ * transport keeps only its top rule so it reads as one plate inside the
+ * card's border.
+ */
+
+.frame {
+  position: relative;
+  /*
+   * The blend needs its backdrop in the same stacking context, so the
+   * frame paints the page ground itself and isolates: the take blends
+   * with this paper and nothing behind it.
+   */
+  isolation: isolate;
+  background: var(--paper);
+}
+
+.framed .frame {
+  border: 1px solid var(--line);
+}
+
+/*
+ * The comp stylises the plate with a luminosity blend - only the video's
+ * light survives, and the page's blue does the colouring - so the same
+ * blend, over the same paper, whichever section holds it.
+ */
+.video {
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--player-aspect);
+  object-fit: cover;
+  mix-blend-mode: luminosity;
+}
+
+.transport {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 0.75rem 1.25rem 0.75rem 0.75rem;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--ink) 5%, transparent);
+}
+
+.framed .transport {
+  /* Hung off the frame's bottom rule. */
+  margin-top: -1px;
+}
+
+.embedded .transport {
+  /* The card draws the sides and the body's top rule closes the bottom. */
+  border-right: 0;
+  border-bottom: 0;
+  border-left: 0;
+  gap: 0.875rem;
+  padding: 0.5rem 0.875rem 0.5rem 0.5rem;
+}
+
+.button {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  transition: background-color 150ms;
+}
+
+.button:hover {
+  background: color-mix(in srgb, var(--ink) 10%, transparent);
+}
+
+.embedded .button {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+/*
+ * The scrub track. One custom property arrives from the island each frame,
+ * --player-progress in 0..1, and the playhead rides it; the native range
+ * input stretched invisibly over the top owns every pointer and key.
+ */
+.track {
+  position: relative;
+  flex: 1;
+}
+
+.rule {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: var(--line);
+}
+
+.ticks {
+  display: flex;
+  width: 100%;
+  height: 0.375rem;
+  justify-content: space-between;
+}
+
+.ticks span {
+  width: 1px;
+  height: 0.375rem;
+  background: var(--line);
+}
+
+.playhead {
+  position: absolute;
+  top: -0.3125rem;
+  left: calc(var(--player-progress, 0) * 100%);
+  width: 1px;
+  height: 1rem;
+  background: var(--accent);
+}
+
+.playhead::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -1.5px;
+  width: 4px;
+  height: 4px;
+  background: var(--accent);
+}
+
+.embedded .playhead {
+  top: -0.1875rem;
+  height: 0.75rem;
+}
+
+.range {
+  position: absolute;
+  inset: -0.5rem 0;
+  width: 100%;
+  margin: 0;
+  opacity: 0;
+  appearance: none;
+  cursor: pointer;
+}
+
+.track:has(.range:focus-visible) {
+  outline: 2px solid var(--ring);
+  outline-offset: 6px;
+}
+
+/* The transport glyphs, drawn rather than shipped: two bars and a wedge. */
+.pause {
+  position: relative;
+  width: 0.625rem;
+  height: 0.75rem;
+}
+
+.pause::before,
+.pause::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 0.25rem;
+  height: 100%;
+  background: currentColor;
+}
+
+.pause::before {
+  left: 0;
+}
+
+.pause::after {
+  right: 0;
+}
+
+.play {
+  width: 0.625rem;
+  height: 0.75rem;
+  background: currentColor;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.embedded .pause,
+.embedded .play {
+  width: 0.5rem;
+  height: 0.625rem;
+}
+
+.embedded .pause::before,
+.embedded .pause::after {
+  width: 0.1875rem;
+}
