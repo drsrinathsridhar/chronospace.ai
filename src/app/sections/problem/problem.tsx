@@ -31,7 +31,7 @@ export function Problem() {
   let wordIndex = 0;
 
   return (
-    <section id="problem" className="section-container relative py-30">
+    <section id="problem" className="section-container py-section relative">
       <div
         className={styles.copy}
         data-read-copy

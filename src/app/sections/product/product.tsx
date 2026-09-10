@@ -3,7 +3,6 @@ import { RevealScope } from "@/components/reveal-scope.client";
 import { TimelinePlayer } from "@/components/timeline-player.client";
 import measurablePoster from "./measurable-poster.jpg";
 import navigablePoster from "./navigable-poster.jpg";
-import styles from "./product.module.css";
 import wildPoster from "./wild-poster.jpg";
 
 // The product: the intro's argument split into the three properties a
@@ -26,10 +25,13 @@ import wildPoster from "./wild-poster.jpg";
 // the data: it keys the list and names the take in the player's control
 // labels.
 //
-// Geometry is the comp's at the 1496px design width: the heading and lede
-// 598/1416 into the content box on the section's shared 698px measure, and
-// the cards in a full-width row of three on a 22px gap, each plate held at
-// the comp's 577/310.
+// The header stacks on the centre line like the viewer's and the team's -
+// heading and lede on the page's 698px measure, the lede 20 under. The comp
+// offsets this one 598/1416 into the content box; the client read that as
+// the heading skewed right (feedback, September 2026), so the offset is
+// gone and every section header sits the same way. Under it the cards run
+// in a full-width row of three on a 22px gap, each plate held at the comp's
+// 577/310, on the site-wide 80px header-to-content gap.
 
 type Card = {
   label: string;
@@ -71,17 +73,17 @@ const cards: Card[] = [
 
 export function Product() {
   return (
-    <section id="product" className="section-container relative pt-27 pb-30">
+    <section id="product" className="section-container py-section relative">
       <RevealScope>
-        <div className={styles.column}>
+        <div className="flex flex-col items-center gap-5 text-center">
           <h2
-            className="type-display-xs sm:type-display-sm lg:type-display-md shimmer-in text-balance"
+            className="type-display-xs sm:type-display-sm lg:type-display-md shimmer-in max-w-174.5 text-balance"
             style={{ "--beat": 0 }}
           >
             One capture, three things nobody else can hand you
           </h2>
           <p
-            className="type-body-xl shimmer-in mt-6 max-w-115 opacity-60"
+            className="type-body-xl shimmer-in max-w-115 text-pretty opacity-60"
             style={{ "--beat": 1 }}
           >
             For anyone training models on the physical world, the capture itself
@@ -89,7 +91,7 @@ export function Product() {
           </p>
         </div>
 
-        <div className="mt-20 grid grid-cols-1 gap-5.5 md:mt-38 md:grid-cols-3">
+        <div className="mt-section-gap grid grid-cols-1 gap-5.5 md:grid-cols-3">
           {cards.map((card, index) => (
             <article
               key={card.label}

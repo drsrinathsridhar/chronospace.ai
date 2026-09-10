@@ -47,7 +47,7 @@ const founders: Founder[] = [
 
 export function Team() {
   return (
-    <section id="team" className="section-container relative pt-20 pb-30">
+    <section id="team" className="section-container py-section relative">
       <RevealScope>
         <div className="flex flex-col items-center gap-5 text-center">
           <h2
@@ -65,7 +65,7 @@ export function Team() {
           </p>
         </div>
 
-        <div className="mt-16 grid grid-cols-1 gap-5.5 md:grid-cols-3">
+        <div className="mt-section-gap grid grid-cols-1 gap-5.5 md:grid-cols-3">
           {founders.map((founder, index) => (
             <article
               key={founder.name}

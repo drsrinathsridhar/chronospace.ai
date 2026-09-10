@@ -89,7 +89,7 @@ function Trail({ echoes, className }: { echoes: Echo[]; className: string }) {
 
 export function Vision() {
   return (
-    <section id="vision" className="section-container overflow-clip py-30">
+    <section id="vision" className="section-container py-section overflow-clip">
       <RevealScope className="relative flex flex-col items-center justify-center xl:min-h-110">
         <VisionParallax>
           <Trail echoes={dancerTrail} className={styles.dancer} />

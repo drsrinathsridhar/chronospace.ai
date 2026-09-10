@@ -55,7 +55,7 @@ const entries: Entry[] = [
 
 export function Science() {
   return (
-    <section id="science" className="section-container relative pt-18 pb-30">
+    <section id="science" className="section-container py-section relative">
       <RevealScope>
         <div className="flex flex-col items-center gap-5 text-center">
           <h2
@@ -72,7 +72,7 @@ export function Science() {
           </p>
         </div>
 
-        <div className="mt-20 grid grid-cols-1 gap-5.5 md:grid-cols-3">
+        <div className="mt-section-gap grid grid-cols-1 gap-5.5 md:grid-cols-3">
           {entries.map((entry, index) => (
             <article
               key={entry.title}

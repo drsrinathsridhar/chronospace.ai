@@ -84,7 +84,10 @@
   --radius-panel: 0;
   --radius-pill: 999px;
   --shadow-soft: 0 16px 48px rgb(0 0 0 / 24%);
-  --spacing-section: clamp(4rem, 8vw, 7rem);
+  /* Section rhythm: 120 above and below every section, 80 from a
+     section's header stack to its content. */
+  --spacing-section: 7.5rem;
+  --spacing-section-gap: 5rem;
   --spacing-gutter: var(--gutter);
   --spacing-navbar: var(--navbar-height);
   --spacing-navbar-rest: var(--navbar-height-rest);

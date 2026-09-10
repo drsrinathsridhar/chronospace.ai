@@ -13,11 +13,12 @@ import { CapturePlayer } from "./capture-player.client";
 //
 // Geometry is the comp's at the 1496px design width: the heading and lede
 // stacked on the centre line - the lede 20 under the heading on a 651px
-// measure - and the player centred below on an 826px measure.
+// measure - and the player centred below on an 826px measure, on the
+// site-wide 80px header-to-content gap.
 
 export function Capture() {
   return (
-    <section id="viewer" className="section-container relative pt-20 pb-34">
+    <section id="viewer" className="section-container py-section relative">
       <RevealScope>
         <div className="flex flex-col items-center gap-5 text-center">
           <h2
@@ -36,7 +37,7 @@ export function Capture() {
         </div>
 
         <div
-          className="sweep-in mx-auto mt-16 max-w-206.5 md:mt-28"
+          className="sweep-in mt-section-gap mx-auto max-w-206.5"
           style={{ "--beat": 2 }}
         >
           <CapturePlayer />
