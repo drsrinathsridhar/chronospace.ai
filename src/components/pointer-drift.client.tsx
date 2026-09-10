@@ -2,24 +2,27 @@
 
 import { useEffect, useRef, type ReactNode } from "react";
 
-// The tableau answers the pointer: moving across the vision section eases
-// both capture trails a few pixels the other way, the arm a touch farther
-// than the dancer, so the set pieces hang at their own depths behind the
-// claim while the type holds still.
+// The pointer drift: moving across a section eases whatever this wraps a
+// few pixels the other way, so the set pieces hang at their own depths
+// behind the copy while the type holds still. Shared by the vision
+// tableau, where both capture trails ride it, and the intro, where the
+// manufacturing take does.
 //
 // The island only writes two custom properties on a display:contents
-// wrapper - each trail's own factor and the transforms live in
-// vision.module.css - and the offset is eased toward the pointer on its own
-// animation frame loop, which parks itself once the trails settle. Fine
-// pointers only; reduced motion never starts.
+// wrapper - each piece's own factor and the transforms live in the owning
+// section's CSS module - and the offset is eased toward the pointer on its
+// own animation frame loop, which parks itself once the pieces settle. It
+// listens on the nearest <section>, so the drift answers the pointer across
+// the whole section, not just the wrapped block. Fine pointers only;
+// reduced motion never starts.
 
-/** Largest drift from centre, px, before each trail's factor. */
+/** Largest drift from centre, px, before each piece's factor. */
 const DRIFT_X = 8;
 const DRIFT_Y = 5;
 /** Fraction of the remaining distance covered per frame. */
 const EASE = 0.08;
 
-export function VisionParallax({ children }: { children: ReactNode }) {
+export function PointerDrift({ children }: { children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

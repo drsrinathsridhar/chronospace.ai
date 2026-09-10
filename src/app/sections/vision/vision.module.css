@@ -60,7 +60,7 @@
 }
 
 /*
- * The pointer drift (vision-parallax.client.tsx): both trails ease against
+ * The pointer drift (pointer-drift.client.tsx): both trails ease against
  * the pointer on --drift-x/--drift-y, the arm at full measure and the
  * dancer at just over half, so the two hang at their own depths behind the
  * claim. Without the island the variables rest at 0 and the comp holds.
