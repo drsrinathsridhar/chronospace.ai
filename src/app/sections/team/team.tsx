@@ -1,26 +1,44 @@
 import Image from "next/image";
 import type { StaticImageData } from "next/image";
 import { RevealScope } from "@/components/reveal-scope.client";
-import aashishRai from "./aashish-rai.png";
-import srinathSridhar from "./srinath-sridhar.png";
-import tamarKreitman from "./tamar-kreitman.png";
+import { CtaArrowIcon } from "@/icons/generated";
+import aashishRai from "./aashish-rai.jpg";
+import srinathSridhar from "./srinath-sridhar.jpg";
+import tamarKreitman from "./tamar-kreitman.jpg";
+import styles from "./team.module.css";
 
 // The team: the claim behind the claims. The header stacks on the centre
-// line like the viewer's, and under it the three founders sit in open
-// columns - no frame around the person, no rule; the portrait and the
-// name/role stack (comp node 7802:8912, trimmed on client feedback: the
-// credential and org lines are gone, and the profile tile with it - the
-// portrait itself is the LinkedIn link now).
+// line like the viewer's, and under it the three founders sit in the
+// capture grammar the rest of the page speaks - a square portrait filling
+// its column, resting in the room's grey like the hero figures and the
+// takes, and under it a caption hung off a hairline the way the product
+// claims hang off their transports: the name and a LinkedIn link on one
+// line, the role beneath. Hovering anywhere on the card hands the colour
+// back to the portrait (team.module.css).
+//
+// This replaces the comp's 153px tiles in open columns (node 7802:8912) at
+// the client's request, September 2026: the small tiles with their text
+// stacked underneath read as a corporate-2000s staff page and, sitting on
+// the left of a 457px column, skewed the whole row left.
+//
+// Two links per founder, one of them accessible: the portrait links out so
+// the picture behaves like everyone expects it to, but it is hidden from
+// assistive tech and out of the tab order; the caption's "LinkedIn" is the
+// single entry a keyboard or screen reader meets per person.
+//
+// Portraits are the client's stills as sent, square and re-encoded to JPEG
+// at up to 1000px - no crop, no upscale, so the 512px source stays 512.
 //
 // Geometry is the comp's at the 1496px design width: the lede 20 under the
-// heading on a 577px measure, and the cards in a full-width row of three on
-// a 22px gap with the comp's 153px portraits.
+// heading on a 577px measure, the cards in a full-width row of three on a
+// 22px gap, and the caption set like the product claim (node 7802:8456): a
+// full-width rule, title and copy on a 12px gap inside 24px of vertical
+// padding.
 
 type Founder = {
   name: string;
   role: string;
   photo: StaticImageData;
-  /** The portrait links here - no visible mark, the photo is the link. */
   linkedin: string;
 };
 
@@ -54,7 +72,7 @@ export function Team() {
             className="type-display-xs sm:type-display-sm lg:type-display-md shimmer-in max-w-174.5 text-balance"
             style={{ "--beat": 0 }}
           >
-            Meet Team
+            Meet the team
           </h2>
           <p
             className="type-body-xl shimmer-in max-w-144.25 text-pretty opacity-60"
@@ -69,29 +87,49 @@ export function Team() {
           {founders.map((founder, index) => (
             <article
               key={founder.name}
-              className="sweep-in flex flex-col"
+              className={`${styles.card} sweep-in flex flex-col`}
               style={{ "--beat": 2 + index }}
             >
-              <div className="flex flex-1 flex-col gap-6 px-8 py-6">
-                <a
-                  href={founder.linkedin}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={`${founder.name} on LinkedIn`}
-                  className="w-fit transition-opacity hover:opacity-80"
-                >
-                  <Image
-                    src={founder.photo}
-                    alt={`Portrait of ${founder.name}`}
-                    className="size-38.25 object-cover"
-                  />
-                </a>
-                <div className="flex flex-col gap-1">
+              {/* The portrait is a link too, but the caption's link is the
+                  accessible one - one LinkedIn entry per person for the
+                  keyboard and screen readers. */}
+              <a
+                href={founder.linkedin}
+                target="_blank"
+                rel="noreferrer"
+                tabIndex={-1}
+                aria-hidden
+                className={`${styles.portrait} relative block aspect-square overflow-clip`}
+              >
+                <Image
+                  src={founder.photo}
+                  alt=""
+                  fill
+                  sizes="(min-width: 48rem) 33vw, 100vw"
+                  className="object-cover"
+                />
+              </a>
+              <div className="border-line flex flex-col gap-3 border-t py-6">
+                <div className="flex items-baseline justify-between gap-4">
                   <h3 className="type-title-lg">{founder.name}</h3>
-                  <p className="type-body-md leading-tight font-light">
-                    {founder.role}
-                  </p>
+                  <a
+                    href={founder.linkedin}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`${founder.name} on LinkedIn`}
+                    className="type-nav text-muted hover:text-ink focus-visible:text-ink flex items-center gap-2 transition-colors duration-150 ease-out"
+                  >
+                    LinkedIn
+                    <CtaArrowIcon
+                      width={6.4}
+                      height={8}
+                      className="-rotate-45"
+                    />
+                  </a>
                 </div>
+                <p className="type-body-lg leading-tight font-light">
+                  {founder.role}
+                </p>
               </div>
             </article>
           ))}
