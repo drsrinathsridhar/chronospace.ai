@@ -104,20 +104,20 @@ repo and note it in the commit message.
 
 ## 2. Task order
 
-| #   | Task                                                    | Items   | Files (primary)                                         |
-| --- | ------------------------------------------------------- | ------- | ------------------------------------------------------- |
-| T1  | Section rhythm tokens + centred headers                 | 7       | globals.css, product, capture, team, science, problem, vision |
-| T2  | CTA and nav cell centring                               | 4       | cta-link.tsx, site-header.tsx                           |
-| T3  | Remove scramble effect                                  | 5       | scramble-label.*, cta-link.tsx, site-header.tsx, footer |
-| T4  | Footer rebuild                                          | 12, 7   | footer.tsx                                              |
-| T5  | Hero copy anchored to the room                          | 1       | hero.tsx                                                |
-| T6  | Hero idle motion + trail cycle + live timecode          | 2       | hero-room-eye.client.tsx, hero-cards.module.css, hero-timeline |
-| T7  | Hero cameras                                            | 3       | hero-room-cameras.tsx, hero-room.module.css, camera.svg |
-| T8  | Intro section spread                                    | 6       | sections/problem/*, pointer-drift.client.tsx            |
-| T9  | Team rebuild                                            | 11      | sections/team/*                                         |
-| T10 | Measurement overlay: viewer + queryable take            | 9, 10   | measure-overlay.client.tsx, capture-player, product     |
-| T11 | Interim trim of the "no stage" take                     | 8       | public/videos/wild.mp4, product.tsx                     |
-| T12 | Docs                                                    | -       | docs/handoff.md                                         |
+| #   | Task                                           | Items | Files (primary)                                                |
+| --- | ---------------------------------------------- | ----- | -------------------------------------------------------------- |
+| T1  | Section rhythm tokens + centred headers        | 7     | globals.css, product, capture, team, science, problem, vision  |
+| T2  | CTA and nav cell centring                      | 4     | cta-link.tsx, site-header.tsx                                  |
+| T3  | Remove scramble effect                         | 5     | scramble-label.\*, cta-link.tsx, site-header.tsx, footer       |
+| T4  | Footer rebuild                                 | 12, 7 | footer.tsx                                                     |
+| T5  | Hero copy anchored to the room                 | 1     | hero.tsx                                                       |
+| T6  | Hero idle motion + trail cycle + live timecode | 2     | hero-room-eye.client.tsx, hero-cards.module.css, hero-timeline |
+| T7  | Hero cameras                                   | 3     | hero-room-cameras.tsx, hero-room.module.css, camera.svg        |
+| T8  | Intro section spread                           | 6     | sections/problem/\*, pointer-drift.client.tsx                  |
+| T9  | Team rebuild                                   | 11    | sections/team/\*                                               |
+| T10 | Measurement overlay: viewer + queryable take   | 9, 10 | measure-overlay.client.tsx, capture-player, product            |
+| T11 | Interim trim of the "no stage" take            | 8     | public/videos/wild.mp4, product.tsx                            |
+| T12 | Docs                                           | -     | docs/handoff.md                                                |
 
 T1-T4 first (they are the client's "measurable" complaints). T5-T7 touch
 only the hero folder. T8, T9, T10, T11 are independent of each other.
@@ -131,14 +131,14 @@ alignment across the site.
 
 **Measured on staging (1496):**
 
-| Section | Header                    | pt  | pb  | header→content |
-| ------- | ------------------------- | --- | --- | -------------- |
-| Problem | 42.23% offset, 698 wide   | 120 | 120 | -              |
-| Product | 42.23% offset, 698 wide   | 108 | 120 | 152            |
-| Viewer  | centred                   | 80  | 136 | 112            |
-| Team    | centred                   | 80  | 120 | 64             |
-| Science | centred                   | 72  | 120 | 80             |
-| Vision  | centred                   | 120 | 120 | -              |
+| Section | Header                  | pt  | pb  | header→content |
+| ------- | ----------------------- | --- | --- | -------------- |
+| Problem | 42.23% offset, 698 wide | 120 | 120 | -              |
+| Product | 42.23% offset, 698 wide | 108 | 120 | 152            |
+| Viewer  | centred                 | 80  | 136 | 112            |
+| Team    | centred                 | 80  | 120 | 64             |
+| Science | centred                 | 72  | 120 | 80             |
+| Vision  | centred                 | 120 | 120 | -              |
 
 **Target:** every section `py` = 120px, header→content gap = 80px, headers
 centred on a 698px measure with the lede 20px under.
@@ -149,10 +149,10 @@ centred on a 698px measure with the lede 20px under.
 `--spacing-section: clamp(4rem, 8vw, 7rem);` with
 
 ```css
-  /* Section rhythm: 120 above and below every section, 80 from a
+/* Section rhythm: 120 above and below every section, 80 from a
      section's header stack to its content. */
-  --spacing-section: 7.5rem;
-  --spacing-section-gap: 5rem;
+--spacing-section: 7.5rem;
+--spacing-section-gap: 5rem;
 ```
 
 (Confirm with `grep -rn "section\b" src --include=*.tsx` that nothing uses
@@ -174,11 +174,18 @@ centred on a 698px measure with the lede 20px under.
 
   ```tsx
   <div className="flex flex-col items-center gap-5 text-center">
-    <h2 className="type-display-xs sm:type-display-sm lg:type-display-md shimmer-in max-w-174.5 text-balance" style={{ "--beat": 0 }}>
+    <h2
+      className="type-display-xs sm:type-display-sm lg:type-display-md shimmer-in max-w-174.5 text-balance"
+      style={{ "--beat": 0 }}
+    >
       One capture, three things nobody else can hand you
     </h2>
-    <p className="type-body-xl shimmer-in max-w-115 text-pretty opacity-60" style={{ "--beat": 1 }}>
-      For anyone training models on the physical world, the capture itself is the asset.
+    <p
+      className="type-body-xl shimmer-in max-w-115 text-pretty opacity-60"
+      style={{ "--beat": 1 }}
+    >
+      For anyone training models on the physical world, the capture itself is
+      the asset.
     </p>
   </div>
   ```
@@ -210,7 +217,7 @@ now tokenised). T8 rewrites this section; keep the token.
 ### Acceptance
 
 - Measurement snippet: every section in `#problem #product #viewer #team
-  #science #vision` reports `pt === pb === 120`.
+#science #vision` reports `pt === pb === 120`.
 - `#product h2` centre x within 2px of viewport centre; `#product` grid top
   minus lede bottom = 80 (±2).
 - Viewer/Team/Science: content top minus lede bottom = 80 (±2).
@@ -279,7 +286,11 @@ Footer cells (`items-end pb-4`) are replaced wholesale in T4.
 
   ```tsx
   <span className={style.label}>
-    {typeof children === "string" ? (<ScrambleLabel>{children}</ScrambleLabel>) : (children)}
+    {typeof children === "string" ? (
+      <ScrambleLabel>{children}</ScrambleLabel>
+    ) : (
+      children
+    )}
   </span>
   ```
 
@@ -508,7 +519,7 @@ Behaviour changes:
      `wake()`; on leave → `cancelAnimationFrame(frame); frame = undefined`.
    - `document.addEventListener("visibilitychange", ...)`: hidden → cancel;
      visible → wake.
-   Keep `MAX_STEP` so a resumed loop never jumps.
+     Keep `MAX_STEP` so a resumed loop never jumps.
 5. `wake()` on mount so the drift starts without any pointer input.
 6. Cleanup removes every listener/observer and the four properties.
 
@@ -554,7 +565,9 @@ import { useEffect, useRef } from "react";
 const FPS = 30;
 const START_FRAMES = ((0 * 60 + 0) * 60 + 14) * FPS + 7;
 
-function format(frames: number) { /* HH:MM:SS:FF, zero-padded */ }
+function format(frames: number) {
+  /* HH:MM:SS:FF, zero-padded */
+}
 
 export function HeroTimecode() {
   const ref = useRef<HTMLSpanElement>(null);
@@ -691,9 +704,17 @@ export function HeroRoomCameras() {
 }
 
 @keyframes led-flick {
-  0%, 91% { opacity: 1; }
-  93% { opacity: 0.15; }
-  95%, 100% { opacity: 1; }
+  0%,
+  91% {
+    opacity: 1;
+  }
+  93% {
+    opacity: 0.15;
+  }
+  95%,
+  100% {
+    opacity: 1;
+  }
 }
 
 .cone {
@@ -704,7 +725,11 @@ export function HeroRoomCameras() {
   height: 34cqh;
   transform-origin: 50% 0;
   transform: translateX(-50%) rotate(var(--cone, 0deg));
-  background: linear-gradient(to bottom, rgb(255 255 255 / 5%), transparent 85%);
+  background: linear-gradient(
+    to bottom,
+    rgb(255 255 255 / 5%),
+    transparent 85%
+  );
   clip-path: polygon(50% 0, 100% 100%, 0 100%);
   pointer-events: none;
 }
@@ -779,10 +804,13 @@ const readings: [string, string][] = [
 export function Problem() {
   let wordIndex = 0;
   return (
-    <section id="problem" className="section-container relative py-section">
+    <section id="problem" className="section-container py-section relative">
       <RevealScope className="grid gap-12 md:grid-cols-12 md:gap-5.5">
         <PointerDrift>
-          <div className={`${styles.visual} sweep-in md:col-span-5`} style={{ "--beat": 0 }}>
+          <div
+            className={`${styles.visual} sweep-in md:col-span-5`}
+            style={{ "--beat": 0 }}
+          >
             <TimelinePlayer
               src="/videos/manufacturing.mp4"
               poster={manufacturingPoster.src}
@@ -796,15 +824,27 @@ export function Problem() {
         </PointerDrift>
 
         <div className="flex flex-col gap-10 md:col-span-7 md:max-w-174.5">
-          <div className={styles.copy} data-read-copy style={{ "--word-count": wordCount }}>
+          <div
+            className={styles.copy}
+            data-read-copy
+            style={{ "--word-count": wordCount }}
+          >
             {/* paragraphs → words, exactly as today (sr-only full text + aria-hidden word spans) */}
           </div>
 
           <dl className="flex flex-col">
             {readings.map(([term, value], index) => (
-              <div key={term} className="border-line sweep-in flex items-center justify-between gap-6 border-t py-4 last:border-b" style={{ "--beat": 1 + index }}>
+              <div
+                key={term}
+                className="border-line sweep-in flex items-center justify-between gap-6 border-t py-4 last:border-b"
+                style={{ "--beat": 1 + index }}
+              >
                 <dt className="type-body-lg flex items-center gap-4 font-light">
-                  <MeasureBracketIcon width={13.5} height={13.5} className="text-accent shrink-0" />
+                  <MeasureBracketIcon
+                    width={13.5}
+                    height={13.5}
+                    className="text-accent shrink-0"
+                  />
                   {term}
                 </dt>
                 <dd className="type-nav text-ink">{value}</dd>
@@ -831,7 +871,10 @@ sibling of the copy div, as above.
 /* The take hangs at its own depth behind the copy: it eases a few pixels
    against the pointer (pointer-drift.client.tsx), the copy holds still. */
 .visual {
-  transform: translate(calc(var(--drift-x, 0px) * 0.6), calc(var(--drift-y, 0px) * 0.6));
+  transform: translate(
+    calc(var(--drift-x, 0px) * 0.6),
+    calc(var(--drift-y, 0px) * 0.6)
+  );
 }
 ```
 
@@ -890,35 +933,71 @@ import styles from "./team.module.css";
 
 export function Team() {
   return (
-    <section id="team" className="section-container relative py-section">
+    <section id="team" className="section-container py-section relative">
       <RevealScope>
         <div className="flex flex-col items-center gap-5 text-center">
-          <h2 className="type-display-xs sm:type-display-sm lg:type-display-md shimmer-in max-w-174.5 text-balance" style={{ "--beat": 0 }}>
+          <h2
+            className="type-display-xs sm:type-display-sm lg:type-display-md shimmer-in max-w-174.5 text-balance"
+            style={{ "--beat": 0 }}
+          >
             Meet the team
           </h2>
-          <p className="type-body-xl shimmer-in max-w-144.25 text-pretty opacity-60" style={{ "--beat": 1 }}>
-            Years of frontier research on reconstructing the physical world, now building the infrastructure for it.
+          <p
+            className="type-body-xl shimmer-in max-w-144.25 text-pretty opacity-60"
+            style={{ "--beat": 1 }}
+          >
+            Years of frontier research on reconstructing the physical world, now
+            building the infrastructure for it.
           </p>
         </div>
 
         <div className="mt-section-gap grid grid-cols-1 gap-5.5 md:grid-cols-3">
           {founders.map((founder, index) => (
-            <article key={founder.name} className={`${styles.card} sweep-in flex flex-col`} style={{ "--beat": 2 + index }}>
+            <article
+              key={founder.name}
+              className={`${styles.card} sweep-in flex flex-col`}
+              style={{ "--beat": 2 + index }}
+            >
               {/* The portrait is a link too, but the caption's link is the
                   accessible one - one LinkedIn entry per person for the
                   keyboard and screen readers. */}
-              <a href={founder.linkedin} target="_blank" rel="noreferrer" tabIndex={-1} aria-hidden className={`${styles.portrait} relative block aspect-square overflow-clip`}>
-                <Image src={founder.photo} alt="" fill sizes="(min-width: 48rem) 33vw, 100vw" className="object-cover" />
+              <a
+                href={founder.linkedin}
+                target="_blank"
+                rel="noreferrer"
+                tabIndex={-1}
+                aria-hidden
+                className={`${styles.portrait} relative block aspect-square overflow-clip`}
+              >
+                <Image
+                  src={founder.photo}
+                  alt=""
+                  fill
+                  sizes="(min-width: 48rem) 33vw, 100vw"
+                  className="object-cover"
+                />
               </a>
               <div className="border-line flex flex-col gap-3 border-t py-6">
                 <div className="flex items-baseline justify-between gap-4">
                   <h3 className="type-title-lg">{founder.name}</h3>
-                  <a href={founder.linkedin} target="_blank" rel="noreferrer" aria-label={`${founder.name} on LinkedIn`} className="type-nav text-muted hover:text-ink focus-visible:text-ink flex items-center gap-2 transition-colors duration-150 ease-out">
+                  <a
+                    href={founder.linkedin}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`${founder.name} on LinkedIn`}
+                    className="type-nav text-muted hover:text-ink focus-visible:text-ink flex items-center gap-2 transition-colors duration-150 ease-out"
+                  >
                     LinkedIn
-                    <CtaArrowIcon width={6.4} height={8} className="-rotate-45" />
+                    <CtaArrowIcon
+                      width={6.4}
+                      height={8}
+                      className="-rotate-45"
+                    />
                   </a>
                 </div>
-                <p className="type-body-lg leading-tight font-light">{founder.role}</p>
+                <p className="type-body-lg leading-tight font-light">
+                  {founder.role}
+                </p>
               </div>
             </article>
           ))}
@@ -983,14 +1062,40 @@ Reduced motion: still attaches (the marks follow the paused/scrubbed frame
 too), but the tokenisation sweep is skipped.
 
 ```ts
-export type Keyframe = { t: number; x: number; y: number; w?: number; h?: number };
+export type Keyframe = {
+  t: number;
+  x: number;
+  y: number;
+  w?: number;
+  h?: number;
+};
 export type Mark =
-  | { kind: "bracket"; id: string; keyframes: Keyframe[]; top?: Label; right?: Label }
-  | { kind: "line";    id: string; y: number; from: number; to: number; activeFrom?: number; label: Label }
-  | { kind: "tag";     id: string; keyframes: Keyframe[]; label: Label };
+  | {
+      kind: "bracket";
+      id: string;
+      keyframes: Keyframe[];
+      top?: Label;
+      right?: Label;
+    }
+  | {
+      kind: "line";
+      id: string;
+      y: number;
+      from: number;
+      to: number;
+      activeFrom?: number;
+      label: Label;
+    }
+  | { kind: "tag"; id: string; keyframes: Keyframe[]; label: Label };
 type Label = string | ((t: number, duration: number) => string);
 
-export function MeasureOverlay({ marks, tokenise = false }: { marks: Mark[]; tokenise?: boolean })
+export function MeasureOverlay({
+  marks,
+  tokenise = false,
+}: {
+  marks: Mark[];
+  tokenise?: boolean;
+});
 ```
 
 - Keyframe values are percentages of the frame (0-100). Linear
@@ -1011,7 +1116,7 @@ export function MeasureOverlay({ marks, tokenise = false }: { marks: Mark[]; tok
   to `t < 0.15` (detect `t < previousT`), 1.2s, then hides. CSS in
   `measure-overlay.module.css`; the island toggles `data-sweep` to replay.
 - The overlay root is `position:absolute; inset:0; pointer-events:none;
-  aria-hidden`. All mark geometry is `left/top/width/height` in `%` from
+aria-hidden`. All mark geometry is `left/top/width/height` in `%` from
   `--mark-x/--mark-y/--mark-w/--mark-h`.
 
 ### 10b. Viewer - edit `capture-player.client.tsx`
@@ -1122,34 +1227,84 @@ Run in the browser pane's `javascript_tool` after `resize_window` to each
 width. Returns geometry and a `checks` array; every check must be `true`.
 
 ```js
-const r = (el) => { const b = el.getBoundingClientRect(); return { x: Math.round(b.left), y: Math.round(b.top + scrollY), w: Math.round(b.width), h: Math.round(b.height), bottom: Math.round(b.bottom + scrollY), cx: b.left + b.width / 2, cy: b.top + scrollY + b.height / 2 }; };
+const r = (el) => {
+  const b = el.getBoundingClientRect();
+  return {
+    x: Math.round(b.left),
+    y: Math.round(b.top + scrollY),
+    w: Math.round(b.width),
+    h: Math.round(b.height),
+    bottom: Math.round(b.bottom + scrollY),
+    cx: b.left + b.width / 2,
+    cy: b.top + scrollY + b.height / 2,
+  };
+};
 window.scrollTo(0, 0);
 const hero = document.querySelector("main > section");
 const stage = hero.querySelector("[data-stage]");
 const backWall = r(stage.querySelector("span:nth-child(5)")); // ceiling, floor, left, right, back
 const h1 = r(hero.querySelector("h1"));
 const cta = hero.querySelector('a[href="/contact"]');
-const ctaBox = r(cta), ctaLabel = r(cta.querySelector("span")), ctaArrow = r(cta.querySelector("svg"));
+const ctaBox = r(cta),
+  ctaLabel = r(cta.querySelector("span")),
+  ctaArrow = r(cta.querySelector("svg"));
 const cards = [...hero.querySelectorAll("[data-float] article")].map(r);
-const sections = ["#problem", "#product", "#viewer", "#team", "#science", "#vision"].map((s) => { const el = document.querySelector(s); const cs = getComputedStyle(el); return { s, pt: parseFloat(cs.paddingTop), pb: parseFloat(cs.paddingBottom), h2: el.querySelector("h2") ? r(el.querySelector("h2")) : null }; });
+const sections = [
+  "#problem",
+  "#product",
+  "#viewer",
+  "#team",
+  "#science",
+  "#vision",
+].map((s) => {
+  const el = document.querySelector(s);
+  const cs = getComputedStyle(el);
+  return {
+    s,
+    pt: parseFloat(cs.paddingTop),
+    pb: parseFloat(cs.paddingBottom),
+    h2: el.querySelector("h2") ? r(el.querySelector("h2")) : null,
+  };
+});
 const product = document.querySelector("#product");
 const productLede = r(product.querySelector("h2 + p"));
-const productGrid = r(product.querySelector("h2 + p").parentElement.nextElementSibling);
+const productGrid = r(
+  product.querySelector("h2 + p").parentElement.nextElementSibling,
+);
 const productCards = [...product.querySelectorAll("article")].map(r);
 const footer = document.querySelector("footer");
 const footerNav = footer.querySelector("nav");
 const xl = innerWidth >= 1280;
 const checks = {
   h1InsideRoom: !xl || h1.y >= backWall.y + 24,
-  ctaToCardsGap: !xl || (Math.min(...cards.map((c) => c.y)) - ctaBox.bottom) <= 80,
-  ctaLabelCentred: Math.abs(ctaLabel.cy - ctaBox.cy) <= 1 && Math.abs(ctaArrow.cy - ctaBox.cy) <= 1,
+  ctaToCardsGap:
+    !xl || Math.min(...cards.map((c) => c.y)) - ctaBox.bottom <= 80,
+  ctaLabelCentred:
+    Math.abs(ctaLabel.cy - ctaBox.cy) <= 1 &&
+    Math.abs(ctaArrow.cy - ctaBox.cy) <= 1,
   sectionPadding: sections.every((s) => s.pt === 120 && s.pb === 120),
   productHeaderCentred: Math.abs(sections[1].h2.cx - innerWidth / 2) <= 2,
   productHeaderGap: Math.abs(productGrid.y - productLede.bottom - 80) <= 2,
-  footerOnGrid: innerWidth < 768 || !footerNav || Math.abs(r(footerNav).x - productCards[2].x) <= 1,
+  footerOnGrid:
+    innerWidth < 768 ||
+    !footerNav ||
+    Math.abs(r(footerNav).x - productCards[2].x) <= 1,
   footerHeight: r(footer).h < 260,
 };
-({ viewport: [innerWidth, innerHeight], backWall, h1, ctaBox, cards, sections, productLede, productGrid, productCards, footer: r(footer), footerNav: footerNav && r(footerNav), checks });
+({
+  viewport: [innerWidth, innerHeight],
+  backWall,
+  h1,
+  ctaBox,
+  cards,
+  sections,
+  productLede,
+  productGrid,
+  productCards,
+  footer: r(footer),
+  footerNav: footerNav && r(footerNav),
+  checks,
+});
 ```
 
 (At 1496 the footer nav and the third product card both start at x = 999.)
@@ -1157,7 +1312,17 @@ const checks = {
 For motion checks (T6) read `--eye-x` twice:
 
 ```js
-const s = document.querySelector("[data-stage]"); const a = getComputedStyle(s).getPropertyValue("--eye-x"); await new Promise((r) => setTimeout(r, 3000)); ({ a, b: getComputedStyle(s).getPropertyValue("--eye-x"), moved: a !== getComputedStyle(s).getPropertyValue("--eye-x"), echo: !!document.querySelector("article[data-echo]"), timecode: document.querySelector("main > section p span:nth-child(2)")?.textContent });
+const s = document.querySelector("[data-stage]");
+const a = getComputedStyle(s).getPropertyValue("--eye-x");
+await new Promise((r) => setTimeout(r, 3000));
+({
+  a,
+  b: getComputedStyle(s).getPropertyValue("--eye-x"),
+  moved: a !== getComputedStyle(s).getPropertyValue("--eye-x"),
+  echo: !!document.querySelector("article[data-echo]"),
+  timecode: document.querySelector("main > section p span:nth-child(2)")
+    ?.textContent,
+});
 ```
 
 ---
