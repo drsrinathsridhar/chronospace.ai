@@ -2,7 +2,6 @@ import Link from "next/link";
 import { siteConfig } from "@/site.config";
 import { ChronospaceLogoIcon } from "@/icons/generated";
 import { CtaLink } from "./cta-link";
-import { ScrambleLabel } from "./scramble-label.client";
 import { SiteHeaderScroll } from "./site-header-scroll.client";
 import styles from "./site-header.module.css";
 
@@ -12,8 +11,9 @@ import styles from "./site-header.module.css";
 // midline, and the CTA's accent fill is the only block in the bar.
 //
 // The bar is on screen from the first frame; its contents lead the page
-// reveal at index 0. On hover a cell fills with the page ground and its
-// label shuffles its glyphs (scramble-label.client.tsx).
+// reveal at index 0. On hover a cell fills with the page ground, nothing
+// else: the glyph shuffle that used to ride the hover is gone (client
+// feedback, September 2026 - it read as distraction).
 //
 // On scroll the bar tightens (site-header-scroll.client.tsx flips
 // `data-scrolled` on the root, which shrinks --navbar-height). Hovering the
@@ -57,7 +57,7 @@ export function SiteHeader() {
               href={item.href}
               className={`${navCell} type-nav text-ink hidden px-6 lg:flex`}
             >
-              <ScrambleLabel>{item.label}</ScrambleLabel>
+              {item.label}
             </a>
           ))}
 

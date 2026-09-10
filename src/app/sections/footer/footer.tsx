@@ -1,6 +1,5 @@
 import { siteConfig } from "@/site.config";
 import { RevealScope } from "@/components/reveal-scope.client";
-import { ScrambleLabel } from "@/components/scramble-label.client";
 import { ChronospaceLogoIcon, TimelineTickIcon } from "@/icons/generated";
 
 // The close of the page: the sign-off band alone. The partnership ask that
@@ -134,7 +133,7 @@ export function Footer() {
                     rel: "noreferrer",
                   })}
                 >
-                  <ScrambleLabel>{row.label}</ScrambleLabel>
+                  {row.label}
                 </a>
               ) : (
                 <span className={cell}>{row.label}</span>

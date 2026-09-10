@@ -1,7 +1,6 @@
 import type { ComponentPropsWithoutRef } from "react";
 import { CtaArrowIcon } from "@/icons/generated";
 import { cn } from "@/lib/utils";
-import { ScrambleLabel } from "./scramble-label.client";
 
 // The ChronoSpace call to action: a square block with an uppercase label and
 // the play-head arrow at the far edge, both centred on the box's midline. It
@@ -65,13 +64,7 @@ export function CtaLink({
       )}
       {...props}
     >
-      <span className={style.label}>
-        {typeof children === "string" ? (
-          <ScrambleLabel>{children}</ScrambleLabel>
-        ) : (
-          children
-        )}
-      </span>
+      <span className={style.label}>{children}</span>
       <CtaArrowIcon
         width={style.arrow.width}
         height={style.arrow.height}
