@@ -1,3 +1,4 @@
+import { SiteFrame } from "@/components/site-frame";
 import { SiteHeader } from "@/components/site-header";
 import { Hero } from "./sections/hero";
 import { Backers } from "./sections/backers";
@@ -13,17 +14,19 @@ export default function HomePage() {
   return (
     <>
       <SiteHeader />
-      <main>
-        <Hero />
-        <Backers />
-        <Problem />
-        <Product />
-        <Capture />
-        <Team />
-        <Science />
-        <Vision />
-      </main>
-      <Footer />
+      <SiteFrame>
+        <main>
+          <Hero />
+          <Backers />
+          <Problem />
+          <Product />
+          <Capture />
+          <Team />
+          <Science />
+          <Vision />
+        </main>
+        <Footer />
+      </SiteFrame>
     </>
   );
 }

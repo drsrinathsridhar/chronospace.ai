@@ -1,7 +1,7 @@
 /*
  * The standing captures. Each card is a measured window with no frame or
  * header of its own - the body is transparent, the room showing through
- * around the figure - 178.826px wide in the strip and 19.1vw at xl, where
+ * around the figure - 178.826px wide in the strip and 19.1cqw at xl, where
  * the card stands on the room's floor:
  *
  *   The stand. The card's bottom edge is pinned at a fraction of the plate
@@ -69,22 +69,24 @@
   .card {
     position: absolute;
     /*
-     * The feet on the floor: the plate is max(60%, 48.4vw) of the hero tall
+     * The feet on the floor: the plate is max(60%, 48.4cqw) of the hero tall
      * (hero-room.module.css), and the card's bottom edge sits at its
      * fraction of that, whatever the card's own height - the translate
      * pulls it up by exactly itself.
      */
-    top: calc(max(60%, 48.4vw) * var(--card-feet));
+    top: calc(max(60%, 48.4cqw) * var(--card-feet));
     left: var(--card-left);
     /*
-     * Sized in viewport units, like the room: the plate is 48.4vw tall, so
-     * a card measured in vw keeps its proportion to the box at any display
-     * width - a bigger screen gets a bigger room and bigger figures with
-     * it, locked to their aspect ratios by the body and piece ratios.
-     * 19.1vw is the strip card's 178.826px at the 1496 design width,
+     * Sized in the site frame's container units, like the room: the plate
+     * is 48.4cqw tall, so a card measured in cqw keeps its proportion to
+     * the box at any frame width - a bigger screen gets a bigger room and
+     * bigger figures with it, up to the frame's 1920 cap
+     * (components/site-frame.tsx), locked to their aspect ratios by the
+     * body and piece ratios.
+     * 19.1cqw is the strip card's 178.826px at the 1496 design width,
      * scaled up 1.6x so the figures read near life-size in the room.
      */
-    width: 19.1vw;
+    width: 19.1cqw;
     max-width: none;
     pointer-events: auto;
     /*

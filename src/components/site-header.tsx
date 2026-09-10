@@ -27,9 +27,11 @@ const navLinkCell = `${navCell} hover:bg-paper focus-visible:bg-paper transition
 
 export function SiteHeader() {
   return (
-    <header className="h-navbar section-container fixed inset-x-0 top-0 z-50 backdrop-blur-[8px] transition-[height] duration-300 ease-out">
+    <header className="h-navbar fixed inset-x-0 top-0 z-50 backdrop-blur-[8px] transition-[height] duration-300 ease-out">
       <SiteHeaderScroll />
-      <div className="sweep-reveal flex h-full items-center">
+      {/* The bar runs full-bleed; its contents stop at the site frame's width
+          (max-w-site) and centre, in step with the page under it. */}
+      <div className="section-container sweep-reveal max-w-site mx-auto flex h-full items-center">
         <Link
           href="/"
           className="focus-visible:outline-ink relative flex shrink-0 items-center focus-visible:outline-2 focus-visible:outline-offset-2"

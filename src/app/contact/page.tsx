@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SiteFrame } from "@/components/site-frame";
 import { SiteHeader } from "@/components/site-header";
 import { createMetadata } from "@/lib/metadata";
 import { Connect } from "./sections/connect";
@@ -14,9 +15,11 @@ export default function ContactPage() {
   return (
     <>
       <SiteHeader />
-      <main>
-        <Connect />
-      </main>
+      <SiteFrame>
+        <main>
+          <Connect />
+        </main>
+      </SiteFrame>
     </>
   );
 }

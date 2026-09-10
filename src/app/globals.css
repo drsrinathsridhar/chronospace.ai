@@ -16,8 +16,8 @@
   --line-soft: rgb(255 255 255 / 16%);
   --accent: #f25324; /* c-orange/500 */
   --accent-foreground: #ffffff;
-  /* The orange under a pointer: the same accent with 5% black folded in. */
-  --accent-hover: color-mix(in srgb, var(--accent), #000 5%);
+  /* The orange under a pointer: the same accent with 10% black folded in. */
+  --accent-hover: color-mix(in srgb, var(--accent), #000 10%);
   --ring: #f25324;
 
   /*
@@ -95,6 +95,11 @@
   --spacing-navbar: var(--navbar-height);
   --spacing-navbar-rest: var(--navbar-height-rest);
   --spacing-backing-band: var(--backing-band-height);
+  /*
+   * The site frame (components/site-frame.tsx): the layout stops growing at
+   * 1920 and centres, so raster assets are never stretched past that.
+   */
+  --container-site: 120rem;
 }
 
 @layer base {

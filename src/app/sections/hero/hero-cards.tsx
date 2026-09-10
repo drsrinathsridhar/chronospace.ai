@@ -43,7 +43,7 @@ import styles from "./hero-cards.module.css";
 // also client feedback) while keeping the comp's slot geometry - with their
 // feet at 95.77%/109.17%/95.93% of the plate height - the flanking pair
 // dropped 50px from the comp to sit deeper into the floor - and scales of
-// 1.153/1.386/1.153 over a base card of 19.1vw, the comp's 178.826px at
+// 1.153/1.386/1.153 over a base card of 19.1cqw, the comp's 178.826px at
 // the design width grown 1.6x and measured in viewport units so the
 // figures keep their proportion to the room on any display. The shift factors keep
 // the comp's original depths: eyeshift * -z / (P - z) with the room's P of
@@ -98,8 +98,8 @@ const cards: StandingCard[] = [
     left: "17.38%",
     feet: 0.9577,
     scale: 1.3,
-    shiftX: "2.98vw",
-    shiftY: "0.93vw",
+    shiftX: "2.98cqw",
+    shiftY: "0.93cqw",
     tilt: "9deg",
     tiltGain: "3.2deg",
     reveal: 7,
@@ -118,11 +118,11 @@ const cards: StandingCard[] = [
     feet: 1.0917,
     scale: 1.386,
     // Physically this card, nearest of the three, would take the biggest
-    // move (-3.5vw / -1.09vw at its depth) - but front and centre, the
+    // move (-3.5cqw / -1.09cqw at its depth) - but front and centre, the
     // full value reads as restless rather than deep, so it takes a calmer
     // fraction of it and barely turns.
-    shiftX: "-1.44vw",
-    shiftY: "-0.45vw",
+    shiftX: "-1.44cqw",
+    shiftY: "-0.45cqw",
     tilt: "0deg",
     tiltGain: "1.28deg",
     reveal: 8,
@@ -140,8 +140,8 @@ const cards: StandingCard[] = [
     left: "68.85%",
     feet: 0.9593,
     scale: 1.3,
-    shiftX: "2.93vw",
-    shiftY: "0.91vw",
+    shiftX: "2.93cqw",
+    shiftY: "0.91cqw",
     tilt: "-9deg",
     tiltGain: "3.2deg",
     reveal: 9,

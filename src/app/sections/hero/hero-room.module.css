@@ -46,7 +46,9 @@
 .plate {
   position: absolute;
   inset: 0 0 auto;
-  height: max(60%, 48.4vw);
+  /* cqw of the site frame (components/site-frame.tsx), not the viewport:
+     the room stops growing at the frame's 1920 cap. */
+  height: max(60%, 48.4cqw);
   container-type: size;
   background-color: var(--room-wash);
   /*
