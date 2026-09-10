@@ -8,8 +8,8 @@ import styles from "./site-header.module.css";
 
 // The navbar floats over the hero rather than sitting above it: a 60px bar
 // with nothing but a blur behind it, so the room keeps its light. It carries
-// no rule of its own - the links are bare labels, and the CTA's accent fill
-// is the only block in the bar.
+// no rule of its own - the links are bare labels centred on the bar's
+// midline, and the CTA's accent fill is the only block in the bar.
 //
 // The bar is on screen from the first frame; its contents lead the page
 // reveal at index 0. On hover a cell fills with the page ground and its
@@ -21,7 +21,7 @@ import styles from "./site-header.module.css";
 // reveal, played as a flare (site-header.module.css).
 
 const navCell =
-  "hover:bg-paper focus-visible:bg-paper flex h-full items-end transition-colors duration-150 ease-out";
+  "hover:bg-paper focus-visible:bg-paper flex h-full items-center transition-colors duration-150 ease-out";
 
 export function SiteHeader() {
   return (
@@ -55,7 +55,7 @@ export function SiteHeader() {
             <a
               key={item.href}
               href={item.href}
-              className={`${navCell} type-nav text-ink hidden px-6 pb-4 lg:flex`}
+              className={`${navCell} type-nav text-ink hidden px-6 lg:flex`}
             >
               <ScrambleLabel>{item.label}</ScrambleLabel>
             </a>
