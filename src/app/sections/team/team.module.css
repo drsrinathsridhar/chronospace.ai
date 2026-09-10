@@ -1,0 +1,17 @@
+/*
+ * The portraits rest in the room's grey like the hero figures and the
+ * takes, and take their colour back when the card is asked about -
+ * hovering the caption counts, and so does keyboard focus landing on the
+ * caption's link, so the whole card is one object. Filter only, like the
+ * takes: a blend never composites on Safari's media layers, and the
+ * portrait should match them exactly.
+ */
+.portrait img {
+  filter: grayscale(1);
+  transition: filter 0.35s ease;
+}
+
+.card:hover .portrait img,
+.card:focus-within .portrait img {
+  filter: none;
+}
