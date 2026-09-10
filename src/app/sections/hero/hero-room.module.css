@@ -47,7 +47,7 @@
   position: absolute;
   inset: 0 0 auto;
   /* cqw of the site frame (components/site-frame.tsx), not the viewport:
-     the room stops growing at the frame's 1920 cap. */
+     the room stops growing at the frame's 2560 cap. */
   height: max(60%, 48.4cqw);
   container-type: size;
   background-color: var(--room-wash);

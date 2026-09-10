@@ -16,7 +16,7 @@ import { HeroTimeline } from "./hero-timeline";
 // headline's own offset scales with the room rather than sitting at a fixed
 // 104 below the navbar: at xl+ the copy is centred on the back wall's
 // midline instead (client feedback, September 2026 - it read as too high),
-// measured in the site frame's cqw so it stays put past the 1920 cap
+// measured in the site frame's cqw so it stays put past the 2560 cap
 // on any display (client feedback, September 2026: the headline escaped the
 // room on wide screens). The backing marks left
 // the hero for the band directly under it (sections/backers): the hero
@@ -42,12 +42,12 @@ export function Hero() {
   // capture stands at 109.17% of the 48.4cqw plate (hero-cards.module.css),
   // 52.84cqw, plus clearance for the ruler at the foot. On viewports too
   // short for both, the hero keeps the room whole and the band starts just
-  // under the fold instead. The viewport term is capped at 66rem, which is
-  // the room's own height at the site frame's 1920 cap: past that the room
+  // under the fold instead. The viewport term is capped at 87rem, which is
+  // the room's own height at the site frame's 2560 cap: past that the room
   // stops growing (cqw), and a hero still chasing a taller viewport would
   // open a band of bare paper under the figures.
   return (
-    <section className="pt-navbar-rest relative flex min-h-[max(min(calc(100svh-var(--backing-band-height)),66rem),calc(52.84cqw+2.5rem))] flex-col overflow-clip">
+    <section className="pt-navbar-rest relative flex min-h-[max(min(calc(100svh-var(--backing-band-height)),87rem),calc(52.84cqw+2.5rem))] flex-col overflow-clip">
       <HeroRoom />
 
       {/*

@@ -80,7 +80,7 @@
      * Sized in the site frame's container units, like the room: the plate
      * is 48.4cqw tall, so a card measured in cqw keeps its proportion to
      * the box at any frame width - a bigger screen gets a bigger room and
-     * bigger figures with it, up to the frame's 1920 cap
+     * bigger figures with it, up to the frame's 2560 cap
      * (components/site-frame.tsx), locked to their aspect ratios by the
      * body and piece ratios.
      * 19.1cqw is the strip card's 178.826px at the 1496 design width,

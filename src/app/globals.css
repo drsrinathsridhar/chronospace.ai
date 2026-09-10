@@ -97,9 +97,9 @@
   --spacing-backing-band: var(--backing-band-height);
   /*
    * The site frame (components/site-frame.tsx): the layout stops growing at
-   * 1920 and centres, so raster assets are never stretched past that.
+   * 2560 and centres, so raster assets are never stretched past that.
    */
-  --container-site: 120rem;
+  --container-site: 160rem;
 }
 
 @layer base {
