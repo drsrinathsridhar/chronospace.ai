@@ -20,8 +20,10 @@ import styles from "./site-header.module.css";
 // logo sends an orange band of light across the mark - the hero copy's
 // reveal, played as a flare (site-header.module.css).
 
-const navCell =
-  "hover:bg-paper focus-visible:bg-paper flex h-full items-center transition-colors duration-150 ease-out";
+const navCell = "flex h-full items-center";
+// The plain links fill with the page ground on hover; the orange cell keeps
+// its own darker-orange hover from cta-link.tsx.
+const navLinkCell = `${navCell} hover:bg-paper focus-visible:bg-paper transition-colors duration-150 ease-out`;
 
 export function SiteHeader() {
   return (
@@ -55,7 +57,7 @@ export function SiteHeader() {
             <a
               key={item.href}
               href={item.href}
-              className={`${navCell} type-nav text-ink hidden px-6 lg:flex`}
+              className={`${navLinkCell} type-nav text-ink hidden px-6 lg:flex`}
             >
               {item.label}
             </a>

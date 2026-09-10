@@ -11,9 +11,11 @@ import { cn } from "@/lib/utils";
 // The comp pins the label low in the box; the client read that as the label
 // off-centre in its container (feedback, September 2026), so every size
 // centres its pair vertically instead. The nav cell centres its pair on a
-// tight 10px gap and fills the bar; the hero block is a fixed 208x60 with
-// the arrow pushed to the opposite edge; the list block is the comp's 239x54
-// on the smaller nav label.
+// tight 10px gap and fills the bar; the hero block is 208x54 - the comp's
+// 60 trimmed a touch at the client's request - with the arrow pushed to the
+// opposite edge; the list block is the comp's 239x54 on the smaller nav
+// label. The solid block darkens by 5% black under the pointer
+// (--accent-hover), a quieter answer than the cells' fill.
 
 // The arrow is sized in attributes rather than classes: SVGR emits every icon
 // at 1em square with no intrinsic ratio, so `w-auto` would render it square.
@@ -24,7 +26,7 @@ const sizes = {
     arrow: { width: 6.4, height: 8 },
   },
   hero: {
-    root: "h-15 w-52 items-center justify-between px-4",
+    root: "h-13.5 w-52 items-center justify-between px-4",
     label: "type-button",
     arrow: { width: 8, height: 10 },
   },
@@ -36,7 +38,8 @@ const sizes = {
 } as const;
 
 const variants = {
-  solid: "bg-accent text-accent-foreground",
+  solid:
+    "bg-accent text-accent-foreground hover:bg-accent-hover focus-visible:bg-accent-hover transition-colors duration-150 ease-out",
   outline: "border-line text-ink hover:bg-surface border transition-colors",
 } as const;
 

@@ -16,6 +16,8 @@
   --line-soft: rgb(255 255 255 / 16%);
   --accent: #f25324; /* c-orange/500 */
   --accent-foreground: #ffffff;
+  /* The orange under a pointer: the same accent with 5% black folded in. */
+  --accent-hover: color-mix(in srgb, var(--accent), #000 5%);
   --ring: #f25324;
 
   /*
@@ -77,6 +79,7 @@
   --color-line-soft: var(--line-soft);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-accent-hover: var(--accent-hover);
   --color-ring: var(--ring);
   --font-sans: var(--font-sans-brand);
   --font-display: var(--font-display-brand);
