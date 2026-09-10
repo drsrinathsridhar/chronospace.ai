@@ -1,27 +1,30 @@
 /*
- * The intro copy. At the 1496px design width the block starts 598/1416 into
- * the content box and holds the hero headline's 698px measure; the blank
- * line between the two paragraphs is exactly one line of the lede.
+ * The intro spread: the manufacturing take on the left, the lede and the
+ * three readings on the right. The columns are the 12-col grid's, set in
+ * problem.tsx - the take across 5/12 (the comp's 42% offset turned into a
+ * column), the copy across the remaining 7 at the hero headline's 698px
+ * measure - so this file only holds what Tailwind cannot: the read calc
+ * and the drift transform.
  *
- * --read-progress arrives from problem-read-progress.client.tsx as 0..1 and
- * rests at 1, so with no script - or with reduced motion, where the island
- * never attaches - the copy is simply read: settled ink throughout.
+ * --read-progress arrives from read-progress.client.tsx as 0..1 and rests
+ * at 1, so with no script - or with reduced motion, where the island never
+ * attaches - the copy is simply read: settled ink throughout.
  */
+
+/* The take hangs at its own depth behind the copy: it eases a few pixels
+   against the pointer (pointer-drift.client.tsx), the copy holds still. */
+.visual {
+  transform: translate(
+    calc(var(--drift-x, 0px) * 0.6),
+    calc(var(--drift-y, 0px) * 0.6)
+  );
+}
 
 .copy {
   --read-progress: 1;
   display: flex;
   flex-direction: column;
   gap: 1.2em;
-  margin-top: 1.5rem;
-}
-
-@media (min-width: 48rem) {
-  .copy {
-    max-width: 43.625rem; /* 698px */
-    margin-top: 0;
-    margin-left: 42.23%;
-  }
 }
 
 /*

@@ -2,9 +2,9 @@ import Image from "next/image";
 import type { StaticImageData } from "next/image";
 import { siteConfig } from "@/site.config";
 import { CtaLink } from "@/components/cta-link";
+import { PointerDrift } from "@/components/pointer-drift.client";
 import { ReadProgress } from "@/components/read-progress.client";
 import { RevealScope } from "@/components/reveal-scope.client";
-import { VisionParallax } from "./vision-parallax.client";
 import arm from "./arm.png";
 import dancer1 from "./dancer-1.png";
 import dancer2 from "./dancer-2.png";
@@ -91,10 +91,10 @@ export function Vision() {
   return (
     <section id="vision" className="section-container py-section overflow-clip">
       <RevealScope className="relative flex flex-col items-center justify-center xl:min-h-110">
-        <VisionParallax>
+        <PointerDrift>
           <Trail echoes={dancerTrail} className={styles.dancer} />
           <Trail echoes={armTrail} className={styles.arm} />
-        </VisionParallax>
+        </PointerDrift>
 
         <div className="relative flex flex-col items-center gap-6 text-center">
           <h2
