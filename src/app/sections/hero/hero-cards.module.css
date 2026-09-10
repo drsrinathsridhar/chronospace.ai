@@ -24,7 +24,9 @@
  *   collapses copy by copy from the farthest in (echo-intro, fill
  *   backwards so it falls back to the resting opacity of 0 and never
  *   blocks the hover). Hover grows it back nearest-first; leave collapses
- *   it farthest-first. All of it is opacity only.
+ *   it farthest-first. All of it is opacity only. After the load, the
+ *   cards also take turns replaying it on their own (`data-echo`, set by
+ *   hero-room-eye.client.tsx), so the trail is never only a hover state.
  *
  * Below the xl breakpoint the scatter would sit in the headline's lap, so
  * the cards fall back into a three-column strip in the flow.
@@ -207,7 +209,11 @@
   animation-delay: calc(var(--echo-hold) + (3 - var(--echo-index)) * 0.15s);
 }
 
-.card:hover .echo {
+/* Asked about by the pointer, or taking its turn: hero-room-eye.client.tsx
+   sets `data-echo` on one card at a time once the load-time trail has
+   collapsed, so the trail keeps playing round the room unprompted. */
+.card:hover .echo,
+.card[data-echo] .echo {
   opacity: var(--echo-opacity);
   /* Entering: the trail grows back out from the subject. */
   transition-delay: calc((var(--echo-index) - 1) * 90ms);
