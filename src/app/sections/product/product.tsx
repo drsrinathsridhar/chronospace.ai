@@ -64,6 +64,7 @@ const queryableReadings: [string, string][] = [
   ["Timebase", "Any t"],
 ];
 
+// TODO(client): replace wild.mp4 with in-the-wild footage (outdoor / factory / field). The current file is trimmed to the reconstruction pass so the studio rig is not the subject; it is a stand-in.
 const cards: Card[] = [
   {
     label: "Captured in the wild",
@@ -71,7 +72,7 @@ const cards: Card[] = [
     copy: "Real environments, indoors and out, over long durations. No controlled lighting, no bringing the subject to a studio. Everyone else needs one.",
     video: "/videos/wild.mp4",
     poster: wildPoster,
-    duration: 27.04,
+    duration: 9.47,
   },
   {
     label: "Navigable in 4D",
