@@ -1,6 +1,9 @@
 import type { StaticImageData } from "next/image";
+import type { ReactNode } from "react";
+import { MeasureOverlay } from "@/components/measure-overlay.client";
 import { RevealScope } from "@/components/reveal-scope.client";
 import { TimelinePlayer } from "@/components/timeline-player.client";
+import { measurableChips, measurableMarks } from "./measurable-marks";
 import measurablePoster from "./measurable-poster.jpg";
 import navigablePoster from "./navigable-poster.jpg";
 import styles from "./product.module.css";
@@ -17,6 +20,15 @@ import wildPoster from "./wild-poster.jpg";
 // same paper. The takes wait for the scroll: preload="none" and
 // play-on-arrival, so three videos in a row cost nothing until the section
 // shows.
+//
+// The third take proves its claim on the picture (client feedback, item
+// 10): the measurement overlay shared with the viewer stands a height
+// bracket on the dancer, lays a floor line that turns accent the moment a
+// foot crosses it, and tokenises the frame once per loop. Its export also
+// carries two burned-in tool graphics - a mode label and a heat-map strip -
+// which sit under two chips of page ground holding our own HUD.
+// TODO(client): a clean export of measurable.mp4 without the burned-in
+// graphics removes the need for the chips.
 //
 // No chrome around the column (client feedback again): no label strip, no
 // border, no padding - the take and its transport stand on the page, and
@@ -40,7 +52,17 @@ type Card = {
   poster: StaticImageData;
   /** The take's length, for seeking before the metadata arrives. */
   duration: number;
+  /** Readings drawn over the take, inside the player's frame. */
+  overlay?: ReactNode;
 };
+
+// The static HUD on the queryable take: what a long-duration capture at
+// 30x keeps, and the two readings its loop stands for.
+const queryableReadings: [string, string][] = [
+  ["Frames kept", "540"],
+  ["Cycle", "00:00:18:00"],
+  ["Timebase", "Any t"],
+];
 
 const cards: Card[] = [
   {
@@ -65,7 +87,43 @@ const cards: Card[] = [
     copy: "A finished capture streams like ordinary video and answers questions inside it - distance travelled, cycle duration, whether a line was crossed.",
     video: "/videos/measurable.mp4",
     poster: measurablePoster,
-    duration: 60.06,
+    duration: 18,
+    overlay: (
+      <MeasureOverlay
+        tokenise
+        marks={[
+          ...measurableMarks,
+          {
+            kind: "chip",
+            id: "mode",
+            ...measurableChips.mode,
+            children: (
+              <p className="type-caption text-muted flex h-full items-center px-2">
+                Long duration · 30×
+              </p>
+            ),
+          },
+          {
+            kind: "chip",
+            id: "readings",
+            ...measurableChips.readings,
+            children: (
+              <dl className="type-caption flex h-full flex-col justify-center gap-1 px-2">
+                {queryableReadings.map(([term, value]) => (
+                  <div
+                    key={term}
+                    className="flex items-center justify-between gap-2"
+                  >
+                    <dt className="text-muted">{term}</dt>
+                    <dd className="text-ink text-right">{value}</dd>
+                  </div>
+                ))}
+              </dl>
+            ),
+          },
+        ]}
+      />
+    ),
   },
 ];
 
@@ -104,7 +162,9 @@ export function Product() {
                 name={`the ${card.label.toLowerCase()} take`}
                 compact
                 preload="none"
-              />
+              >
+                {card.overlay}
+              </TimelinePlayer>
 
               <div className="border-line flex flex-col gap-3 border-t py-6">
                 <h3 className="type-title-lg">{card.title}</h3>

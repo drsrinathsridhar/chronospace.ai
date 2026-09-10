@@ -1,0 +1,222 @@
+/*
+ * The measurement overlay's marks. Every piece of geometry arrives as a
+ * custom property in percent of the frame - --mark-x/-y/-w/-h - written by
+ * the island each frame (measure-overlay.client.tsx), and --mark-opacity
+ * hides a mark outside its keyframes. Nothing here is sized in px except
+ * the hairlines, the dot, the leader and the corners, which are the same
+ * size at every plate width.
+ */
+
+.overlay {
+  overflow: visible;
+}
+
+.mark {
+  position: absolute;
+  left: calc(var(--mark-x, 0) * 1%);
+  top: calc(var(--mark-y, 0) * 1%);
+  opacity: var(--mark-opacity, 0);
+}
+
+/* The bracket: a box drawn by four corners, the icon turned into place. */
+.bracket {
+  width: calc(var(--mark-w, 0) * 1%);
+  height: calc(var(--mark-h, 0) * 1%);
+}
+
+.corner {
+  position: absolute;
+  width: 13.5px;
+  height: 13.5px;
+}
+
+.corner:nth-child(1) {
+  top: 0;
+  left: 0;
+}
+
+.corner:nth-child(2) {
+  top: 0;
+  right: 0;
+  transform: rotate(90deg);
+}
+
+.corner:nth-child(3) {
+  right: 0;
+  bottom: 0;
+  transform: rotate(180deg);
+}
+
+.corner:nth-child(4) {
+  bottom: 0;
+  left: 0;
+  transform: rotate(270deg);
+}
+
+.label {
+  display: block;
+  white-space: nowrap;
+}
+
+.labelTop {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-bottom: 4px;
+  transform: translateX(-50%);
+}
+
+/*
+ * The height reads up the right edge. When the box runs close to the
+ * frame's right side the island flips it to the left edge instead, so the
+ * reading never leaves the picture.
+ */
+.labelRight {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  margin-left: 4px;
+  transform: translateY(-50%);
+  writing-mode: vertical-rl;
+}
+
+.bracket[data-flip] .labelRight {
+  right: 100%;
+  left: auto;
+  margin-right: 4px;
+  margin-left: 0;
+}
+
+/*
+ * The tag: a 4px accent dot centred on its point, a 24px leader and the
+ * label, laid out to the right - or to the left past 70% of the width.
+ */
+.tag {
+  width: 0;
+  height: 0;
+}
+
+.dot {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  width: 4px;
+  height: 4px;
+  background: var(--accent);
+}
+
+.lead {
+  position: absolute;
+  top: 0;
+  left: 2px;
+  display: flex;
+  align-items: center;
+  transform: translateY(-50%);
+}
+
+.tag[data-flip] .lead {
+  right: 2px;
+  left: auto;
+  flex-direction: row-reverse;
+}
+
+.leader {
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+}
+
+/*
+ * The floor line: a hairline in the room's own rule colour, static, that
+ * turns accent from the second a foot crosses it and shows its label at
+ * the right end.
+ */
+.line {
+  position: absolute;
+  top: calc(var(--mark-y, 0) * 1%);
+  left: calc(var(--mark-x, 0) * 1%);
+  width: calc(var(--mark-w, 0) * 1%);
+  height: 1px;
+  background: var(--line);
+  transition: background-color 150ms;
+}
+
+.line[data-active] {
+  background: var(--accent);
+}
+
+.lineLabel {
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  margin-bottom: 4px;
+  opacity: 0;
+  transition: opacity 150ms;
+}
+
+.line[data-active] .lineLabel {
+  opacity: 1;
+}
+
+/* A static chip of page ground: our HUD, and a cover for burned-in tool
+   graphics until the client sends a clean export. */
+.chip {
+  position: absolute;
+  top: calc(var(--mark-y, 0) * 1%);
+  left: calc(var(--mark-x, 0) * 1%);
+  width: calc(var(--mark-w, 0) * 1%);
+  height: calc(var(--mark-h, 0) * 1%);
+}
+
+/*
+ * The tokenisation sweep: a dotted grid over the whole frame, visible only
+ * through a band that wipes left to right once, 1.2s, when the island sets
+ * data-sweep on the overlay at a loop wrap. `forwards` parks the band off
+ * the right edge; the island clears the attribute afterwards so the next
+ * wrap restarts it. Reduced motion never sets it.
+ */
+.sweep {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+      circle,
+      rgb(255 255 255 / 40%) 0.5px,
+      transparent 1px
+    )
+    0 0 / 12px 12px;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0 33%,
+    #000 40% 60%,
+    transparent 67% 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0 33%,
+    #000 40% 60%,
+    transparent 67% 100%
+  );
+  -webkit-mask-size: 300% 100%;
+  mask-size: 300% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: 100% 0;
+  mask-position: 100% 0;
+  opacity: 0;
+}
+
+.overlay[data-sweep] .sweep {
+  opacity: 1;
+  animation: token-wipe 1.2s linear forwards;
+}
+
+@keyframes token-wipe {
+  from {
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+  }
+  to {
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+  }
+}
