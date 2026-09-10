@@ -1,5 +1,6 @@
 export { A16zSpeedrunIcon } from "./a16z-speedrun";
 export { BrownAngelGroupIcon } from "./brown-angel-group";
+export { CameraIcon } from "./camera";
 export { ChronospaceLogoIcon } from "./chronospace-logo";
 export { CtaArrowIcon } from "./cta-arrow";
 export { GithubIcon } from "./github";

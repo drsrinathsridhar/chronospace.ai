@@ -1,10 +1,13 @@
 import { TimelineTickIcon } from "@/icons/generated";
+import { HeroTimecode } from "./hero-timecode.client";
 import styles from "./hero-timeline.module.css";
 
 // The timecode ruler at the hero's foot. The captures used to sit on it;
 // they hang in the room now (hero-cards.tsx), and the ruler stays as the
 // instrument line under the whole first screen - drawn left to right like a
-// playhead sweeping through the take.
+// playhead sweeping through the take. The timecode itself runs
+// (hero-timecode.client.tsx): it starts at the comp's 00:00:14:07 and counts
+// frames at 30fps for as long as the page is up.
 //
 // Geometry is the comp's at the 1496px design width: a full-bleed track
 // with accent corner ticks at the origin, one measured 111px unit in, and
@@ -19,7 +22,7 @@ export function HeroTimeline() {
       >
         <p className="text-line flex items-center gap-4">
           <span>Timecode</span>
-          <span>00:00:14:07</span>
+          <HeroTimecode />
         </p>
         <p className="bg-paper text-ink flex items-center gap-4 px-2">
           <span className="bg-ink size-0.5" />

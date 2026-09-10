@@ -10,10 +10,15 @@ import { HeroTimeline } from "./hero-timeline";
 // room behind it (hero-cards.tsx) - and the timecode ruler underlining the
 // whole screen at its foot.
 //
-// The vertical rhythm is the comp's, to the pixel, at the 1496px design
-// width: 104 below the navbar to the headline, 40 to the action - the whole
-// stack pulled up so the manufacturing capture can stand clear of it - and
-// the ruler flush with the foot. The backing marks left
+// The vertical rhythm is the comp's at the 1496px design width - 40 from the
+// headline to the action, the whole stack pulled up so the manufacturing
+// capture can stand clear of it - and the ruler flush with the foot. The
+// headline's own offset scales with the room rather than sitting at a fixed
+// 104 below the navbar: the plate is 48.4vw tall and the back wall's top edge
+// lands 20.68% down it (10vw at xl+), so the copy is set 12.5vw from the page
+// top, floored at the comp's 104, and stays at least 2.5vw inside the room
+// on any display (client feedback, September 2026: the headline escaped the
+// room on wide screens). The backing marks left
 // the hero for the band directly under it (sections/backers): the hero
 // yields exactly the band's height of the viewport, so hero + band close
 // the first screen together, with the ruler as the band's top border.
@@ -42,7 +47,14 @@ export function Hero() {
     <section className="pt-navbar-rest relative flex min-h-[max(calc(100svh-var(--backing-band-height)),calc(52.84vw+2.5rem))] flex-col overflow-clip">
       <HeroRoom />
 
-      <div className="section-container relative flex flex-col items-center pt-24 text-center md:pt-26">
+      {/*
+       * The offset below the navbar is what anchors the copy to the room:
+       * max(104, 12.5vw - navbar) puts the headline's top at max(164, 12.5vw)
+       * from the page top - 164 up to 1312 wide, as before, then 180 at
+       * 1440, 187 at 1496, 240 at 1920 - always clear of the back wall's top
+       * edge at 10vw.
+       */}
+      <div className="section-container relative flex flex-col items-center pt-24 text-center md:pt-[max(6.5rem,calc(12.5vw-var(--spacing-navbar-rest)))]">
         <h1 className="type-display-xs sm:type-display-sm lg:type-display-md flex max-w-174.5 flex-col">
           {/*
            * `text-balance` only has anything to do below the design width,
