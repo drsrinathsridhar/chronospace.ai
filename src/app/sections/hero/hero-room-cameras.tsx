@@ -19,9 +19,14 @@ import styles from "./hero-room.module.css";
 // Coordinates are the stage's: x and z in cqw, y in cqh, from the survey in
 // hero-room.module.css. The left wall stands at x = -2.735, the right at
 // 102.375, the back at z = -81.82; the ceiling at y = -22.2 and the floor at
-// 98.2. The rows at y = 8 and y = 40 land a quarter and a half of the way
-// down the walls once projected. Every unit carries a recording LED on its
-// own irregular clock; four carry a faint view cone toward the floor.
+// 98.2. The side-wall rows at y = 8 and y = 40 land a quarter and a half of
+// the way down the walls once projected. The back-wall row sits higher, at
+// y = -18, just under the cove: the headline stands in front of the back
+// wall with its top at 25.8% of the plate, and a row at y = 8 projected to
+// 37% - straight through the copy. At -18 it projects to 22.5%, in the band
+// between the ceiling line (20.7%) and the headline, where the footage puts
+// its units too. Every unit carries a recording LED on its own irregular
+// clock; four carry a faint view cone toward the floor.
 
 type Unit = {
   x: string;
@@ -117,17 +122,18 @@ const units: Unit[] = [
     ledDelay: "0.6s",
     ledPeriod: "4.2s",
   },
-  // Back wall, one row, just in front of the plane at z = -81.82.
+  // Back wall, one row under the cove, just in front of the plane at
+  // z = -81.82.
   {
     x: "15cqw",
-    y: "8cqh",
+    y: "-18cqh",
     z: "-80.5cqw",
     ledDelay: "1.1s",
     ledPeriod: "5.5s",
   },
   {
     x: "38cqw",
-    y: "8cqh",
+    y: "-18cqh",
     z: "-80.5cqw",
     cone: "-10deg",
     ledDelay: "3.1s",
@@ -135,7 +141,7 @@ const units: Unit[] = [
   },
   {
     x: "62cqw",
-    y: "8cqh",
+    y: "-18cqh",
     z: "-80.5cqw",
     cone: "10deg",
     ledDelay: "0.2s",
@@ -143,7 +149,7 @@ const units: Unit[] = [
   },
   {
     x: "85cqw",
-    y: "8cqh",
+    y: "-18cqh",
     z: "-80.5cqw",
     ledDelay: "2.4s",
     ledPeriod: "4.8s",
