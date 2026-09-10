@@ -1,6 +1,10 @@
 # Handoff
 
-State of the build as of 2026-09-04, for the next working session.
+State of the build as of 2026-09-10, for the next working session. The
+September client feedback round is implemented on branch
+`claude/chronospace-design-feedback-1d8277` (plan and measurements in
+`docs/client-feedback-plan.md`); the reviewed state before it is tag and
+branch `backup/pre-feedback-2026-09-10` at `4e8a41b`.
 
 ## Project
 
@@ -29,65 +33,99 @@ State of the build as of 2026-09-04, for the next working session.
 - Verify with `npm run format`, `npm run lint`, `npm run typecheck`,
   and `next build`.
 
-## Page state (`src/app/page.tsx`: Hero -> Problem -> Capture)
+## Page state (`src/app/page.tsx`: Hero -> Backers -> Problem -> Product -> Capture -> Team -> Science -> Vision, then Footer)
 
-### Hero (`src/app/sections/hero/`, Figma `7762:5279`, latest revision)
+Every section sits on one rhythm: `py-section` (120px) above and below,
+`mt-section-gap` (80px) from the centred header stack to the content
+(`globals.css` `@theme`). Section headers are centred on a 698px measure
+with the lede 20px under - the product heading included, which the comp
+had on a 42.23% column and the client read as skewed. CTA labels and nav
+cells are vertically centred (the comp pinned them low). The glyph-scramble
+hover is gone.
 
-- CSS-built 3D room (`hero-room*`) with pointer parallax; faces are
-  clipped at the plate (`overflow: clip`) - this fixed a seam where
-  projected walls escaped below the room.
-- **Three floating cards** (`hero-cards.tsx` / `.module.css`): grey room
-  plates + coloured subject cutouts, scattered at the comp's positions
-  at xl+, falling back to a three-column strip below xl. Behaviours:
-  - Pointer float via `--float-x/--float-y`, chased at TAU 240ms vs the
-    room's 80ms, per-card `--card-drift` (10-16px).
-  - Scroll parallax via unitless `--scroll-y` times per-card
-    `--card-lift` (0.08 / 0.12 / 0.06) - cards rise slightly faster
-    than the page.
-  - Echo trail: three offset copies (opacity 0.6/0.35/0.2, stepped back
-    6.5% apiece) shown on load, collapsed copy by copy, replayed on
-    hover. The intro animation uses `fill: backwards` specifically so
-    it hands opacity back to the hover transition when done.
-- All hero motion vars are written by `hero-room-eye.client.tsx` - one
-  rAF loop with wake/settle discipline; bails on reduced motion and
-  coarse pointers.
-- Timecode ruler (`hero-timeline.tsx`) sits alone at the hero's foot
-  with a left-to-right clip wipe; accent ticks are `TimelineTickIcon`.
-  The robotics in-card measure marks were removed at client request.
-- The backing a16z mark shines **once** when scrolling carries it
-  through the middle of the viewport (`hero-backing-shine.client.tsx`
-  - `hero-backing.module.css` - a copy of the navbar logotype flare).
-- The hero pads with `pt-navbar-rest` (`--navbar-height-rest`) so the
-  navbar's scroll shrink never reflows the section.
+### Hero (`src/app/sections/hero/`, Figma `7762:5279`)
 
-### Problem (`src/app/sections/problem/`, Figma `7762:5338`)
+- CSS-built 3D room (`hero-room*`) with pointer parallax; faces clipped at
+  the plate.
+- Copy stack offset scales with the room: `md:pt-[max(6.5rem, 12.5vw -
+navbar)]`, so the headline stays inside the back wall (top edge 20.68% of
+  the plate) at every width. Headline top = 12.5vw at xl+ (187 at 1496,
+  240 at 1920).
+- **Camera rig** (`hero-room-cameras.tsx`): 16 billboard units as direct
+  children of the stage - two rows of three per side wall, one row of four
+  along the back wall at y = -18cqh (just under the cove, above the
+  headline). Each has a blinking accent LED; four carry faint view cones.
+  `CameraIcon` via the icon pipeline.
+- **Idle motion** (`hero-room-eye.client.tsx`): with no pointer input for
+  1.5s the eye drifts on a two-period Lissajous (0.35/0.2 fine, 0.22/0.12
+  coarse - touch devices get the drift too). Pointer takes over on move.
+  The loop runs whenever the hero is on screen and the tab visible, and
+  parks otherwise (IntersectionObserver + visibilitychange). The same
+  island runs the **echo round-robin**: from 6s, every 5s one card carries
+  `data-echo` for 1.6s (`hero-cards.module.css` reads it like hover).
+- **Live timecode** (`hero-timecode.client.tsx`): the ruler's readout counts
+  at 30fps from 00:00:14:07, DOM-written, pauses when hidden.
+- Three standing cards (`hero-cards.tsx`) unchanged otherwise.
 
-- `(INTRO)` label on the gutter + two lede paragraphs on a
-  42.23% / 698px column (the section's shared measure).
-- Scroll-read effect: words split on the server with indices, island
-  (`problem-read-progress.client.tsx`) writes one `--read-progress`
-  number, per-word colour falls out of a `color-mix` calc in the
-  module CSS. Rests at 1, so no-JS / reduced motion reads as settled
-  ink. Carries `id="problem"` (nav anchor).
+### Problem / intro (`src/app/sections/problem/`)
 
-### Capture (`src/app/sections/capture/`, Figma `7762:5403`)
+Two columns on a 12-col grid: the manufacturing take (`/videos/manufacturing.mp4`,
+768x1024, 8s, compact `TimelinePlayer`, `aspect 4 / 5`, `preload="none"`)
+in cols 1-5 with `PointerDrift`; cols 6-12 hold the lede (read-sweep, two
+shortened paragraphs) and a `<dl>` of three readings with
+`MeasureBracketIcon`. `id="problem"`.
 
-- "Every frame is a measurement." + custom player for
-  `/videos/echo.mp4`.
-- The take is stylised with `mix-blend-mode: luminosity` over the paper
-  ground (the exact treatment used in Figma - client confirmed).
-- Live HUD readings are deterministic functions of `currentTime`,
-  anchored on the comp's resting values; TIMEBASE stays "ANY T" on
-  purpose (it is the claim, not a measurement).
-- Pause/play button with CSS-drawn glyphs and an invisible native
-  `<input type="range">` over the ticked rail for scrubbing (pointer,
-  keyboard, screen readers). One rAF loop owns playhead + HUD.
+### Product (`src/app/sections/product/`)
 
-## Not yet built
+Centred header; three takes in the compact player. Card 1 `wild.mp4` is
+**trimmed to its reconstruction pass (9.47s)** as a stand-in until the
+client sends in-the-wild footage (TODO in the file). Card 3
+`measurable.mp4` is **trimmed to an 18s loop (t 4-22 of the original)**
+and carries a `MeasureOverlay` (`measurable-marks.ts`): height bracket,
+floor line active from t=7, tokenisation sweep on each loop wrap, and two
+`bg-paper` chips covering the burned-in label and heat-map until a clean
+export arrives.
 
-Nav anchors without sections: `#how-it-works`, `#applications`,
-`#research` (see `src/site.config.ts`). The capture section has no id -
-it could plausibly become `#how-it-works`.
+### Capture / viewer (`src/app/sections/capture/`)
+
+`capture-player.client.tsx` renders a `MeasureOverlay` over `echo.mp4`:
+height bracket following the taller figure (21 keyframes at 0.25s), path
+tag integrating to 1.04 m, speed tag; corner HUD trimmed to Frames kept /
+Tracked joints / Timebase. Note the take is a camera orbit - the figure
+sweeps x 29% -> 97% -> 26%.
+
+### Team (`src/app/sections/team/`)
+
+"Meet the team". Full-column square portraits (JPEG, grayscale at rest,
+colour on card hover/focus-within, `team.module.css`), caption under a
+hairline: name, "LinkedIn" text link (the accessible one) with the CTA
+arrow at -45deg, role. Portrait is an `aria-hidden tabIndex=-1` link.
+Srinath's source is 512px - ask for a larger one.
+
+### Footer (`src/app/sections/footer/`)
+
+Two rows on the cards' grid: wordmark + figure brackets across cols 1-2,
+captioned link groups in col 3 (Company: LinkedIn, Contact; Legal is
+filtered out while `terms`/`privacy` are `#`), then a rule with the
+copyright and "Made by tonik" in caption type.
+
+### Shared components added
+
+- `src/components/measure-overlay.client.tsx` (+ `.module.css`): keyframed
+  bracket / line / tag / chip marks over a sibling `<video>`, one rAF loop,
+  DOM-written, optional tokenise sweep.
+- `src/components/pointer-drift.client.tsx`: the vision tableau's pointer
+  ease, moved from `vision-parallax.client.tsx` now the intro uses it too.
+
+## Waiting on the client
+
+- In-the-wild footage for "No stage required" (replaces the wild.mp4 trim).
+- Clean exports of `wild`, `navigable`, `measurable` without burned-in
+  graphics (removes the chips in `product.tsx`).
+- Real URLs: Research cards (`science.tsx`, all point at the Brown lab
+  site), `siteConfig.links.calendly`, `.linkedin`, `.terms`, `.privacy`.
+- Copy confirmation: "Meet the team".
+- A >= 1000px portrait of Srinath Sridhar.
 
 ## Tooling notes
 
@@ -97,7 +135,9 @@ it could plausibly become `#how-it-works`.
   notifications/initialized -> tools/call; session id arrives in the
   `mcp-session-id` response header). Exported assets download from
   `http://localhost:3845/assets/<hash>.png`.
-- **Visual verification**: no browser tool in the session - use
+- **Visual verification**: the in-app browser pane may report the tab
+  hidden (no rAF, screenshots blank) - the puppeteer MCP (headless, counts
+  as visible) works for motion checks. Otherwise no browser tool in the session - use
   `playwright-core` with the cached Chromium at
   `~/Library/Caches/ms-playwright/chromium_headless_shell-1217/chrome-headless-shell-mac-arm64/chrome-headless-shell`.
   Working scripts (`shot*.mjs`, `check-*.mjs`) live in the approved
@@ -106,9 +146,9 @@ it could plausibly become `#how-it-works`.
   contested by other local apps - check before trusting a response).
 - **Media**: videos are served from `public/videos/`; posters are
   first frames extracted with ffmpeg and colocated with their section.
-  `sports/manufacturing/robotics.mp4` are currently unused (hero card
-  videos were retired in the floating-cards redesign; manufacturing.mp4
-  is the updated take) but kept in case the client returns to them.
+  `sports/robotics.mp4` are unused (hero card videos were retired in the
+  floating-cards redesign) but kept in case the client returns to them;
+  `manufacturing.mp4` is the intro section's take.
 - **Known trap, fixed once already**: the React hooks lint forbids
   synchronous `setState` inside effects - drive state from media/DOM
   events instead.
