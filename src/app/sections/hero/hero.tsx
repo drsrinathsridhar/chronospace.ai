@@ -1,6 +1,4 @@
 import { Fragment } from "react";
-import { siteConfig } from "@/site.config";
-import { CtaLink } from "@/components/cta-link";
 import { HeroCards } from "./hero-cards";
 import { HeroRoom } from "./hero-room";
 import { HeroTimeline } from "./hero-timeline";
@@ -11,15 +9,16 @@ import { HeroTimeline } from "./hero-timeline";
 // room behind it (hero-cards.tsx) - and the timecode ruler underlining the
 // whole screen at its foot.
 //
-// The vertical rhythm is the comp's at the 1496px design width - 40 from the
-// headline to the action, the whole stack pulled up so the manufacturing
-// capture can stand clear of it - and the ruler flush with the foot. The
-// headline's own offset scales with the room rather than sitting at a fixed
-// 104 below the navbar: at xl+ the copy is centred on the back wall's
-// midline instead (client feedback, September 2026 - it read as too high),
-// measured in the site frame's cqw so it stays put past the 2560 cap
-// on any display (client feedback, September 2026: the headline escaped the
-// room on wide screens). The backing marks left
+// The headline stands alone in the room. The comp put a "Connect with us"
+// under it, 40 below; the client asked for one such call in the first
+// screen, and the navbar's is the one that stays (feedback round 2), so the
+// captures now have the whole floor between the copy and the ruler. The
+// headline's offset scales with the room rather than sitting at a fixed 104
+// below the navbar: at xl+ the copy is centred in the band of back wall
+// above the figures (client feedback, September 2026 - it read as too
+// high), measured in the site frame's cqw so it stays put past the 2560 cap
+// on any display (the headline once escaped the room on wide screens). The
+// backing marks left
 // the hero for the band directly under it (sections/backers): the hero
 // yields exactly the band's height of the viewport, so hero + band close
 // the first screen together, with the ruler as the band's top border.
@@ -42,31 +41,34 @@ export function Hero() {
   // 12px the moment the page moves.
   //
   // The height is the viewport minus the backing band, so hero + band close
-  // the first screen together - floored by what the room needs: the deepest
-  // capture stands at 109.17% of the 48.4cqw plate (hero-cards.module.css),
-  // 52.84cqw, plus clearance for the ruler at the foot. On viewports too
-  // short for both, the hero keeps the room whole and the band starts just
-  // under the fold instead. The viewport term is capped at 87rem, which is
-  // the room's own height at the site frame's 2560 cap: past that the room
-  // stops growing (cqw), and a hero still chasing a taller viewport would
-  // open a band of bare paper under the figures.
+  // the first screen together - floored by what the room needs: the three
+  // captures stand on one line at 109.17% of the 48.4cqw plate
+  // (hero-cards.module.css), 52.84cqw, plus clearance for the ruler at the
+  // foot. On viewports too short for both, the hero keeps the room whole and
+  // the band starts just under the fold instead. The viewport term is capped
+  // at 87rem, which is the room's own height at the site frame's 2560 cap:
+  // past that the room stops growing (cqw), and a hero still chasing a
+  // taller viewport would open a band of bare paper under the figures.
   return (
     <section className="pt-navbar-rest relative flex min-h-[max(min(calc(100svh-var(--backing-band-height)),87rem),calc(52.84cqw+2.5rem))] flex-col overflow-clip">
       <HeroRoom />
 
       {/*
-       * At xl the copy leaves the flow and centres itself on the back wall:
-       * the wall runs from 20.68% to 86.9% of the plate, so its midline is
-       * 53.8% of the plate's 48.4cqw - 26.04cqw from the frame's top - and
-       * the block is translated up by half its own height onto it. The CTA
-       * then ends around 66% of the plate, above the manufacturing line's
-       * top pixel (~85%) and between the two flanking figures. Below xl the
+       * At xl the copy leaves the flow and centres itself on the back wall,
+       * translated up by half its own height onto --copy-centre. The centre
+       * is the middle of the band the headline has to itself: from the
+       * wall's top edge, the cove line at 20.68% of the 48.4cqw plate
+       * (10.01cqw), down to the figures' heads on the one-line row, ~35.4cqw
+       * (hero-cards.tsx) - 22.7cqw. That is also, within a few pixels, where
+       * the headline stood while it shared a block centred on the wall's
+       * midline with the call to action - the height the client signed off -
+       * so losing the action moved the figures, not the words. Below xl the
        * cards fall into a strip under the copy, so the copy keeps the comp's
        * padding and the flow.
        */}
       <div
         className="section-container relative flex flex-col items-center pt-24 text-center md:pt-26 xl:absolute xl:inset-x-0 xl:top-(--copy-centre) xl:z-10 xl:-translate-y-1/2 xl:pt-0"
-        style={{ "--copy-centre": "26.04cqw" }}
+        style={{ "--copy-centre": "22.7cqw" }}
       >
         <h1 className="type-display-xs sm:type-display-sm lg:type-display-md flex max-w-174.5 flex-col">
           {/*
@@ -86,14 +88,6 @@ export function Hero() {
             </Fragment>
           ))}
         </h1>
-
-        <CtaLink
-          href={siteConfig.links.contact}
-          className="sweep-reveal mt-8 md:mt-10"
-          style={{ "--reveal-index": 3 }}
-        >
-          Connect with us
-        </CtaLink>
       </div>
 
       {/*

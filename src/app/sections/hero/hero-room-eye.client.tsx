@@ -16,8 +16,16 @@ import { useEffect, useRef } from "react";
 // chase so the hand-off is soft.
 //
 // The same clock runs the captures' trail: once the load-time trail has
-// collapsed, the cards take turns carrying their echo for a moment, round
-// robin, so the room keeps showing what it does with time.
+// collapsed and its colour drained, the cards take turns carrying their
+// echo for a moment, round robin, so the room keeps showing what it does
+// with time. A turn is `data-echo` on one card, and the CSS gives that card
+// its trail AND its colour, exactly as it does a hovered one - so the
+// coloured trail the client asked for on load keeps recurring, one figure
+// at a time (hero-cards.module.css).
+//
+// How far the eye travels is not decided here: the amplitude and the
+// client's wiggle knob (--hero-wiggle, src/tuning.config.ts) live in the
+// CSS that reads --eye-x/--eye-y, so this island keeps writing -1..1.
 //
 // Three things it is careful about, each of which was a bug first:
 //
@@ -60,8 +68,10 @@ const DRIFT = { fine: { x: 0.35, y: 0.2 }, coarse: { x: 0.22, y: 0.12 } };
 /** Two incommensurate periods, ms, so the path never repeats visibly. */
 const DRIFT_PERIOD_X = 14000;
 const DRIFT_PERIOD_Y = 9000;
-/** Delay before the first automatic trail, ms - after the load-time trail
-    has finished collapsing (--echo-hold 2.4s + 0.45s + stagger). */
+/** Delay before the first automatic trail, ms - well after the load-time
+    trail has finished collapsing (--echo-hold 2.4s + 0.3s stagger + 0.45s)
+    and the figures have drained to grey (figure-intro ends at ~3.45s), so
+    the first turn reads as a new event, not a stutter of the first. */
 const ECHO_FIRST = 6000;
 /** Interval between automatic trails, ms, and how long each stays out. */
 const ECHO_EVERY = 5000;

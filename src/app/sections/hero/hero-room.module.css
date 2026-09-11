@@ -95,11 +95,16 @@
  *
  * --eye-x / --eye-y arrive from hero-room-eye.client.tsx as -1..1 and rest
  * at 0, so with no script, or for anyone who has asked for less motion, this
- * is exactly the comp.
+ * is exactly the comp. The travel - 8cqw across, 5.1cqh up and down at full
+ * lean - is scaled by --hero-wiggle, the client's one knob for how much the
+ * room moves (src/tuning.config.ts, written on the root by app/layout.tsx;
+ * 1 is this amount, 0 parks the room). The standing cards scale their own
+ * moves by the same knob (hero-cards.module.css), so they keep standing in
+ * the room at any setting.
  */
 .stage {
-  --eye-shift-x: calc(8cqw * var(--eye-x, 0));
-  --eye-shift-y: calc(5.1cqh * var(--eye-y, 0));
+  --eye-shift-x: calc(8cqw * var(--eye-x, 0) * var(--hero-wiggle, 1));
+  --eye-shift-y: calc(5.1cqh * var(--eye-y, 0) * var(--hero-wiggle, 1));
   --eye: translate3d(
     calc(-1 * var(--eye-shift-x)),
     calc(-1 * var(--eye-shift-y)),
@@ -236,68 +241,4 @@
     color-mix(in srgb, var(--room-floor) 30%, transparent) 60%,
     var(--paper)
   );
-}
-
-/*
- * The capture rig. The client's room is lined with small camera units, so
- * this one is too: billboards standing a hair off each wall inside the
- * same perspective as the faces, so they shrink with depth and ride the
- * eye move for free. Sized in cqw like everything else in the box; placed
- * by hero-room-cameras.tsx through --cam-x/y/z. A few carry a faint view
- * cone toward the floor; every one carries a recording LED that flicks on
- * its own irregular clock. Under reduced motion the global rule collapses
- * the flick to its resting frame, lit.
- */
-.camera {
-  width: 2cqw;
-  aspect-ratio: 12 / 8;
-  color: color-mix(in srgb, var(--ink) 28%, transparent);
-  transform: var(--eye) translate3d(var(--cam-x), var(--cam-y), var(--cam-z));
-}
-
-/* Block, so the housing fills its box with no inline baseline gap. */
-.camera > svg {
-  display: block;
-}
-
-.led {
-  position: absolute;
-  top: 12%;
-  right: 8%;
-  width: 14%;
-  aspect-ratio: 1;
-  background: var(--accent);
-  animation: led-flick var(--led-period, 5s) steps(1, end) infinite;
-  animation-delay: var(--led-delay, 0s);
-}
-
-@keyframes led-flick {
-  0%,
-  91% {
-    opacity: 1;
-  }
-  93% {
-    opacity: 0.15;
-  }
-  95%,
-  100% {
-    opacity: 1;
-  }
-}
-
-.cone {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  width: 6cqw;
-  height: 34cqh;
-  transform-origin: 50% 0;
-  transform: translateX(-50%) rotate(var(--cone, 0deg));
-  background: linear-gradient(
-    to bottom,
-    rgb(255 255 255 / 5%),
-    transparent 85%
-  );
-  clip-path: polygon(50% 0, 100% 100%, 0 100%);
-  pointer-events: none;
 }

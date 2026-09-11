@@ -15,8 +15,9 @@
  *   the eye by its own --card-shift-x/y: the room's move displaces a point
  *   at depth z by eyeshift * -z / (P - z) (see the survey in
  *   hero-room.module.css), so a card's shift is that factor at the depth
- *   its feet stand - the two far captures ride gently with the eye, and
- *   the manufacturing line, nearer than the plate plane, moves against it.
+ *   its feet stand. The three stand on one line since feedback round 2, in
+ *   front of the plate plane, so they all move against the eye by the same
+ *   amount and the row moves as one (hero-cards.tsx has the numbers).
  *
  *   The echo. Each subject ships with its trail - three copies stepped back
  *   6.5% of the body apiece at falling opacities, the reference build's
@@ -27,6 +28,22 @@
  *   it farthest-first. All of it is opacity only. After the load, the
  *   cards also take turns replaying it on their own (`data-echo`, set by
  *   hero-room-eye.client.tsx), so the trail is never only a hover state.
+ *
+ *   The colour. The figures rest in the room's grey, lifted bright; the
+ *   trail is what shows them in their own colour. On load the whole
+ *   figure and its echoes arrive in colour and stay so through the hold,
+ *   and the colour drains into the grey as the last echo folds
+ *   (figure-intro, on the same clock as echo-intro) - the one "wow" the
+ *   client asked for (feedback round 2). Hover and the round-robin turn
+ *   hand the colour back the same way, so a trail is always a coloured
+ *   trail. Under reduced motion the global rule collapses both intros to
+ *   their resting frames: grey, no trail, from the first paint.
+ *
+ * Two of the numbers are the client's to turn (src/tuning.config.ts,
+ * written on the root by app/layout.tsx): --figure-brightness is the
+ * resting lift, --hero-wiggle scales every move the eye makes here, as it
+ * does the room's (hero-room.module.css), so figures and walls stay in
+ * step at any setting.
  *
  * Below the xl breakpoint the scatter would sit in the headline's lap, so
  * the cards fall back into a three-column strip in the flow.
@@ -99,19 +116,28 @@
      * (--card-tilt-gain) - moving right, you see a little less of every
      * card's right side, the same as you would of the walls. No scroll
      * parallax: the room does not have one, and the cards move exactly as
-     * the room does.
+     * the room does. Both eye-driven terms - the shift and the tilt gain -
+     * are scaled by --hero-wiggle, the same knob that scales the room's
+     * eye travel (hero-room.module.css), so turning the wiggle down keeps
+     * the figures standing in the room rather than sliding across it, and
+     * 0 parks them along with the walls. The standing angle itself is not
+     * scaled: it is where the card stands, not how it moves.
      */
     transform-origin: 0 100%;
     transform: translate3d(
-        calc(var(--float-x, 0) * var(--card-shift-x, 0px)),
-        calc(var(--float-y, 0) * var(--card-shift-y, 0px)),
+        calc(
+          var(--float-x, 0) * var(--card-shift-x, 0px) * var(--hero-wiggle, 1)
+        ),
+        calc(
+          var(--float-y, 0) * var(--card-shift-y, 0px) * var(--hero-wiggle, 1)
+        ),
         0
       )
       translateY(-100%) scale(var(--card-scale, 1)) perspective(56rem)
       rotateY(
         calc(
           var(--card-tilt, 0deg) + var(--float-x, 0) *
-            var(--card-tilt-gain, 2deg)
+            var(--card-tilt-gain, 2deg) * var(--hero-wiggle, 1)
         )
       );
   }
@@ -137,17 +163,41 @@
 
 /*
  * The capture at rest and the capture asked about: the coloured subject is
- * desaturated into the room's grey by default, and hovering the card hands
- * the colour back - to the subject and, because the echoes are copies of
- * the same pieces, to the whole trail as it grows out.
+ * desaturated into the room's grey by default and lifted toward white by
+ * --figure-brightness (the root's tuning knob; 1.75 was the shipped value
+ * before the knob, and stays as the fallback), and hovering the card - or
+ * its turn in the round robin - hands the colour back: to the subject and,
+ * because the echoes are copies of the same pieces, to the whole trail as
+ * it grows out.
+ *
+ * On load the figure arrives in colour instead and drains to the rest
+ * state as its trail folds: figure-intro holds `filter: none` through the
+ * echo hold (fill backwards) and runs the drain over the trail's collapse,
+ * starting as the farthest echo starts to fold and ending as the nearest
+ * finishes (--echo-hold + 0.15s, 0.9s). No forwards fill, so the property
+ * is handed back to the rules above the moment it ends and hover owns it
+ * again. Under reduced motion the global rule zeroes the delay and the
+ * duration, so the figure is grey from the first frame.
  */
 .piece img {
-  filter: grayscale(1) brightness(1.75);
+  filter: grayscale(1) brightness(var(--figure-brightness, 1.75));
   transition: filter 0.35s ease;
+  animation: figure-intro 0.9s var(--reveal-ease) backwards;
+  animation-delay: calc(var(--echo-hold) + 0.15s);
 }
 
-.card:hover .piece img {
+.card:hover .piece img,
+.card[data-echo] .piece img {
   filter: none;
+}
+
+@keyframes figure-intro {
+  from {
+    filter: none;
+  }
+  to {
+    filter: grayscale(1) brightness(var(--figure-brightness, 1.75));
+  }
 }
 
 /* One copy of the subject - the figure and every echo of it. */

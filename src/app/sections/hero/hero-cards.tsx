@@ -11,17 +11,24 @@ import styles from "./hero-cards.module.css";
 // the room shows straight through and the figure reads as standing inside
 // it rather than printed on a card.
 //
-// The subjects are the coloured cutouts, resting desaturated: the capture
-// filed in the room's own grey until the pointer asks about it, when the
-// colour comes back with the trail - the film run, not just the frame. The
-// desaturation is a filter (hero-cards.module.css), so the hover trades one
-// filter for none and the echoes inherit the same colour for free.
+// The subjects are the coloured cutouts, resting desaturated and lifted
+// bright: the capture filed in the room's own grey - "pristine white",
+// how bright is the client's knob, --figure-brightness in
+// src/tuning.config.ts - until the pointer asks about it, when the colour
+// comes back with the trail - the film run, not just the frame. On load
+// the figures arrive in colour with their trails out and drain to the grey
+// as the trails fold (client feedback, round 2: fire the effect once, in
+// colour, on arrival). The desaturation is a filter
+// (hero-cards.module.css), so the hover trades one filter for none and the
+// echoes inherit the same colour for free.
 //
 // The stand is the anchor: each card's bottom edge is pinned to a fraction
 // of the room plate's height (--card-feet), so the frame sits on the floor
 // line wherever the viewport puts it, and the whole card scales from that
-// bottom edge by its depth (--card-scale) - the manufacturing line stands
-// nearest and largest, the two flanking captures a step further in.
+// bottom edge by its depth (--card-scale). Since feedback round 2 all three
+// stand on the same line at the same depth, so the two numbers are the same
+// for every card - the mechanism stays per card so a scatter is one edit
+// away.
 //
 // Two kinds of motion, both defined in hero-cards.module.css:
 //
@@ -37,20 +44,33 @@ import styles from "./hero-cards.module.css";
 //   replays it: the trail grows back out, and folds away again on leave,
 //   always staggered.
 //
-// Geometry is the comp's at 1496: cards on 17.38%/39.71%/68.85% - the
-// manufacturing line nudged 2% left of the comp's 41.71% on client
-// feedback, and the flanking captures swapped (robot left, dancer right,
-// also client feedback) while keeping the comp's slot geometry - with their
-// feet at 95.77%/109.17%/95.93% of the plate height - the flanking pair
-// dropped 50px from the comp to sit deeper into the floor - and scales of
-// 1.153/1.386/1.153 over a base card of 19.1cqw, the comp's 178.826px at
-// the design width grown 1.6x and measured in viewport units so the
-// figures keep their proportion to the room on any display. The shift factors keep
-// the comp's original depths: eyeshift * -z / (P - z) with the room's P of
-// 100cqw and its 8cqw / 5.1cqh eye travel, the flanking captures about
-// 58cqw into the room and the manufacturing line 30cqw in front of the
-// plate plane. Below the xl breakpoint the scatter would collide with the
-// headline, so the cards fall into a three-column strip above the ruler.
+// Geometry: one line. All three feet stand on 109.17% of the plate height -
+// the floor line the manufacturing capture always stood on, now shared - at
+// one scale of 1.3 over a base card of 19.1cqw, the comp's 178.826px at the
+// design width grown 1.6x and measured in the site frame's cqw so the
+// figures keep their proportion to the room on any display (client
+// feedback, round 2: with the centre call to action gone, the figures stand
+// in a row and grow a step). The comp's scatter was 17.38%/39.71%/68.85%
+// with the flanks a step deeper (feet 95.77%/95.93%, scale 1.153) and the
+// centre nearest (1.386). The row keeps its order - robot left, dancer
+// right, both client feedback - and is placed by what shows, not by the
+// invisible card boxes: the robot's pieces span 0..82% of its body, the
+// line -1..101%, the dancer 26..73%, and the 9-degree stances foreshorten
+// the flanks, so equal card gaps would read as a row leaning right. Instead
+// the three FIGURES are spaced with even gaps (about 6.4cqw; measured
+// 96/97px at 1496) and the row of them is centred on the vanishing point
+// (49.82%), which puts the manufacturing line's centre at 53.3% - within
+// half a percent of where the client had nudged it (2% left of the comp's
+// 41.71%). The dancer's box stands 6px off the line's at 1496: the flank
+// lefts cannot come closer without the boxes overlapping.
+// With every card at the same depth the shift factors are one number:
+// physically eyeshift * -z / (P - z) at 30cqw in front of the plate plane,
+// with the room's P of 100cqw and its 8cqw / 5.1cqh travel, is -3.5cqw /
+// -1.09cqw - but a row front and centre taking the full move reads as
+// restless rather than deep, so all three take the calmer fraction the
+// centre card already took, and move as one. Below the xl breakpoint the
+// row would sit in the headline's lap, so the cards fall into a
+// three-column strip above the ruler.
 
 type Piece = {
   image: StaticImageData;
@@ -95,11 +115,11 @@ const cards: StandingCard[] = [
         aspect: "22.87 / 68.61",
       },
     ],
-    left: "17.38%",
-    feet: 0.9577,
+    left: "14.7%",
+    feet: 1.0917,
     scale: 1.3,
-    shiftX: "2.98cqw",
-    shiftY: "0.93cqw",
+    shiftX: "-1.44cqw",
+    shiftY: "-0.45cqw",
     tilt: "9deg",
     tiltGain: "3.2deg",
     reveal: 7,
@@ -114,15 +134,13 @@ const cards: StandingCard[] = [
         aspect: "252.352 / 109.353",
       },
     ],
-    left: "39.71%",
+    left: "40.9%",
     feet: 1.0917,
-    scale: 1.386,
-    // Physically this card, nearest of the three, would take the biggest
-    // move (-3.5cqw / -1.09cqw at its depth) - but front and centre, the
-    // full value reads as restless rather than deep, so it takes a calmer
-    // fraction of it and barely turns.
+    scale: 1.3,
     shiftX: "-1.44cqw",
     shiftY: "-0.45cqw",
+    /* Facing the viewer squarely, and barely turning with the eye: the
+       flanks carry the standing angles. */
     tilt: "0deg",
     tiltGain: "1.28deg",
     reveal: 8,
@@ -137,11 +155,11 @@ const cards: StandingCard[] = [
         aspect: "97 / 135",
       },
     ],
-    left: "68.85%",
-    feet: 0.9593,
+    left: "66.12%",
+    feet: 1.0917,
     scale: 1.3,
-    shiftX: "2.93cqw",
-    shiftY: "0.91cqw",
+    shiftX: "-1.44cqw",
+    shiftY: "-0.45cqw",
     tilt: "-9deg",
     tiltGain: "3.2deg",
     reveal: 9,
