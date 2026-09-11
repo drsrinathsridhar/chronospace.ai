@@ -43,8 +43,15 @@ export const media = {
     nvidiaInception: "/media/backers/nvidia-inception.png",
   },
 
-  /** The intro spread's take: portrait, 4/5 plate. */
+  /**
+   * The intro spread's visual. For now a still - the split-circle
+   * placeholder (photo half, voxel half) standing in until the client
+   * decides what the section shows (feedback round 2, slide 4). The
+   * manufacturing take stays listed for when the owner's rebuilt scene is
+   * ready; sections/problem reads `picture` today.
+   */
   intro: {
+    picture: "/media/intro/placeholder.png",
     manufacturing: {
       src: "/media/intro/manufacturing.mp4",
       poster: "/media/intro/manufacturing-poster.jpg",

@@ -76,11 +76,14 @@ hover is gone.
 
 ### Problem / intro (`src/app/sections/problem/`)
 
-Two columns on a 12-col grid: the manufacturing take (`media.intro.manufacturing`,
-768x1024, 8s, compact `TimelinePlayer`, `aspect 4 / 5`, `preload="none"`)
-in cols 1-5 with `PointerDrift`; cols 6-12 hold the lede (read-sweep, two
-shortened paragraphs) and a `<dl>` of three readings with
-`MeasureBracketIcon`. `id="problem"`.
+Two columns on a 12-col grid: a still (`media.intro.picture`, the owner's
+split-circle placeholder, square box, `object-contain`, centred on the
+copy) in cols 1-5 with `PointerDrift`; cols 6-12 hold the lede (read-sweep,
+two shortened paragraphs) and a `<dl>` of three readings with
+`MeasureBracketIcon`. `id="problem"`. The manufacturing take that used to
+run here in the compact `TimelinePlayer` is parked in
+`media.intro.manufacturing` until the client decides on the visual
+(round 2, slide 4) and the owner's rebuilt scene is ready.
 
 ### Product (`src/app/sections/product/`)
 

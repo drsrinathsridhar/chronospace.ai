@@ -1,19 +1,22 @@
+import Image from "next/image";
 import { MeasureBracketIcon } from "@/icons/generated";
 import { PointerDrift } from "@/components/pointer-drift.client";
 import { ReadProgress } from "@/components/read-progress.client";
 import { RevealScope } from "@/components/reveal-scope.client";
-import { TimelinePlayer } from "@/components/timeline-player.client";
 import { media } from "@/media.config";
 import styles from "./problem.module.css";
 
 // The intro: after the hero's claim, the argument - in two columns now, not
 // a lone block of copy (client feedback: text-dense, no visual break). On
-// the left the manufacturing take runs in the compact build of the shared
-// timeline player, the same instrument as the product cards and the
-// viewer, playing on arrival and loading nothing before it. On the right
-// the lede in two short paragraphs, then the three questions a finished
-// capture answers, each rehearsed with the reading the viewer below will
-// land on.
+// the left a picture: for now the split-circle placeholder the owner
+// supplied (a robot half in photograph, half in voxels), standing in until
+// the client settles what this section shows (feedback round 2, slide 4:
+// "the 4D movement we bring vs the 2Ds in the market"). The manufacturing
+// take that ran here in the shared timeline player is out for the moment;
+// its slot stays in media.config.ts for when the rebuilt scene lands. On
+// the right the lede in two short paragraphs, then the three questions a
+// finished capture answers, each rehearsed with the reading the viewer
+// below will land on.
 //
 // The read sweep stays: the comp freezes the lede mid-read - white up to
 // "...a machine can u", muted from there on - which is a scroll state, not
@@ -23,14 +26,15 @@ import styles from "./problem.module.css";
 // problem.module.css. Without JavaScript, or under reduced motion, the
 // progress rests at 1 and the copy reads as settled ink.
 //
-// The take hangs at its own depth: the shared pointer drift eases it a few
-// pixels against the pointer while the copy holds still.
+// The picture hangs at its own depth: the shared pointer drift eases it a
+// few pixels against the pointer while the copy holds still.
 //
-// Geometry on the 12-column grid: the take takes 5 columns (5/12, which is
-// the comp's 42% offset turned into a column), the copy the remaining 7 at
-// the hero headline's 698px measure. At the 1496 design width that is the
-// take across x 40-616 and the copy from x 638. Under the md breakpoint
-// the take stacks above the copy at full width.
+// Geometry on the 12-column grid: the picture takes 5 columns (5/12, which
+// is the comp's 42% offset turned into a column), the copy the remaining 7
+// at the hero headline's 698px measure. At the 1496 design width that is
+// the picture across x 40-616 and the copy from x 638, the picture centred
+// on the copy's height. Under the md breakpoint it stacks above the copy at
+// full width.
 
 const paragraphs = [
   "Frontier models have consumed everything that was already digital. The physical world - where the work actually happens - was never recorded in a form a machine can use.",
@@ -56,17 +60,17 @@ export function Problem() {
       <RevealScope className="grid gap-12 md:grid-cols-12 md:gap-5.5">
         <PointerDrift>
           <div
-            className={`${styles.visual} sweep-in md:col-span-5`}
+            className={`${styles.visual} sweep-in relative aspect-square md:col-span-5 md:self-center`}
             style={{ "--beat": 0 }}
           >
-            <TimelinePlayer
-              src={media.intro.manufacturing.src}
-              poster={media.intro.manufacturing.poster}
-              fallbackDuration={media.intro.manufacturing.duration}
-              aspect="4 / 5"
-              name="the manufacturing take"
-              compact
-              preload="none"
+            {/* TODO(client): the final intro visual - swap the file in
+                public/media/intro (media.config.ts, `intro.picture`). */}
+            <Image
+              src={media.intro.picture}
+              alt=""
+              fill
+              sizes="(min-width: 48rem) 42vw, 100vw"
+              className="object-contain"
             />
           </div>
         </PointerDrift>
