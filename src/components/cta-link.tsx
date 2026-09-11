@@ -37,9 +37,15 @@ const sizes = {
   },
 } as const;
 
+// `inverse` is the block in the page's ink with paper type - the navbar's
+// action once the page has scrolled (site-header.module.css switches it
+// there by scroll state) and the closing block's primary action over its
+// video (client feedback, round 2: white where orange would distract).
 const variants = {
   solid:
     "bg-accent text-accent-foreground hover:bg-accent-hover focus-visible:bg-accent-hover transition-colors duration-150 ease-out",
+  inverse:
+    "bg-ink text-paper hover:bg-ink-hover focus-visible:bg-ink-hover transition-colors duration-150 ease-out",
   outline: "border-line text-ink hover:bg-surface border transition-colors",
 } as const;
 

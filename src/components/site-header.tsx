@@ -16,9 +16,11 @@ import styles from "./site-header.module.css";
 // feedback, September 2026 - it read as distraction).
 //
 // On scroll the bar tightens (site-header-scroll.client.tsx flips
-// `data-scrolled` on the root, which shrinks --navbar-height). Hovering the
-// logo sends an orange band of light across the mark - the hero copy's
-// reveal, played as a flare (site-header.module.css).
+// `data-scrolled` on the root, which shrinks --navbar-height) and the
+// orange cell turns to ink with paper type: the accent belongs to the hero,
+// and carried down the page it read as a distraction (client feedback,
+// round 2 - site-header.module.css). Hovering the logo sends an orange band
+// of light across the mark - the hero copy's reveal, played as a flare.
 
 const navCell = "flex h-full items-center";
 // The plain links fill with the page ground on hover; the orange cell keeps
@@ -68,7 +70,7 @@ export function SiteHeader() {
           <CtaLink
             size="nav"
             href={siteConfig.links.contact}
-            className={navCell}
+            className={`${navCell} ${styles.cta}`}
           >
             Connect with us
           </CtaLink>

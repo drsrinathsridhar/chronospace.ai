@@ -43,3 +43,19 @@ a:focus-visible .flare {
   opacity: 1;
   animation: logo-flare 0.9s var(--reveal-ease) both;
 }
+
+/*
+ * The bar's call to action, once the page has left the hero: ink block,
+ * paper type, a touch of paper folded into the ink under the pointer - the
+ * `inverse` colouring of cta-link.tsx, switched by the root's scroll state
+ * rather than a prop, so the server markup never changes.
+ */
+:root[data-scrolled] .cta {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+:root[data-scrolled] .cta:hover,
+:root[data-scrolled] .cta:focus-visible {
+  background: var(--ink-hover);
+}
