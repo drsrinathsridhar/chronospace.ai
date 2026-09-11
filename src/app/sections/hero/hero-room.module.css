@@ -95,11 +95,16 @@
  *
  * --eye-x / --eye-y arrive from hero-room-eye.client.tsx as -1..1 and rest
  * at 0, so with no script, or for anyone who has asked for less motion, this
- * is exactly the comp.
+ * is exactly the comp. The travel - 8cqw across, 5.1cqh up and down at full
+ * lean - is scaled by --hero-wiggle, the client's one knob for how much the
+ * room moves (src/tuning.config.ts, written on the root by app/layout.tsx;
+ * 1 is this amount, 0 parks the room). The standing cards scale their own
+ * moves by the same knob (hero-cards.module.css), so they keep standing in
+ * the room at any setting.
  */
 .stage {
-  --eye-shift-x: calc(8cqw * var(--eye-x, 0));
-  --eye-shift-y: calc(5.1cqh * var(--eye-y, 0));
+  --eye-shift-x: calc(8cqw * var(--eye-x, 0) * var(--hero-wiggle, 1));
+  --eye-shift-y: calc(5.1cqh * var(--eye-y, 0) * var(--hero-wiggle, 1));
   --eye: translate3d(
     calc(-1 * var(--eye-shift-x)),
     calc(-1 * var(--eye-shift-y)),

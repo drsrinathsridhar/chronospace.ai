@@ -11,11 +11,16 @@ import styles from "./hero-cards.module.css";
 // the room shows straight through and the figure reads as standing inside
 // it rather than printed on a card.
 //
-// The subjects are the coloured cutouts, resting desaturated: the capture
-// filed in the room's own grey until the pointer asks about it, when the
-// colour comes back with the trail - the film run, not just the frame. The
-// desaturation is a filter (hero-cards.module.css), so the hover trades one
-// filter for none and the echoes inherit the same colour for free.
+// The subjects are the coloured cutouts, resting desaturated and lifted
+// bright: the capture filed in the room's own grey - "pristine white",
+// how bright is the client's knob, --figure-brightness in
+// src/tuning.config.ts - until the pointer asks about it, when the colour
+// comes back with the trail - the film run, not just the frame. On load
+// the figures arrive in colour with their trails out and drain to the grey
+// as the trails fold (client feedback, round 2: fire the effect once, in
+// colour, on arrival). The desaturation is a filter
+// (hero-cards.module.css), so the hover trades one filter for none and the
+// echoes inherit the same colour for free.
 //
 // The stand is the anchor: each card's bottom edge is pinned to a fraction
 // of the room plate's height (--card-feet), so the frame sits on the floor
