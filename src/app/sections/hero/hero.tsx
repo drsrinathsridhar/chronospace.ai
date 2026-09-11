@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { siteConfig } from "@/site.config";
 import { CtaLink } from "@/components/cta-link";
 import { HeroCards } from "./hero-cards";
@@ -29,7 +30,10 @@ import { HeroTimeline } from "./hero-timeline";
 
 // Two spans rather than one string with a break: each line is picked up by
 // the shimmer on its own beat, and the break stays where the comp puts it
-// instead of wherever the measure happens to fall.
+// instead of wherever the measure happens to fall. A plain space separates
+// the spans in the markup: the flex column never renders it, but without it
+// the text content - what search engines, readers and copy-paste see - ran
+// the lines together ("builds AIto digitize"; client feedback, round 2).
 const headline = ["ChronoSpace builds AI", "to digitize the physical world"];
 
 export function Hero() {
@@ -71,13 +75,15 @@ export function Hero() {
            * instead of leaving a single word stranded.
            */}
           {headline.map((line, index) => (
-            <span
-              key={line}
-              className="shimmer-reveal text-balance"
-              style={{ "--reveal-index": index + 1 }}
-            >
-              {line}
-            </span>
+            <Fragment key={line}>
+              {index > 0 && " "}
+              <span
+                className="shimmer-reveal text-balance"
+                style={{ "--reveal-index": index + 1 }}
+              >
+                {line}
+              </span>
+            </Fragment>
           ))}
         </h1>
 
