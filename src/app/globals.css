@@ -18,6 +18,8 @@
   --accent-foreground: #ffffff;
   /* The orange under a pointer: the same accent with 10% black folded in. */
   --accent-hover: color-mix(in srgb, var(--accent), #000 10%);
+  /* The ink block under a pointer: the same white with 10% paper folded in. */
+  --ink-hover: color-mix(in srgb, var(--ink), var(--paper) 10%);
   --ring: #f25324;
 
   /*
@@ -80,6 +82,7 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent-hover: var(--accent-hover);
+  --color-ink-hover: var(--ink-hover);
   --color-ring: var(--ring);
   --font-sans: var(--font-sans-brand);
   --font-display: var(--font-display-brand);
@@ -88,9 +91,12 @@
   --radius-pill: 999px;
   --shadow-soft: 0 16px 48px rgb(0 0 0 / 24%);
   /* Section rhythm: 120 above and below every section, 80 from a
-     section's header stack to its content. */
+     section's header stack to its content, and 40 between the panels of
+     every three-column row (product takes, portraits, research cards) -
+     the comp's 22 read as dense (client feedback, round 2). */
   --spacing-section: 7.5rem;
   --spacing-section-gap: 5rem;
+  --spacing-panel-gap: 2.5rem;
   --spacing-gutter: var(--gutter);
   --spacing-navbar: var(--navbar-height);
   --spacing-navbar-rest: var(--navbar-height-rest);

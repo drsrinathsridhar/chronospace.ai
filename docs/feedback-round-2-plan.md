@@ -14,20 +14,20 @@ decision before or during the build.
 
 ## 0. What the client sent, and what each file is for
 
-| File in `public/feedback-11:09/`           | What it is                                                                                | Used by task |
-| ------------------------------------------ | ----------------------------------------------------------------------------------------- | ------------ |
-| `Chronospace_landing_page_feedback_10th_sep_2026.pptx` | The deck. Slides 1-10 are this round.                                            | all          |
-| `nvidia-inception-black-transparent.png`   | NVIDIA Inception Program lockup, black on transparent, 782x300                            | T2           |
-| `nvidia-inception-color-transparent.png`   | Same lockup, green eye + black type, transparent                                          | T2           |
-| `nvidia-inception-cropped.png`             | Same lockup, cropped, opaque white ground                                                 | T2 (spare)   |
-| `girls-dancing.mp4`                        | 1280x720, 3.2 s, H.264, 0.5 MB. Replaces the third product clip ("The scene stays queryable") | T6        |
-| `footer-woodworking.mp4`                   | 1920x1080, 21.9 s, H.264+AAC, **385 MB at 140 Mbps** - must be re-encoded before it ships | T9           |
-| `scrubber-reference.mov`                   | 2762x778, 8.3 s screen recording of the arc scrubber the client wants (a "free viewpoint" dial) | T5      |
-| `scrubber-image.png`                       | Still of that dial: arc, handle dot, orange progress sweep, centre dot, "FREE VIEWPOINT", "VIEW 15 / 60" | T5 |
-| `Screenshot 2026-09-11 002717.png`         | Footer style reference: full-bleed video, big headline left, two buttons, slim bottom bar | T9           |
-| `Screenshot 2026-09-11 003928.png`         | 2D factory-scene reference for the manufacturing animation                                | DEFER        |
+| File in `public/feedback-11:09/`                       | What it is                                                                                               | Used by task |
+| ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------- | ------------ |
+| `Chronospace_landing_page_feedback_10th_sep_2026.pptx` | The deck. Slides 1-10 are this round.                                                                    | all          |
+| `nvidia-inception-black-transparent.png`               | NVIDIA Inception Program lockup, black on transparent, 782x300                                           | T2           |
+| `nvidia-inception-color-transparent.png`               | Same lockup, green eye + black type, transparent                                                         | T2           |
+| `nvidia-inception-cropped.png`                         | Same lockup, cropped, opaque white ground                                                                | T2 (spare)   |
+| `girls-dancing.mp4`                                    | 1280x720, 3.2 s, H.264, 0.5 MB. Replaces the third product clip ("The scene stays queryable")            | T6           |
+| `footer-woodworking.mp4`                               | 1920x1080, 21.9 s, H.264+AAC, **385 MB at 140 Mbps** - must be re-encoded before it ships                | T9           |
+| `scrubber-reference.mov`                               | 2762x778, 8.3 s screen recording of the arc scrubber the client wants (a "free viewpoint" dial)          | T5           |
+| `scrubber-image.png`                                   | Still of that dial: arc, handle dot, orange progress sweep, centre dot, "FREE VIEWPOINT", "VIEW 15 / 60" | T5           |
+| `Screenshot 2026-09-11 002717.png`                     | Footer style reference: full-bleed video, big headline left, two buttons, slim bottom bar                | T9           |
+| `Screenshot 2026-09-11 003928.png`                     | 2D factory-scene reference for the manufacturing animation                                               | DEFER        |
 
-Also at repo root, untracked: `safari-issue.png` - a screenshot of an *older*
+Also at repo root, untracked: `safari-issue.png` - a screenshot of an _older_
 navbar design (Problem / How it works / Applications / Research). Not part of
 this deck; **ASK** what it is for before doing anything with it.
 
@@ -40,71 +40,80 @@ commit would ship 430 MB of masters to Vercel. Add it to `.gitignore` in T0
 ## 1. The feedback, slide by slide
 
 ### Slide 1 - cover
+
 Anchored on staging. Nothing to do.
 
 ### Slide 2 - Hero
-| # | Request (client wording paraphrased)                                                                                           | Status |
-| - | ------------------------------------------------------------------------------------------------------------------------------ | ------ |
-| 2a | "Firstly, the PROGRESS IS GREAT!"                                                                                             | -      |
-| 2b | Remove **all** cameras from the hero scene                                                                                    | DO T3  |
-| 2c | Remove the **centre** "Connect with us" button; keep only the navbar one                                                      | DO T3  |
-| 2d | With the button gone, put the three capture figures **on one horizontal line** and **scale them up a bit**                    | DO T3  |
-| 2e | "Land a WOW": the echo/trail effect on the three figures should fire **in colour once on page load** (today it plays in white) | DO T3  |
-| 2f | Figures should rest as an **even brighter white** ("pristine look"), or expose brightness as a setting                        | DO T3 + T11 |
-| 2g | Bug: headline reads "builds AIto digitize" in the text fallback (no space between the two spans)                              | DO T1  |
-| 2h | Swap the NVIDIA mark for the final NVIDIA Inception lockup (files supplied)                                                   | DO T2  |
+
+| #   | Request (client wording paraphrased)                                                                                           | Status      |
+| --- | ------------------------------------------------------------------------------------------------------------------------------ | ----------- |
+| 2a  | "Firstly, the PROGRESS IS GREAT!"                                                                                              | -           |
+| 2b  | Remove **all** cameras from the hero scene                                                                                     | DO T3       |
+| 2c  | Remove the **centre** "Connect with us" button; keep only the navbar one                                                       | DO T3       |
+| 2d  | With the button gone, put the three capture figures **on one horizontal line** and **scale them up a bit**                     | DO T3       |
+| 2e  | "Land a WOW": the echo/trail effect on the three figures should fire **in colour once on page load** (today it plays in white) | DO T3       |
+| 2f  | Figures should rest as an **even brighter white** ("pristine look"), or expose brightness as a setting                         | DO T3 + T11 |
+| 2g  | Bug: headline reads "builds AIto digitize" in the text fallback (no space between the two spans)                               | DO T1       |
+| 2h  | Swap the NVIDIA mark for the final NVIDIA Inception lockup (files supplied)                                                    | DO T2       |
 
 ### Slide 3 - Manufacturing animation
+
 Replace the conveyor scene with two workers interacting with a machine, in
 brand style, per the 2D reference. **DEFER** - owner builds the asset later
 and swaps it in. Nothing in this round should make that swap harder (see T10).
 
 ### Slide 4 - Intro spread ("Frontier models have consumed...") visual
+
 The conveyor take is fine, but can the visual show "the 4D movement we bring
 vs the 2D in the market" (split-circle reference: photo half / voxel half)?
 "Don't spend too much time." **DEFER** - this is asset/animation work on the
 same clip as slide 3. Noted in "Open items" so it is not lost.
 
 ### Slides 5-6 - Product videos ("One capture, three things") and the viewer ("Everything is measurable")
-| # | Request                                                                                                          | Status |
-| - | ---------------------------------------------------------------------------------------------------------------- | ------ |
-| 5a | **Restore colour** on the videos for now (they render desaturated)                                              | DO T4  |
-| 5b | Replace the **linear scrub timeline with a circular / arc timeline** - an interactive scrub you can drag to pan the video. Same arc treatment on all three product videos and (slide 6) on the viewer | DO T5 |
-| 5c | Keep current clips as placeholders; **crop/cut them well - no white bands** at the sides; do not edit content     | DO T6  |
-| 5d | **Replace the third video** (callout sits over "The scene stays queryable") with `girls-dancing.mp4`             | DO T6  |
-| 5e | **Increase spacing** between the three product videos - the section reads dense                                  | DO T7  |
+
+| #   | Request                                                                                                                                                                                               | Status |
+| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| 5a  | **Restore colour** on the videos for now (they render desaturated)                                                                                                                                    | DO T4  |
+| 5b  | Replace the **linear scrub timeline with a circular / arc timeline** - an interactive scrub you can drag to pan the video. Same arc treatment on all three product videos and (slide 6) on the viewer | DO T5  |
+| 5c  | Keep current clips as placeholders; **crop/cut them well - no white bands** at the sides; do not edit content                                                                                         | DO T6  |
+| 5d  | **Replace the third video** (callout sits over "The scene stays queryable") with `girls-dancing.mp4`                                                                                                  | DO T6  |
+| 5e  | **Increase spacing** between the three product videos - the section reads dense                                                                                                                       | DO T7  |
 
 ### Slide 7 - Team
-| # | Request                                                                                                                       | Status |
-| - | ----------------------------------------------------------------------------------------------------------------------------- | ------ |
-| 7a | Navbar "Connect with us" turns **white with black text once scrolled away from the hero**; orange is distracting down the page | DO T8 |
-| 7b | Increase spacing between the three portraits, portraits **a bit smaller**; keep that spacing **consistent across every 3-panel section** | DO T7 |
-| 7c | A **clean LinkedIn logo** (reference: the "in" glyph + "LinkedIn" in accent)                                                  | DO T7  |
-| 7d | Heading is just **"Team"**, not "Meet the team"                                                                               | DO T7  |
+
+| #   | Request                                                                                                                                  | Status |
+| --- | ---------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| 7a  | Navbar "Connect with us" turns **white with black text once scrolled away from the hero**; orange is distracting down the page           | DO T8  |
+| 7b  | Increase spacing between the three portraits, portraits **a bit smaller**; keep that spacing **consistent across every 3-panel section** | DO T7  |
+| 7c  | A **clean LinkedIn logo** (reference: the "in" glyph + "LinkedIn" in accent)                                                             | DO T7  |
+| 7d  | Heading is just **"Team"**, not "Meet the team"                                                                                          | DO T7  |
 
 ### Slide 8 - Closing block + footer
-| # | Request                                                                                                               | Status |
-| - | --------------------------------------------------------------------------------------------------------------------- | ------ |
-| 8a | Footer background video = the **woodworking clip**; **remove the dancer and robot-arm** trail assets                  | DO T9  |
-| 8b | Style it like the reference screenshot: full-bleed video, headline left, one-line sub-copy, "Connect with us" + "Follow on LinkedIn" buttons, slim bottom bar with logo · copyright · LinkedIn · Terms · Privacy | DO T9 |
+
+| #   | Request                                                                                                                                                                                                          | Status |
+| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| 8a  | Footer background video = the **woodworking clip**; **remove the dancer and robot-arm** trail assets                                                                                                             | DO T9  |
+| 8b  | Style it like the reference screenshot: full-bleed video, headline left, one-line sub-copy, "Connect with us" + "Follow on LinkedIn" buttons, slim bottom bar with logo · copyright · LinkedIn · Terms · Privacy | DO T9  |
 
 The annotated screenshot covers both the Vision section and the Footer, so
 the two merge into one closing block (see decision D5).
 
 ### Slide 9 - Research & Insights
-| # | Request                                                                                                                                  | Status |
-| - | ---------------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| 9a | Add a **media placeholder per card** (extract from the source if possible, else any representative image); placeholders must be **easy to replace** | DO T10 |
-| 9b | **Drop the wireframe-style card** (bordered box with header strip); use the **minimalist card style** of the other sections, same gap as the other 3-panel sections | DO T7 + T10 |
+
+| #   | Request                                                                                                                                                             | Status      |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 9a  | Add a **media placeholder per card** (extract from the source if possible, else any representative image); placeholders must be **easy to replace**                 | DO T10      |
+| 9b  | **Drop the wireframe-style card** (bordered box with header strip); use the **minimalist card style** of the other sections, same gap as the other 3-panel sections | DO T7 + T10 |
 
 ### Slide 10 - General housekeeping
-| # | Request                                                                                                                                             | Status |
-| - | --------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| 10a | This build is the long-term template; **every video and image slot must be swappable without touching layout or code structure**                  | DO T11 |
-| 10b | The **circular scrubber must work independently of whichever clip sits in it**                                                                     | DO T5  |
-| 10c | The hero **wiggle is great - expose a single config knob** for how much it wiggles                                                                 | DO T11 |
-| 10d | A **short note in the handoff on how to swap assets and settings** (file locations, formats, dimensions)                                           | DO T12 |
-| 10e | Minor alignment and spacing issues across the page - not itemised, trusted to the final pass                                                       | DO T13 |
+
+| #   | Request                                                                                                                          | Status |
+| --- | -------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| 10a | This build is the long-term template; **every video and image slot must be swappable without touching layout or code structure** | DO T11 |
+| 10b | The **circular scrubber must work independently of whichever clip sits in it**                                                   | DO T5  |
+| 10c | The hero **wiggle is great - expose a single config knob** for how much it wiggles                                               | DO T11 |
+| 10d | A **short note in the handoff on how to swap assets and settings** (file locations, formats, dimensions)                         | DO T12 |
+| 10e | Minor alignment and spacing issues across the page - not itemised, trusted to the final pass                                     | DO T13 |
 
 ---
 
@@ -151,22 +160,22 @@ the two merge into one closing block (see decision D5).
 
 Each task ends with `npm run format:fix && npm run lint && npm run typecheck && npm run build` and a browser check at 1496 / 1920 / 390 using the measurement approach from `docs/client-feedback-plan.md` §9 (screenshots may fail in the hidden pane; measure with `javascript_tool`).
 
-| #   | Task                                                                  | Items          | Primary files                                                                                  | Depends on |
-| --- | --------------------------------------------------------------------- | -------------- | ---------------------------------------------------------------------------------------------- | ---------- |
-| T0  | Branch + backup tag; gitignore `public/feedback-11:09/`; install/confirm ffmpeg | -      | `.gitignore`                                                                                   | -          |
-| T1  | Headline text fallback space                                          | 2g             | `hero.tsx`                                                                                     | -          |
-| T2  | NVIDIA Inception lockup                                               | 2h             | `backers.tsx`, `public/media/backers/nvidia-inception.png`                                     | T0         |
-| T3  | Hero: remove cameras + centre CTA, one-line figures scaled up, colour echo on load, brighter rest, re-centre copy, recompute hero min-height | 2b-2f | `hero.tsx`, `hero-room.tsx`, `hero-room-cameras.tsx` (delete), `hero-room.module.css`, `hero-cards.tsx`, `hero-cards.module.css`, `hero-room-eye.client.tsx` | T1 |
-| T4  | Video colour flag                                                     | 5a             | `timeline-player.module.css`, `tuning.config.ts` (stub), `globals.css`                        | -          |
-| T5  | Arc scrubber component in `TimelinePlayer` (both builds), a11y range kept, reduced-motion safe | 5b, 10b | `src/components/arc-scrubber.client.tsx` (+css), `timeline-player.client.tsx`, `.module.css`, `src/icons/source/` if new glyphs | T4 |
-| T6  | Product clips: swap third clip, drop timed overlay + chips, poster regen, confirm no side bands (object-fit already `cover`; check each poster/clip aspect) | 5c, 5d | `product.tsx`, `measurable-marks.ts`, `public/media/product/` | T0 |
-| T7  | 3-panel rhythm: `--spacing-panel-gap` token; Team heading "Team", smaller 4:5 portraits, LinkedIn glyph link; Science card chrome to minimalist grammar | 5e, 7b-7d, 9b | `globals.css`, `product.tsx`, `team.tsx`, `team.module.css`, `science.tsx`, `hero-cards.module.css` (strip) | - |
-| T8  | Navbar CTA white/black after scroll                                   | 7a             | `site-header.tsx`, `site-header.module.css`, `cta-link.tsx` (new `inverse` variant, reused by T9) | -       |
-| T9  | Closing block: re-encode woodworking (1080p + 720p H.264, ~6-10 MB, muted, poster), merge Vision + Footer into `sections/closing`, delete dancer/arm/brackets, bottom bar | 8a, 8b | `src/app/sections/closing/*`, `page.tsx`, `site.config.ts`, `public/media/closing/` | T0 (ffmpeg), T8 |
-| T10 | Science media placeholders (plates from `public/media/science/`)      | 9a             | `science.tsx`, `public/media/science/`                                                         | T7         |
-| T11 | `media.config.ts` + `tuning.config.ts`; move all slot files to `public/media/**`; wire hero wiggle, figure brightness, video tone, arc config | 10a, 10c, 2f | `src/media.config.ts`, `src/tuning.config.ts`, every section that owns media, `globals.css` | T3, T4, T5, T6, T9, T10 |
-| T12 | Handoff: `docs/asset-swap-guide.md` (slots, paths, formats, dimensions, durations, knobs), update `docs/handoff.md`, "waiting on the client" list | 10d | `docs/`                                                                               | T11        |
-| T13 | Final alignment/spacing sweep at 1496 / 1920 / 2560 / 390; nav anchors (Capture `#viewer` and Vision are not in the nav - decide whether to leave) | 10e | various                                                                             | all        |
+| #   | Task                                                                                                                                                                      | Items         | Primary files                                                                                                                                                | Depends on              |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------- |
+| T0  | Branch + backup tag; gitignore `public/feedback-11:09/`; install/confirm ffmpeg                                                                                           | -             | `.gitignore`                                                                                                                                                 | -                       |
+| T1  | Headline text fallback space                                                                                                                                              | 2g            | `hero.tsx`                                                                                                                                                   | -                       |
+| T2  | NVIDIA Inception lockup                                                                                                                                                   | 2h            | `backers.tsx`, `public/media/backers/nvidia-inception.png`                                                                                                   | T0                      |
+| T3  | Hero: remove cameras + centre CTA, one-line figures scaled up, colour echo on load, brighter rest, re-centre copy, recompute hero min-height                              | 2b-2f         | `hero.tsx`, `hero-room.tsx`, `hero-room-cameras.tsx` (delete), `hero-room.module.css`, `hero-cards.tsx`, `hero-cards.module.css`, `hero-room-eye.client.tsx` | T1                      |
+| T4  | Video colour flag                                                                                                                                                         | 5a            | `timeline-player.module.css`, `tuning.config.ts` (stub), `globals.css`                                                                                       | -                       |
+| T5  | Arc scrubber component in `TimelinePlayer` (both builds), a11y range kept, reduced-motion safe                                                                            | 5b, 10b       | `src/components/arc-scrubber.client.tsx` (+css), `timeline-player.client.tsx`, `.module.css`, `src/icons/source/` if new glyphs                              | T4                      |
+| T6  | Product clips: swap third clip, drop timed overlay + chips, poster regen, confirm no side bands (object-fit already `cover`; check each poster/clip aspect)               | 5c, 5d        | `product.tsx`, `measurable-marks.ts`, `public/media/product/`                                                                                                | T0                      |
+| T7  | 3-panel rhythm: `--spacing-panel-gap` token; Team heading "Team", smaller 4:5 portraits, LinkedIn glyph link; Science card chrome to minimalist grammar                   | 5e, 7b-7d, 9b | `globals.css`, `product.tsx`, `team.tsx`, `team.module.css`, `science.tsx`, `hero-cards.module.css` (strip)                                                  | -                       |
+| T8  | Navbar CTA white/black after scroll                                                                                                                                       | 7a            | `site-header.tsx`, `site-header.module.css`, `cta-link.tsx` (new `inverse` variant, reused by T9)                                                            | -                       |
+| T9  | Closing block: re-encode woodworking (1080p + 720p H.264, ~6-10 MB, muted, poster), merge Vision + Footer into `sections/closing`, delete dancer/arm/brackets, bottom bar | 8a, 8b        | `src/app/sections/closing/*`, `page.tsx`, `site.config.ts`, `public/media/closing/`                                                                          | T0 (ffmpeg), T8         |
+| T10 | Science media placeholders (plates from `public/media/science/`)                                                                                                          | 9a            | `science.tsx`, `public/media/science/`                                                                                                                       | T7                      |
+| T11 | `media.config.ts` + `tuning.config.ts`; move all slot files to `public/media/**`; wire hero wiggle, figure brightness, video tone, arc config                             | 10a, 10c, 2f  | `src/media.config.ts`, `src/tuning.config.ts`, every section that owns media, `globals.css`                                                                  | T3, T4, T5, T6, T9, T10 |
+| T12 | Handoff: `docs/asset-swap-guide.md` (slots, paths, formats, dimensions, durations, knobs), update `docs/handoff.md`, "waiting on the client" list                         | 10d           | `docs/`                                                                                                                                                      | T11                     |
+| T13 | Final alignment/spacing sweep at 1496 / 1920 / 2560 / 390; nav anchors (Capture `#viewer` and Vision are not in the nav - decide whether to leave)                        | 10e           | various                                                                                                                                                      | all                     |
 
 Rough sizing: T0-T2, T4, T8 are small (under an hour each). T3, T5, T9, T11
 are the substantial ones (half a day each). T7, T10 medium. T12-T13 a couple
