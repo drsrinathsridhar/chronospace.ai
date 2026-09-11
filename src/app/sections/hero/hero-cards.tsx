@@ -41,28 +41,28 @@ import styles from "./hero-cards.module.css";
 //   always staggered.
 //
 // Geometry: one line. All three feet stand on 109.17% of the plate height -
-// the floor line the manufacturing capture always stood on, now shared - at
-// one scale of 1.5 over a base card of 19.1cqw, the comp's 178.826px at the
-// design width grown 1.6x and measured in the site frame's cqw so the
-// figures keep their proportion to the room on any display (client
-// feedback, round 2: with the centre call to action gone, the figures stand
-// in a row and grow a step). The comp's scatter was 17.38%/39.71%/68.85%
-// with the flanks a step deeper (feet 95.77%/95.93%, scale 1.153) and the
-// centre nearest (1.386). The row keeps its order - robot left, dancer
-// right, both client feedback - and is placed by what shows, not by the
-// invisible card boxes: the robot's pieces span 0..82% of its body, the
-// line -1..101%, the dancer 26..73%, and the 9-degree stances foreshorten
-// the flanks, so equal card gaps would read as a row leaning right. Instead
-// the three FIGURES are spaced with even gaps (about 6.4cqw; measured
-// 96/97px at 1496) and the row of them is centred on the vanishing point
-// (49.82%), which puts the manufacturing line's centre at 53.3% - within
-// half a percent of where the client had nudged it (2% left of the comp's
-// 41.71%). At the 1.5 scale, with the flanks pushed out to 11.3% / 70% at
-// the owner's request (11 Sep 2026), the robot's box stands 40 off the
-// line's at 1496 and the dancer's 7: the flanks cannot come closer without
-// the boxes overlapping. The dancer's box runs a few pixels past a 1920
-// viewport - empty transparency, clipped by the hero, the figure itself
-// well inside.
+// the floor line the manufacturing capture always stood on, now shared -
+// over a base card of 19.1cqw, the comp's 178.826px at the design width
+// grown 1.6x and measured in the site frame's cqw so the figures keep their
+// proportion to the room on any display (client feedback, round 2: with
+// the centre call to action gone, the figures stand in a row and grow a
+// step). The scales are per card - 1.75 / 1.62 / 1.0 - chosen so the
+// PEOPLE in the three pictures stand at one height (owner's request, 11
+// Sep 2026): the robotics figure is a small man beside a large arm, the
+// manufacturing workers fill about 72% of their frame, and the dancer
+// fills hers, so equal card scales gave three different people. The comp's
+// scatter was 17.38%/39.71%/68.85% with the flanks a step deeper (feet
+// 95.77%/95.93%, scale 1.153) and the centre nearest (1.386). The row keeps
+// its order - robot left, dancer right, both client feedback - and is
+// placed by what shows, not by the invisible card boxes: the robot's pieces
+// span 0..82% of its body, the line -1..101%, the dancer 26..73%, and the
+// 9-degree stances foreshorten the flanks. The flanks stand at 8.3% /
+// 77.3%, the line at 39.8% (its centre a hair right of the vanishing
+// point, where the client had nudged it): the robot's box just clears the
+// line's at 1496 (1px) - it cannot come closer without the boxes
+// overlapping - and the dancer's smaller box sits where her figure stood
+// before. Measured at 1496: the robotics man 162px tall, the workers about
+// 168, the dancer's body about 167 (196 to the raised hand).
 // With every card at the same depth the shift factors are one number:
 // physically eyeshift * -z / (P - z) at 30cqw in front of the plate plane,
 // with the room's P of 100cqw and its 8cqw / 5.1cqh travel, is -3.5cqw /
@@ -116,9 +116,9 @@ const cards: StandingCard[] = [
         aspect: "22.87 / 68.61",
       },
     ],
-    left: "11.3%",
+    left: "8.3%",
     feet: 1.0917,
-    scale: 1.5,
+    scale: 1.75,
     shiftX: "-1.44cqw",
     shiftY: "-0.45cqw",
     tilt: "9deg",
@@ -138,9 +138,9 @@ const cards: StandingCard[] = [
         aspect: "1582 / 773",
       },
     ],
-    left: "40.9%",
+    left: "39.8%",
     feet: 1.0917,
-    scale: 1.5,
+    scale: 1.62,
     shiftX: "-1.44cqw",
     shiftY: "-0.45cqw",
     /* Facing the viewer squarely, and barely turning with the eye: the
@@ -159,9 +159,9 @@ const cards: StandingCard[] = [
         aspect: "97 / 135",
       },
     ],
-    left: "70%",
+    left: "77.3%",
     feet: 1.0917,
-    scale: 1.5,
+    scale: 1,
     shiftX: "-1.44cqw",
     shiftY: "-0.45cqw",
     tilt: "-9deg",
