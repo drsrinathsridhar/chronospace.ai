@@ -1,21 +1,25 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import type { ReactNode } from "react";
 import { ArcScrubber } from "./arc-scrubber.client";
 import styles from "./timeline-player.module.css";
 
-// The timeline player: the take in a plate with its controls overlaid in
-// the plate's bottom-right corner on a translucent surface - a drawn
-// play/pause glyph, the arc scrubber beside it, and a HUD row under both:
-// the caption "Timecode" and a frame counter. Built for the capture viewer
+// The timeline player: the take in a plate with its one control overlaid
+// in the plate's bottom-right corner on a translucent surface - the arc
+// scrubber, centred, with the frame counter centred under it. The
+// play/pause glyph and the "Timecode" caption that used to share the
+// surface are gone (owner's request, 11 Sep 2026): the dial is the whole
+// instrument. Built for the capture viewer
 // and reused by the product cards and the intro, so all five plates read
 // as the same instrument. The arc replaced the linear tick track under the
 // plate (client feedback round 2, item 5b); see arc-scrubber.client.tsx.
 //
 // Two builds, one flag. `compact` is the card build: no frame of its own
-// (the card draws the border) and a smaller surface - a tighter arc radius
-// and a smaller button.
+// (the card draws the border) and a smaller surface - a tighter arc radius.
+// The surface is as wide as its dial and no wider, and the counter is
+// centred inside it in tabular figures, so the box never changes size as
+// the frame number ticks over (it used to grow with the digits).
 //
 // One rAF loop owns all the motion: it writes the playhead as a single
 // custom property (--player-progress) on the dial, keeps the range input
@@ -34,7 +38,8 @@ import styles from "./timeline-player.module.css";
 // the plate scrolls into view, gated on prefers-reduced-motion - and with
 // preload="none" the bytes wait for that moment too, which is what lets
 // three takes sit in one row of cards without loading megabytes up front.
-// The pause button and the scrubber work either way.
+// The scrubber works either way; without a pause control the take simply
+// runs (muted, looping) once it has arrived.
 
 /** The frame rate every take is encoded at; the counter counts in it. */
 const FRAME_RATE = 30;
@@ -77,9 +82,6 @@ export function TimelinePlayer({
   const rangeRef = useRef<HTMLInputElement>(null);
   const counterRef = useRef<HTMLSpanElement>(null);
   const scrubbingRef = useRef(false);
-  // Paused until the take actually plays - the play event flips it, so the
-  // button is honest with or without autoplay, script, or reduced motion.
-  const [paused, setPaused] = useState(true);
   const onTickRef = useRef(onTick);
 
   useEffect(() => {
@@ -124,12 +126,10 @@ export function TimelinePlayer({
     }
 
     function onPlay() {
-      setPaused(false);
       wake();
     }
 
     function onPause() {
-      setPaused(true);
       wake();
     }
 
@@ -164,16 +164,6 @@ export function TimelinePlayer({
       video.removeEventListener("seeked", wake);
     };
   }, [fallbackDuration]);
-
-  function toggle() {
-    const video = videoRef.current;
-    if (!video) return;
-    if (video.paused) {
-      video.play().catch(() => {});
-    } else {
-      video.pause();
-    }
-  }
 
   // Seeks to a progress in 0..1 - from the arc's pointer or the range's
   // keys alike - and moves the dial and the range at once rather than a
@@ -214,35 +204,18 @@ export function TimelinePlayer({
         {children}
 
         <div className={styles.surface}>
-          <div className={styles.controls}>
-            <button
-              type="button"
-              onClick={toggle}
-              aria-label={paused ? `Play ${name}` : `Pause ${name}`}
-              className={styles.button}
-            >
-              <span
-                aria-hidden
-                className={paused ? styles.play : styles.pause}
-              />
-            </button>
+          <ArcScrubber
+            dialRef={dialRef}
+            rangeRef={rangeRef}
+            name={name}
+            onSeek={seek}
+            onScrub={scrub}
+          />
 
-            <ArcScrubber
-              dialRef={dialRef}
-              rangeRef={rangeRef}
-              name={name}
-              onSeek={seek}
-              onScrub={scrub}
-            />
-          </div>
-
-          <div className={`${styles.hud} type-caption`}>
-            <span className="text-muted">Timecode</span>
-            <span className="text-ink">
-              <span className="text-muted">Frame </span>
-              <span ref={counterRef}>0 / {frames(fallbackDuration)}</span>
-            </span>
-          </div>
+          <p className={`${styles.counter} type-caption text-ink`}>
+            <span className="text-muted">Frame </span>
+            <span ref={counterRef}>0 / {frames(fallbackDuration)}</span>
+          </p>
         </div>
       </div>
     </div>
