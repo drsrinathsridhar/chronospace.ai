@@ -1,8 +1,8 @@
+import Image from "next/image";
 import type { ReactNode } from "react";
 import {
   A16zSpeedrunIcon,
   BrownAngelGroupIcon,
-  NvidiaIcon,
   TekVenturesIcon,
   VelaIcon,
 } from "@/icons/generated";
@@ -27,11 +27,16 @@ import styles from "./backers.module.css";
 // the page's own reveal clock (--reveal-index) after the ruler instead of
 // waiting on a scroll trigger.
 //
-// NVIDIA Inception has no single wordmark lockup we can ship, so the cell
-// pairs the NVIDIA mark with the program's name set in the band's own
-// chrome type. TekVentures gets the same treatment: their V mark
-// (tek.ventures) beside the name - the mark's three reds translated into
-// three tones of the band's own ink in the icon source.
+// NVIDIA Inception ships the program's own lockup (client feedback round
+// 2): a raster the client supplied, black on transparent, served from
+// public/media/backers so it can be swapped like any other asset. The band
+// is monochrome ink, so the raster is reduced to a white silhouette by
+// filter (backers.module.css) and the flare copy to an orange one - the
+// closest a bitmap gets to the SVG marks' currentColor.
+// TODO(client): an SVG or white version of the lockup removes the filters.
+// TekVentures pairs their V mark (tek.ventures) with the name - the mark's
+// three reds translated into three tones of the band's own ink in the icon
+// source.
 //
 // Every mark is a link to the backer's site, opening in a new tab; hover
 // hands the mark the navbar logo's orange flare and lifts it to full ink.
@@ -41,10 +46,13 @@ const backers: { name: string; href: string; mark: ReactNode }[] = [
     name: "NVIDIA Inception",
     href: "https://www.nvidia.com/en-us/startups/",
     mark: (
-      <span className="flex items-center gap-3">
-        <NvidiaIcon width={85} height={16} />
-        <span className="type-nav">Inception</span>
-      </span>
+      <Image
+        src="/media/backers/nvidia-inception.png"
+        alt=""
+        width={104}
+        height={40}
+        className={styles.raster}
+      />
     ),
   },
   {

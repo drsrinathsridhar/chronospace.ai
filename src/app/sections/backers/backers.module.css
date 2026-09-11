@@ -47,3 +47,20 @@
     animation: none;
   }
 }
+
+/*
+ * The one raster mark (NVIDIA Inception): flattened to the band's ink -
+ * every opaque pixel to black, then inverted to white - and, inside the
+ * flare copy, pushed on through sepia and a hue turn to land near the
+ * accent orange.
+ */
+.raster {
+  height: 2.5rem;
+  width: auto;
+  filter: brightness(0) invert(1);
+}
+
+.flare .raster {
+  filter: brightness(0) invert(1) sepia(1) saturate(40) hue-rotate(-18deg)
+    brightness(0.9);
+}
