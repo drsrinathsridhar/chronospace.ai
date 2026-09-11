@@ -14,10 +14,11 @@ import { HeroTimeline } from "./hero-timeline";
 // screen, and the navbar's is the one that stays (feedback round 2), so the
 // captures now have the whole floor between the copy and the ruler. The
 // headline's offset scales with the room rather than sitting at a fixed 104
-// below the navbar: at xl+ the copy is centred on the back wall's midline
-// (client feedback, September 2026 - it read as too high), measured in the
-// site frame's cqw so it stays put past the 2560 cap on any display (the
-// headline once escaped the room on wide screens). The backing marks left
+// below the navbar: at xl+ the copy is centred in the band of back wall
+// above the figures (client feedback, September 2026 - it read as too
+// high), measured in the site frame's cqw so it stays put past the 2560 cap
+// on any display (the headline once escaped the room on wide screens). The
+// backing marks left
 // the hero for the band directly under it (sections/backers): the hero
 // yields exactly the band's height of the viewport, so hero + band close
 // the first screen together, with the ruler as the band's top border.
@@ -53,18 +54,21 @@ export function Hero() {
       <HeroRoom />
 
       {/*
-       * At xl the copy leaves the flow and centres itself on the back wall:
-       * the wall runs from 20.68% to 86.9% of the plate, so its midline is
-       * 53.8% of the plate's 48.4cqw - 26.04cqw from the frame's top - and
-       * the headline is translated up by half its own height onto it. Its
-       * foot then lands near 61% of the plate, clear of the tallest figure's
-       * top (~73%, hero-cards.tsx) at every width the scatter shows at.
-       * Below xl the cards fall into a strip under the copy, so the copy
-       * keeps the comp's padding and the flow.
+       * At xl the copy leaves the flow and centres itself on the back wall,
+       * translated up by half its own height onto --copy-centre. The centre
+       * is the middle of the band the headline has to itself: from the
+       * wall's top edge, the cove line at 20.68% of the 48.4cqw plate
+       * (10.01cqw), down to the figures' heads on the one-line row, ~35.4cqw
+       * (hero-cards.tsx) - 22.7cqw. That is also, within a few pixels, where
+       * the headline stood while it shared a block centred on the wall's
+       * midline with the call to action - the height the client signed off -
+       * so losing the action moved the figures, not the words. Below xl the
+       * cards fall into a strip under the copy, so the copy keeps the comp's
+       * padding and the flow.
        */}
       <div
         className="section-container relative flex flex-col items-center pt-24 text-center md:pt-26 xl:absolute xl:inset-x-0 xl:top-(--copy-centre) xl:z-10 xl:-translate-y-1/2 xl:pt-0"
-        style={{ "--copy-centre": "26.04cqw" }}
+        style={{ "--copy-centre": "22.7cqw" }}
       >
         <h1 className="type-display-xs sm:type-display-sm lg:type-display-md flex max-w-174.5 flex-col">
           {/*

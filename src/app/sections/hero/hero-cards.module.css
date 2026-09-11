@@ -15,8 +15,9 @@
  *   the eye by its own --card-shift-x/y: the room's move displaces a point
  *   at depth z by eyeshift * -z / (P - z) (see the survey in
  *   hero-room.module.css), so a card's shift is that factor at the depth
- *   its feet stand - the two far captures ride gently with the eye, and
- *   the manufacturing line, nearer than the plate plane, moves against it.
+ *   its feet stand. The three stand on one line since feedback round 2, in
+ *   front of the plate plane, so they all move against the eye by the same
+ *   amount and the row moves as one (hero-cards.tsx has the numbers).
  *
  *   The echo. Each subject ships with its trail - three copies stepped back
  *   6.5% of the body apiece at falling opacities, the reference build's
