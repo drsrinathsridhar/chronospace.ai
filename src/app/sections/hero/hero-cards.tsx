@@ -103,17 +103,21 @@ const cards: StandingCard[] = [
   {
     label: "Robotics",
     pieces: [
+      // The client's new arm and worker (11 Sep 2026), each cropped to its
+      // opaque bounds, so the aspects are the files' own pixel ratios. The
+      // worker's width is set for his height: 34.6% of the card, which
+      // puts him level with the manufacturing workers and the dancer.
       {
         image: media.hero.roboticsArm,
         left: "-0.12%",
         width: "50.71%",
-        aspect: "103.554 / 143.242",
+        aspect: "613 / 854",
       },
       {
         image: media.hero.roboticsMan,
-        left: "71.25%",
-        width: "11.2%",
-        aspect: "22.87 / 68.61",
+        left: "72.5%",
+        width: "9.6%",
+        aspect: "161 / 579",
       },
     ],
     left: "8.3%",
