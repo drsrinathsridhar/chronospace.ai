@@ -4,7 +4,7 @@ import { useState } from "react";
 import { MeasureOverlay } from "@/components/measure-overlay.client";
 import type { Mark } from "@/components/measure-overlay.client";
 import { TimelinePlayer } from "@/components/timeline-player.client";
-import echoPoster from "./echo-poster.jpg";
+import { media } from "@/media.config";
 
 // The viewer, and the point of it: the readings are not a caption, they are
 // drawn on the picture. A bracket stands on the figure with his height up
@@ -27,7 +27,7 @@ import echoPoster from "./echo-poster.jpg";
 // is the shared timeline player (src/components/timeline-player.client.tsx),
 // which the product cards also run.
 
-const FALLBACK_DURATION = 4.94;
+const take = media.viewer.echo;
 
 // The comp's resting readout - also the server-rendered state.
 const resting: [string, string][] = [
@@ -148,9 +148,9 @@ export function CapturePlayer() {
 
   return (
     <TimelinePlayer
-      src="/videos/echo.mp4"
-      poster={echoPoster.src}
-      fallbackDuration={FALLBACK_DURATION}
+      src={take.src}
+      poster={take.poster}
+      fallbackDuration={take.duration}
       aspect="640 / 368"
       name="the capture"
       onTick={(t, duration) => setReadout(measure(t, duration))}

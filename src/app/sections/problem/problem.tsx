@@ -3,7 +3,7 @@ import { PointerDrift } from "@/components/pointer-drift.client";
 import { ReadProgress } from "@/components/read-progress.client";
 import { RevealScope } from "@/components/reveal-scope.client";
 import { TimelinePlayer } from "@/components/timeline-player.client";
-import manufacturingPoster from "./manufacturing-poster.jpg";
+import { media } from "@/media.config";
 import styles from "./problem.module.css";
 
 // The intro: after the hero's claim, the argument - in two columns now, not
@@ -60,9 +60,9 @@ export function Problem() {
             style={{ "--beat": 0 }}
           >
             <TimelinePlayer
-              src="/videos/manufacturing.mp4"
-              poster={manufacturingPoster.src}
-              fallbackDuration={8}
+              src={media.intro.manufacturing.src}
+              poster={media.intro.manufacturing.poster}
+              fallbackDuration={media.intro.manufacturing.duration}
               aspect="4 / 5"
               name="the manufacturing take"
               compact

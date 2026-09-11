@@ -1,9 +1,5 @@
 import Image from "next/image";
-import type { StaticImageData } from "next/image";
-import manufacturingSubject from "./manufacturing-subject.png";
-import roboticsArm from "./robotics-arm.png";
-import roboticsMan from "./robotics-man.png";
-import sportsSubject from "./sports-subject.png";
+import { media } from "@/media.config";
 import styles from "./hero-cards.module.css";
 
 // The three captures, standing in the room. No frame, no label - each card
@@ -74,7 +70,8 @@ import styles from "./hero-cards.module.css";
 // three-column strip above the ruler.
 
 type Piece = {
-  image: StaticImageData;
+  /** Public path of the cutout - see media.config.ts. */
+  image: string;
   left: string;
   width: string;
   aspect: string;
@@ -104,13 +101,13 @@ const cards: StandingCard[] = [
     label: "Robotics",
     pieces: [
       {
-        image: roboticsArm,
+        image: media.hero.roboticsArm,
         left: "-0.12%",
         width: "50.71%",
         aspect: "103.554 / 143.242",
       },
       {
-        image: roboticsMan,
+        image: media.hero.roboticsMan,
         left: "71.25%",
         width: "11.2%",
         aspect: "22.87 / 68.61",
@@ -129,7 +126,7 @@ const cards: StandingCard[] = [
     label: "Manufacturing",
     pieces: [
       {
-        image: manufacturingSubject,
+        image: media.hero.manufacturing,
         left: "-1.47%",
         width: "102.83%",
         aspect: "252.352 / 109.353",
@@ -150,7 +147,7 @@ const cards: StandingCard[] = [
     label: "Sports & entertainment",
     pieces: [
       {
-        image: sportsSubject,
+        image: media.hero.sports,
         left: "25.96%",
         width: "47.5%",
         aspect: "97 / 135",
@@ -177,7 +174,7 @@ const echoes = [
 function Pieces({ pieces }: { pieces: Piece[] }) {
   return pieces.map((piece) => (
     <span
-      key={piece.image.src}
+      key={piece.image}
       className={styles.piece}
       style={{
         "--piece-left": piece.left,

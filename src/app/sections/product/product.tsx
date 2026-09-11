@@ -1,9 +1,8 @@
-import type { StaticImageData } from "next/image";
 import type { ReactNode } from "react";
 import { RevealScope } from "@/components/reveal-scope.client";
 import { TimelinePlayer } from "@/components/timeline-player.client";
-import navigablePoster from "./navigable-poster.jpg";
-import wildPoster from "./wild-poster.jpg";
+import { media } from "@/media.config";
+import type { Take } from "@/media.config";
 
 // The product: the intro's argument split into the three properties a
 // capture actually ships with - taken in the wild, navigable in 4D,
@@ -48,12 +47,8 @@ type Card = {
   label: string;
   title: string;
   copy: string;
-  /** The take, encoded to 960px/30fps H.264 from the client's masters. */
-  video: string;
-  /** A colocated import, or a public path once the slot lives in /media. */
-  poster: StaticImageData | string;
-  /** The take's length, for seeking before the metadata arrives. */
-  duration: number;
+  /** The take, its poster and its length - a slot in media.config.ts. */
+  take: Take;
   /** Readings drawn over the take, inside the player's frame. */
   overlay?: ReactNode;
 };
@@ -66,31 +61,24 @@ const queryableReadings: [string, string][] = [
   ["Timebase", "Any t"],
 ];
 
-// TODO(client): replace wild.mp4 with in-the-wild footage (outdoor / factory / field). The current file is trimmed to the reconstruction pass so the studio rig is not the subject; it is a stand-in.
 const cards: Card[] = [
   {
     label: "Captured in the wild",
     title: "No stage required",
     copy: "Real environments, indoors and out, over long durations. No controlled lighting, no bringing the subject to a studio. Everyone else needs one.",
-    video: "/videos/wild.mp4",
-    poster: wildPoster,
-    duration: 9.47,
+    take: media.product.wild,
   },
   {
     label: "Navigable in 4D",
     title: "Any viewpoint, any moment",
     copy: "Geometry you can move through at full environment scale, at whatever instant you need - not a fixed camera you have to accept.",
-    video: "/videos/navigable.mp4",
-    poster: navigablePoster,
-    duration: 18.78,
+    take: media.product.navigable,
   },
   {
     label: "Measurable afterwards",
     title: "The scene stays queryable",
     copy: "A finished capture streams like ordinary video and answers questions inside it - distance travelled, cycle duration, whether a line was crossed.",
-    video: "/media/product/queryable.mp4",
-    poster: "/media/product/queryable-poster.jpg",
-    duration: 3.2,
+    take: media.product.queryable,
     overlay: (
       <dl className="type-caption absolute bottom-2.5 left-2.5 flex w-42.75 max-w-[calc(50%-1rem)] flex-col gap-1">
         {queryableReadings.map(([term, value]) => (
@@ -132,13 +120,9 @@ export function Product() {
               style={{ "--beat": 2 + index }}
             >
               <TimelinePlayer
-                src={card.video}
-                poster={
-                  typeof card.poster === "string"
-                    ? card.poster
-                    : card.poster.src
-                }
-                fallbackDuration={card.duration}
+                src={card.take.src}
+                poster={card.take.poster}
+                fallbackDuration={card.take.duration}
                 aspect="577 / 310"
                 name={`the ${card.label.toLowerCase()} take`}
                 compact

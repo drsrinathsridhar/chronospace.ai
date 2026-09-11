@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { CtaLink } from "@/components/cta-link";
 import { RevealScope } from "@/components/reveal-scope.client";
+import { media } from "@/media.config";
 
 // Research & Insights: the work behind the product, one entry per kind -
 // the paper, the coverage, the post. The header stacks on the centre line
@@ -17,7 +18,7 @@ import { RevealScope } from "@/components/reveal-scope.client";
 // the titles wrap to.
 //
 // The pictures are placeholders the client swaps (feedback, round 2): one
-// JPEG per entry under public/media/science, named for the entry, drawn in
+// JPEG per entry under public/media/science (media.config.ts), drawn in
 // the product plate's 577/310 frame with object-fit: cover so any size or
 // ratio dropped in fills it. Until the real artwork arrives they are stills
 // from the site's own captures. TODO(client): the final image per entry.
@@ -45,7 +46,7 @@ const entries: Entry[] = [
       "Full-scene geometry recovered over minutes, not seconds, from cameras that were never calibrated.",
     href: "https://ivl.cs.brown.edu/",
     action: "Read the paper",
-    image: "/media/science/paper.jpg",
+    image: media.science.paper,
   },
   {
     label: "Media coverage",
@@ -54,7 +55,7 @@ const entries: Entry[] = [
       "Press coverage of the capture rig and the team behind the technology.",
     href: "https://ivl.cs.brown.edu/",
     action: "Read the story",
-    image: "/media/science/press.jpg",
+    image: media.science.press,
   },
   {
     label: "Blog post",
@@ -63,7 +64,7 @@ const entries: Entry[] = [
       "Notes from the team on building capture you can still query after the fact.",
     href: "https://ivl.cs.brown.edu/",
     action: "Read the post",
-    image: "/media/science/post.jpg",
+    image: media.science.post,
   },
 ];
 

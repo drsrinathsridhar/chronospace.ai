@@ -10,6 +10,7 @@ import {
 // (see the note atop site-header.module.css). CSS modules make the import
 // safe: the same class composes to the same generated name.
 import flare from "@/components/site-header.module.css";
+import { media } from "@/media.config";
 import styles from "./backers.module.css";
 
 // The backing band: the last row of the first screen. The hero gives up
@@ -47,7 +48,7 @@ const backers: { name: string; href: string; mark: ReactNode }[] = [
     href: "https://www.nvidia.com/en-us/startups/",
     mark: (
       <Image
-        src="/media/backers/nvidia-inception.png"
+        src={media.backers.nvidiaInception}
         alt=""
         width={104}
         height={40}

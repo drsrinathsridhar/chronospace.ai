@@ -17,7 +17,7 @@ import { useEffect, useRef } from "react";
 
 type ClosingVideoProps = {
   poster: string;
-  sources: { src: string; media?: string }[];
+  sources: readonly { src: string; media?: string }[];
   className?: string;
 };
 

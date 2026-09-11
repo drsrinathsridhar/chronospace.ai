@@ -3,6 +3,7 @@ import { CtaLink } from "@/components/cta-link";
 import { RevealScope } from "@/components/reveal-scope.client";
 import { ChronospaceLogoIcon } from "@/icons/generated";
 import { ClosingVideo } from "./closing-video.client";
+import { media } from "@/media.config";
 import styles from "./closing.module.css";
 
 // The close of the page: the vision and the sign-off, merged into one
@@ -31,11 +32,7 @@ import styles from "./closing.module.css";
 // has its final shape, and they come alive on their own the moment the
 // config carries real URLs.
 
-const poster = "/media/closing/woodworking-poster.jpg";
-const sources = [
-  { src: "/media/closing/woodworking-1080.mp4", media: "(min-width: 96rem)" },
-  { src: "/media/closing/woodworking-720.mp4" },
-];
+const { poster, sources } = media.closing.woodworking;
 
 export function Closing() {
   return (

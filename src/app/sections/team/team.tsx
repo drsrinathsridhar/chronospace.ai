@@ -1,10 +1,7 @@
 import Image from "next/image";
-import type { StaticImageData } from "next/image";
 import { RevealScope } from "@/components/reveal-scope.client";
 import { LinkedinIcon } from "@/icons/generated";
-import aashishRai from "./aashish-rai.jpg";
-import srinathSridhar from "./srinath-sridhar.jpg";
-import tamarKreitman from "./tamar-kreitman.jpg";
+import { media } from "@/media.config";
 import styles from "./team.module.css";
 
 // The team: the claim behind the claims. The header stacks on the centre
@@ -35,6 +32,8 @@ import styles from "./team.module.css";
 //
 // Portraits are the client's stills as sent, square and re-encoded to JPEG
 // at up to 1000px - no crop, no upscale, so the 512px source stays 512.
+// They live under public/media/team and are named in media.config.ts, so
+// a new portrait is a file swap.
 //
 // Geometry is the comp's at the 1496px design width: the lede 20 under the
 // heading on a 577px measure, the cards in a centred row of three on the
@@ -46,7 +45,8 @@ import styles from "./team.module.css";
 type Founder = {
   name: string;
   role: string;
-  photo: StaticImageData;
+  /** Public path of the portrait - see media.config.ts. */
+  photo: string;
   linkedin: string;
 };
 
@@ -54,19 +54,19 @@ const founders: Founder[] = [
   {
     name: "Srinath Sridhar",
     role: "CEO",
-    photo: srinathSridhar,
+    photo: media.team.srinathSridhar,
     linkedin: "https://www.linkedin.com/in/srinathsridhar",
   },
   {
     name: "Tamar Kreitman",
     role: "Head of Systems",
-    photo: tamarKreitman,
+    photo: media.team.tamarKreitman,
     linkedin: "https://www.linkedin.com/in/tamar-kreitman",
   },
   {
     name: "Aashish Rai",
     role: "Head of Spatial AI",
-    photo: aashishRai,
+    photo: media.team.aashishRai,
     linkedin: "https://www.linkedin.com/in/aashishrai3799",
   },
 ];
