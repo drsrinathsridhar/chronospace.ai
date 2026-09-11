@@ -11,7 +11,9 @@ name, listed in `src/media.config.ts`. To swap an asset, either:
 
 1. **Overwrite the file** - same folder, same name - and redeploy. Nothing
    else changes. (Browsers may cache the old file for a while; a hard
-   refresh shows the new one.)
+   refresh shows the new one. While `next dev` is running, the optimizer
+   also caches resized copies in `.next/dev/cache/images` - delete that
+   folder and restart the dev server if a swapped picture does not show.)
 2. Or **change the path in `src/media.config.ts`** to point at a new file
    name. That is the only line of code a swap ever needs.
 
