@@ -14,7 +14,7 @@ import styles from "./site-header.module.css";
 // only block in the bar.
 //
 // The bar is on screen from the first frame; its contents lead the page
-// reveal at index 0. On hover a cell fills with the page ground, nothing
+// reveal at index 0. On hover a cell fills with a tenth of ink, nothing
 // else: the glyph shuffle that used to ride the hover is gone (client
 // feedback, September 2026 - it read as distraction).
 //
@@ -26,9 +26,11 @@ import styles from "./site-header.module.css";
 // of light across the mark - the hero copy's reveal, played as a flare.
 
 const navCell = "flex h-full items-center";
-// The plain links fill with the page ground on hover; the orange cell keeps
-// its own darker-orange hover from cta-link.tsx.
-const navLinkCell = `${navCell} hover:bg-paper focus-visible:bg-paper transition-colors duration-150 ease-out`;
+// The plain links fill with a tenth of ink on hover - the page ground they
+// used to take was all but invisible over the blurred room (owner's
+// request, 11 Sep 2026); the orange cell keeps its own darker-orange hover
+// from cta-link.tsx.
+const navLinkCell = `${navCell} hover:bg-ink/10 focus-visible:bg-ink/10 transition-colors duration-150 ease-out`;
 
 export function SiteHeader() {
   return (
