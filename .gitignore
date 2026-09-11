@@ -49,3 +49,6 @@ public/team-fixes.png
 public/new-videos/
 # raw client favicon export - served from src/app icon files
 public/09/
+
+# client feedback drops - masters and decks, never shipped; encoded copies live in public/media
+public/feedback-*/
