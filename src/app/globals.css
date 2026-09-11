@@ -96,7 +96,7 @@
      the comp's 22 read as dense (client feedback, round 2). */
   --spacing-section: 7.5rem;
   --spacing-section-gap: 5rem;
-  --spacing-panel-gap: 2.5rem;
+  --spacing-panel: 2.5rem;
   --spacing-gutter: var(--gutter);
   --spacing-navbar: var(--navbar-height);
   --spacing-navbar-rest: var(--navbar-height-rest);

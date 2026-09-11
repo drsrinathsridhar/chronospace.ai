@@ -1,7 +1,7 @@
 import Image from "next/image";
 import type { StaticImageData } from "next/image";
 import { RevealScope } from "@/components/reveal-scope.client";
-import { CtaArrowIcon } from "@/icons/generated";
+import { LinkedinIcon } from "@/icons/generated";
 import aashishRai from "./aashish-rai.jpg";
 import srinathSridhar from "./srinath-sridhar.jpg";
 import tamarKreitman from "./tamar-kreitman.jpg";
@@ -15,6 +15,13 @@ import styles from "./team.module.css";
 // claims hang off their transports: the name and a LinkedIn link on one
 // line, the role beneath. Hovering anywhere on the card hands the colour
 // back to the portrait (team.module.css).
+//
+// Round 2 of client feedback (September 2026) tightened the row: the
+// heading is just "Team", the LinkedIn entry is the network's own glyph
+// beside the word rather than a rotated arrow, and the portraits are a
+// step smaller with more air between them - the row sits on a 1200px
+// measure inside the content box, on the page-wide panel gap
+// (--spacing-panel, 40px) every three-column row now shares.
 //
 // This replaces the comp's 153px tiles in open columns (node 7802:8912) at
 // the client's request, September 2026: the small tiles with their text
@@ -30,8 +37,9 @@ import styles from "./team.module.css";
 // at up to 1000px - no crop, no upscale, so the 512px source stays 512.
 //
 // Geometry is the comp's at the 1496px design width: the lede 20 under the
-// heading on a 577px measure, the cards in a full-width row of three on a
-// 22px gap, and the caption set like the product claim (node 7802:8456): a
+// heading on a 577px measure, the cards in a centred row of three on the
+// panel gap (1200px wide, so each portrait is ~373 rather than the comp's
+// 457), and the caption set like the product claim (node 7802:8456): a
 // full-width rule, title and copy on a 12px gap inside 24px of vertical
 // padding.
 
@@ -72,7 +80,7 @@ export function Team() {
             className="type-display-xs sm:type-display-sm lg:type-display-md shimmer-in max-w-174.5 text-balance"
             style={{ "--beat": 0 }}
           >
-            Meet the team
+            Team
           </h2>
           <p
             className="type-body-xl shimmer-in max-w-144.25 text-pretty opacity-60"
@@ -83,7 +91,7 @@ export function Team() {
           </p>
         </div>
 
-        <div className="mt-section-gap grid grid-cols-1 gap-5.5 md:grid-cols-3">
+        <div className="mt-section-gap gap-panel mx-auto grid w-full max-w-300 grid-cols-1 md:grid-cols-3">
           {founders.map((founder, index) => (
             <article
               key={founder.name}
@@ -119,12 +127,12 @@ export function Team() {
                     aria-label={`${founder.name} on LinkedIn`}
                     className="type-nav text-muted hover:text-ink focus-visible:text-ink flex items-center gap-2 transition-colors duration-150 ease-out"
                   >
-                    LinkedIn
-                    <CtaArrowIcon
-                      width={6.4}
-                      height={8}
-                      className="-rotate-45"
+                    <LinkedinIcon
+                      width={14}
+                      height={14}
+                      className="text-accent shrink-0"
                     />
+                    LinkedIn
                   </a>
                 </div>
                 <p className="type-body-lg leading-tight font-light">

@@ -1,17 +1,26 @@
+import Image from "next/image";
 import { CtaLink } from "@/components/cta-link";
 import { RevealScope } from "@/components/reveal-scope.client";
 
 // Research & Insights: the work behind the product, one entry per kind -
 // the paper, the coverage, the post. The header stacks on the centre line
 // like the viewer's and the team's, and under it the entries sit in the
-// same card grammar as the product section: a labelled header strip and
-// the claim under it - no plate; the entries are records, not evidence,
-// so they carry no thumbnails.
+// product section's card grammar: a plate on top, a hairline, and the
+// record under it. No box around the card and no header strip - the
+// bordered "wireframe" build read as unfinished (client feedback, round
+// 2), so the entries now stand on the page like the takes and the
+// portraits do, on the page-wide panel gap.
 //
-// Each card is its label, the entry's title, a one-line blurb, and the
-// row's action in the call-to-action grammar at the list scale, pinned to
-// the card's foot so the three actions land on one line whatever the
-// titles wrap to.
+// Each card is its picture, its label, the entry's title, a one-line blurb,
+// and the row's action in the call-to-action grammar at the list scale,
+// pinned to the card's foot so the three actions land on one line whatever
+// the titles wrap to.
+//
+// The pictures are placeholders the client swaps (feedback, round 2): one
+// JPEG per entry under public/media/science, named for the entry, drawn in
+// the product plate's 577/310 frame with object-fit: cover so any size or
+// ratio dropped in fills it. Until the real artwork arrives they are stills
+// from the site's own captures. TODO(client): the final image per entry.
 //
 // The cards sweep in on the section's reveal, one beat after the header's
 // shimmer, left to right.
@@ -22,6 +31,8 @@ type Entry = {
   blurb: string;
   href: string;
   action: string;
+  /** Public path of the plate's picture - swap the file, keep the name. */
+  image: string;
 };
 
 // TODO: point each entry at the real publication once the client sends
@@ -34,6 +45,7 @@ const entries: Entry[] = [
       "Full-scene geometry recovered over minutes, not seconds, from cameras that were never calibrated.",
     href: "https://ivl.cs.brown.edu/",
     action: "Read the paper",
+    image: "/media/science/paper.jpg",
   },
   {
     label: "Media coverage",
@@ -42,6 +54,7 @@ const entries: Entry[] = [
       "Press coverage of the capture rig and the team behind the technology.",
     href: "https://ivl.cs.brown.edu/",
     action: "Read the story",
+    image: "/media/science/press.jpg",
   },
   {
     label: "Blog post",
@@ -50,6 +63,7 @@ const entries: Entry[] = [
       "Notes from the team on building capture you can still query after the fact.",
     href: "https://ivl.cs.brown.edu/",
     action: "Read the post",
+    image: "/media/science/post.jpg",
   },
 ];
 
@@ -72,18 +86,25 @@ export function Science() {
           </p>
         </div>
 
-        <div className="mt-section-gap grid grid-cols-1 gap-5.5 md:grid-cols-3">
+        <div className="mt-section-gap gap-panel grid grid-cols-1 md:grid-cols-3">
           {entries.map((entry, index) => (
             <article
               key={entry.title}
-              className="border-line sweep-in flex flex-col border"
+              className="sweep-in flex flex-col"
               style={{ "--beat": 2 + index }}
             >
-              <header className="bg-paper border-line border-b p-8">
-                <p className="type-nav text-muted">{entry.label}</p>
-              </header>
+              <div className="bg-surface relative aspect-577/310 overflow-clip">
+                <Image
+                  src={entry.image}
+                  alt=""
+                  fill
+                  sizes="(min-width: 48rem) 33vw, 100vw"
+                  className="object-cover"
+                />
+              </div>
 
-              <div className="flex flex-1 flex-col gap-6 px-8 py-10">
+              <div className="border-line flex flex-1 flex-col gap-3 border-t py-6">
+                <p className="type-nav text-muted">{entry.label}</p>
                 <h3 className="type-title-lg text-balance">{entry.title}</h3>
                 <p className="type-body-lg leading-tight font-light">
                   {entry.blurb}
@@ -95,7 +116,7 @@ export function Science() {
                   rel="noreferrer"
                   size="list"
                   variant="outline"
-                  className="mt-auto"
+                  className="mt-3 md:mt-auto"
                 >
                   {entry.action}
                 </CtaLink>
