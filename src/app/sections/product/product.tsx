@@ -1,10 +1,7 @@
 import type { StaticImageData } from "next/image";
 import type { ReactNode } from "react";
-import { MeasureOverlay } from "@/components/measure-overlay.client";
 import { RevealScope } from "@/components/reveal-scope.client";
 import { TimelinePlayer } from "@/components/timeline-player.client";
-import { measurableChips, measurableMarks } from "./measurable-marks";
-import measurablePoster from "./measurable-poster.jpg";
 import navigablePoster from "./navigable-poster.jpg";
 import wildPoster from "./wild-poster.jpg";
 
@@ -20,22 +17,24 @@ import wildPoster from "./wild-poster.jpg";
 // play-on-arrival, so three videos in a row cost nothing until the section
 // shows.
 //
-// The third take proves its claim on the picture (client feedback, item
-// 10): the measurement overlay shared with the viewer stands a height
-// bracket on the dancer, lays a floor line that turns accent the moment a
-// foot crosses it, and tokenises the frame once per loop. Its export also
-// carries two burned-in tool graphics - a mode label and a heat-map strip -
-// which sit under two chips of page ground holding our own HUD.
-// TODO(client): a clean export of measurable.mp4 without the burned-in
-// graphics removes the need for the chips.
+// The third take is the client's own pick for the queryable claim
+// (feedback round 2, slide 5: `girls-dancing.mp4`, encoded to 960x540 at
+// 30 fps as /media/product/queryable.mp4 - the first slot under the new
+// media root, the rest move later). It carries only a static HUD in the
+// plate's bottom-left corner, with readings true for this take: the frames
+// it keeps and the length of its loop as a timecode. The measurement
+// overlay the previous take ran - a bracket and a floor line keyed to that
+// 18 s clip's frames - would fire on the wrong frames over a 3.2 s loop, so
+// it is off this card until the client confirms the clip and the marks can
+// be re-timed against it (plan decision D6).
 //
 // No chrome around the column (client feedback again): no label strip, no
-// border, no padding - the take and its transport stand on the page, and
-// the claim hangs straight under them on the plate's own left edge, set to
-// comp node 7802:8456: a full-width rule off the transport, the title and
-// copy on a 12px gap inside 24px of vertical padding. The label survives in
-// the data: it keys the list and names the take in the player's control
-// labels.
+// border, no padding - the take stands on the page with its controls on
+// the picture, and the claim hangs straight under it on the plate's own
+// left edge, set to comp node 7802:8456: a full-width rule off the plate,
+// the title and copy on a 12px gap inside 24px of vertical padding. The
+// label survives in the data: it keys the list and names the take in the
+// player's control labels.
 //
 // The header stacks on the centre line like the viewer's and the team's -
 // heading and lede on the page's 698px measure, the lede 20 under. The comp
@@ -51,18 +50,19 @@ type Card = {
   copy: string;
   /** The take, encoded to 960px/30fps H.264 from the client's masters. */
   video: string;
-  poster: StaticImageData;
+  /** A colocated import, or a public path once the slot lives in /media. */
+  poster: StaticImageData | string;
   /** The take's length, for seeking before the metadata arrives. */
   duration: number;
   /** Readings drawn over the take, inside the player's frame. */
   overlay?: ReactNode;
 };
 
-// The static HUD on the queryable take: what a long-duration capture at
-// 30x keeps, and the two readings its loop stands for.
+// The static HUD on the queryable take: what this 3.2 s loop at 30 fps
+// keeps, its cycle as a timecode, and the claim - any t.
 const queryableReadings: [string, string][] = [
-  ["Frames kept", "540"],
-  ["Cycle", "00:00:18:00"],
+  ["Frames kept", "96"],
+  ["Cycle", "00:00:03:06"],
   ["Timebase", "Any t"],
 ];
 
@@ -88,44 +88,18 @@ const cards: Card[] = [
     label: "Measurable afterwards",
     title: "The scene stays queryable",
     copy: "A finished capture streams like ordinary video and answers questions inside it - distance travelled, cycle duration, whether a line was crossed.",
-    video: "/videos/measurable.mp4",
-    poster: measurablePoster,
-    duration: 18,
+    video: "/media/product/queryable.mp4",
+    poster: "/media/product/queryable-poster.jpg",
+    duration: 3.2,
     overlay: (
-      <MeasureOverlay
-        tokenise
-        marks={[
-          ...measurableMarks,
-          {
-            kind: "chip",
-            id: "mode",
-            ...measurableChips.mode,
-            children: (
-              <p className="type-caption text-muted flex h-full items-center px-2">
-                Long duration · 30×
-              </p>
-            ),
-          },
-          {
-            kind: "chip",
-            id: "readings",
-            ...measurableChips.readings,
-            children: (
-              <dl className="type-caption flex h-full flex-col justify-center gap-1 px-2">
-                {queryableReadings.map(([term, value]) => (
-                  <div
-                    key={term}
-                    className="flex items-center justify-between gap-2"
-                  >
-                    <dt className="text-muted">{term}</dt>
-                    <dd className="text-ink text-right">{value}</dd>
-                  </div>
-                ))}
-              </dl>
-            ),
-          },
-        ]}
-      />
+      <dl className="type-caption absolute bottom-2.5 left-2.5 flex w-42.75 max-w-[calc(50%-1rem)] flex-col gap-1">
+        {queryableReadings.map(([term, value]) => (
+          <div key={term} className="flex items-center justify-between gap-4">
+            <dt className="text-muted">{term}</dt>
+            <dd className="text-ink text-right">{value}</dd>
+          </div>
+        ))}
+      </dl>
     ),
   },
 ];
@@ -159,7 +133,11 @@ export function Product() {
             >
               <TimelinePlayer
                 src={card.video}
-                poster={card.poster.src}
+                poster={
+                  typeof card.poster === "string"
+                    ? card.poster
+                    : card.poster.src
+                }
                 fallbackDuration={card.duration}
                 aspect="577 / 310"
                 name={`the ${card.label.toLowerCase()} take`}

@@ -18,6 +18,10 @@ import echoPoster from "./echo-poster.jpg";
 // queryable product take runs. The corner HUD keeps only what has no place
 // on the picture: the frames the echo keeps, the joints tracked, and the
 // timebase - re-rendered on the player's decisecond tick and nothing else.
+// It sits bottom-left, clear of the player's own control surface in the
+// bottom-right corner (the arc scrubber, feedback round 2); the marks
+// never reach that corner - the bracket's left edge stays past 26% and the
+// floor tag past 32% of the frame.
 //
 // The instrument itself - the blended plate, the transport, the rAF clock -
 // is the shared timeline player (src/components/timeline-player.client.tsx),
@@ -152,7 +156,7 @@ export function CapturePlayer() {
       onTick={(t, duration) => setReadout(measure(t, duration))}
     >
       <MeasureOverlay marks={marks} />
-      <dl className="type-caption absolute right-2.5 bottom-2.5 flex w-42.75 max-w-full flex-col gap-1">
+      <dl className="type-caption absolute bottom-2.5 left-2.5 flex w-42.75 max-w-[calc(50%-1rem)] flex-col gap-1">
         {readout.map(([term, value]) => (
           <div key={term} className="flex items-center justify-between gap-4">
             <dt className="text-muted">{term}</dt>
