@@ -1,4 +1,3 @@
-import { HeroRoomCameras } from "./hero-room-cameras";
 import { HeroRoomEye } from "./hero-room-eye.client";
 import styles from "./hero-room.module.css";
 
@@ -13,9 +12,10 @@ import styles from "./hero-room.module.css";
 // standing capture cards (hero-cards.tsx) anchor their feet to this plate's
 // height, so they read as standing on the floor it draws.
 //
-// The walls carry the capture rig (hero-room-cameras.tsx): small camera
-// units placed in the stage's own coordinates, after the faces so they paint
-// over them.
+// The walls are bare. A capture rig of wall-mounted camera units stood here
+// for one round of feedback and was taken down on the next (client
+// feedback, round 2: no cameras in the hero) - the five faces and the cove
+// light are the whole room.
 //
 // Decorative throughout, and never interactive.
 
@@ -29,7 +29,6 @@ export function HeroRoom() {
           <span className={styles.left} />
           <span className={styles.right} />
           <span className={styles.back} />
-          <HeroRoomCameras />
         </div>
         <span className={styles.sink} />
       </div>
