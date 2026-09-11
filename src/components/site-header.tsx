@@ -6,9 +6,12 @@ import { SiteHeaderScroll } from "./site-header-scroll.client";
 import styles from "./site-header.module.css";
 
 // The navbar floats over the hero rather than sitting above it: a 60px bar
-// with nothing but a blur behind it, so the room keeps its light. It carries
-// no rule of its own - the links are bare labels centred on the bar's
-// midline, and the CTA's accent fill is the only block in the bar.
+// with nothing but a blur behind it, so the room keeps its light. A
+// hairline closes it underneath - the same 1px of --line the timecode
+// ruler draws above the backing band, so the first screen is ruled top and
+// bottom alike (owner's request, 11 Sep 2026); otherwise the links are bare
+// labels centred on the bar's midline, and the CTA's accent fill is the
+// only block in the bar.
 //
 // The bar is on screen from the first frame; its contents lead the page
 // reveal at index 0. On hover a cell fills with the page ground, nothing
@@ -29,7 +32,7 @@ const navLinkCell = `${navCell} hover:bg-paper focus-visible:bg-paper transition
 
 export function SiteHeader() {
   return (
-    <header className="h-navbar fixed inset-x-0 top-0 z-50 backdrop-blur-[8px] transition-[height] duration-300 ease-out">
+    <header className="h-navbar border-line fixed inset-x-0 top-0 z-50 border-b backdrop-blur-[8px] transition-[height] duration-300 ease-out">
       <SiteHeaderScroll />
       {/* The bar runs full-bleed; its contents stop at the site frame's width
           (max-w-site) and centre, in step with the page under it. */}
