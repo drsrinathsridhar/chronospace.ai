@@ -1,10 +1,18 @@
 # Handoff
 
-State of the build as of 2026-09-10, for the next working session. The
-September client feedback round is implemented on branch
-`claude/chronospace-design-feedback-1d8277` (plan and measurements in
-`docs/client-feedback-plan.md`); the reviewed state before it is tag and
-branch `backup/pre-feedback-2026-09-10` at `4e8a41b`.
+State of the build as of 2026-09-11, for the next working session. Two
+client feedback rounds are in: round 1 (deck of 10 Sep, plan in
+`docs/client-feedback-plan.md`, merged to `main` at `4e02ca6`, reviewed
+state before it tagged `backup/pre-feedback-2026-09-10`) and round 2 (deck
+received 11 Sep, slides 1-10, plan in `docs/feedback-round-2-plan.md`),
+implemented on branch `claude/feedback-round-2-2026-09-11`; the state the
+client reviewed for round 2 is tag `backup/pre-feedback-2-2026-09-11` at
+`4e02ca6`. **How to swap any asset or setting: `docs/asset-swap-guide.md`.**
+
+Out of scope for round 2, by the owner's decision: the manufacturing
+animation rework (deck slides 3-4) - the owner builds the asset and drops
+it into the `intro.manufacturing` and `hero.manufacturing` slots of
+`src/media.config.ts`.
 
 ## Project
 
@@ -46,16 +54,16 @@ hover is gone.
 ### Hero (`src/app/sections/hero/`, Figma `7762:5279`)
 
 - CSS-built 3D room (`hero-room*`) with pointer parallax; faces clipped at
-  the plate.
-- Copy stack offset scales with the room: `md:pt-[max(6.5rem, 12.5vw -
-navbar)]`, so the headline stays inside the back wall (top edge 20.68% of
-  the plate) at every width. Headline top = 12.5vw at xl+ (187 at 1496,
-  240 at 1920).
-- **Camera rig** (`hero-room-cameras.tsx`): 16 billboard units as direct
-  children of the stage - two rows of three per side wall, one row of four
-  along the back wall at y = -18cqh (just under the cove, above the
-  headline). Each has a blinking accent LED; four carry faint view cones.
-  `CameraIcon` via the icon pipeline.
+  the plate. The camera rig is gone (round 2) - the room is bare walls.
+- Headline alone (the centre call to action is gone, round 2), centred on
+  the back wall at `--copy-centre: 22.7cqw`; the two lines are separate
+  spans with a space between them in the markup.
+- **Figures** (`hero-cards.tsx`): three cutouts on one floor line (feet at
+  109.17% of the plate), one scale of 1.4, spaced by what shows rather than
+  by their boxes; the load-time trail plays in colour, then drains to the
+  desaturated rest (`--figure-brightness` from `tuning.config.ts`), and
+  hover / the round-robin echo hand the colour back. Eye travel of room
+  and figures is scaled by `--hero-wiggle` (same file).
 - **Idle motion** (`hero-room-eye.client.tsx`): with no pointer input for
   1.5s the eye drifts on a two-period Lissajous (0.35/0.2 fine, 0.22/0.12
   coarse - touch devices get the drift too). Pointer takes over on move.
@@ -65,11 +73,10 @@ navbar)]`, so the headline stays inside the back wall (top edge 20.68% of
   `data-echo` for 1.6s (`hero-cards.module.css` reads it like hover).
 - **Live timecode** (`hero-timecode.client.tsx`): the ruler's readout counts
   at 30fps from 00:00:14:07, DOM-written, pauses when hidden.
-- Three standing cards (`hero-cards.tsx`) unchanged otherwise.
 
 ### Problem / intro (`src/app/sections/problem/`)
 
-Two columns on a 12-col grid: the manufacturing take (`/videos/manufacturing.mp4`,
+Two columns on a 12-col grid: the manufacturing take (`media.intro.manufacturing`,
 768x1024, 8s, compact `TimelinePlayer`, `aspect 4 / 5`, `preload="none"`)
 in cols 1-5 with `PointerDrift`; cols 6-12 hold the lede (read-sweep, two
 shortened paragraphs) and a `<dl>` of three readings with
@@ -77,37 +84,59 @@ shortened paragraphs) and a `<dl>` of three readings with
 
 ### Product (`src/app/sections/product/`)
 
-Centred header; three takes in the compact player. Card 1 `wild.mp4` is
+Centred header; three takes in the compact player on the page-wide panel
+gap (`gap-panel`, 40px, shared with Team and Science). Card 1 `wild` is
 **trimmed to its reconstruction pass (9.47s)** as a stand-in until the
-client sends in-the-wild footage (TODO in the file). Card 3
-`measurable.mp4` is **trimmed to an 18s loop (t 4-22 of the original)**
-and carries a `MeasureOverlay` (`measurable-marks.ts`): height bracket,
-floor line active from t=7, tokenisation sweep on each loop wrap, and two
-`bg-paper` chips covering the burned-in label and heat-map until a clean
-export arrives.
+client sends in-the-wild footage. Card 3 is the client's `queryable` clip
+(round 2; 3.2 s, carries its own burned-in body-tracking HUD) with a small
+static HUD of ours bottom-left; the old `measurable.mp4`, its timed
+`MeasureOverlay` and the cover chips are gone. Every plate runs in colour
+(`videoTone` in `tuning.config.ts`) and carries the **arc scrubber**
+(`src/components/arc-scrubber.client.tsx`, drawn in CSS, bottom-right
+inside the plate): drag along the arc to seek, a hidden native range for
+keyboard; it reads only progress, so any clip works.
 
 ### Capture / viewer (`src/app/sections/capture/`)
 
-`capture-player.client.tsx` renders a `MeasureOverlay` over `echo.mp4`:
-height bracket following the taller figure (21 keyframes at 0.25s), path
-tag integrating to 1.04 m, speed tag; corner HUD trimmed to Frames kept /
-Tracked joints / Timebase. Note the take is a camera orbit - the figure
-sweeps x 29% -> 97% -> 26%.
+`capture-player.client.tsx` renders a `MeasureOverlay` over `echo.mp4`
+(`media.viewer.echo`): height bracket following the taller figure (21
+keyframes at 0.25s), path tag integrating to 1.04 m, speed tag; corner HUD
+(Frames kept / Tracked joints / Timebase) now bottom-left, the arc scrubber
+bottom-right. Note the take is a camera orbit - the figure sweeps x 29% ->
+97% -> 26%. The marks are timed to this clip.
 
 ### Team (`src/app/sections/team/`)
 
-"Meet the team". Full-column square portraits (JPEG, grayscale at rest,
-colour on card hover/focus-within, `team.module.css`), caption under a
-hairline: name, "LinkedIn" text link (the accessible one) with the CTA
-arrow at -45deg, role. Portrait is an `aria-hidden tabIndex=-1` link.
-Srinath's source is 512px - ask for a larger one.
+"Team". Square portraits (JPEG, grayscale at rest, colour on card
+hover/focus-within, `team.module.css`) in a centred 1200px row on the panel
+gap (373px each at 1496), caption under a hairline: name, "LinkedIn" link
+(the accessible one) with the LinkedIn glyph in accent, role. Portrait is an
+`aria-hidden tabIndex=-1` link. Srinath's source is 512px - ask for a larger
+one.
 
-### Footer (`src/app/sections/footer/`)
+### Science (`src/app/sections/science/`)
 
-Two rows on the cards' grid: wordmark + figure brackets across cols 1-2,
-captioned link groups in col 3 (Company: LinkedIn, Contact; Legal is
-filtered out while `terms`/`privacy` are `#`), then a rule with the
-copyright and "Made by tonik" in caption type.
+Centred header; three cards in the product grammar (round 2): a 577/310
+picture plate (`media.science.*`, placeholders), hairline, label, title,
+blurb, outline action pinned to the foot. No border box, no header strip.
+
+### Closing + bar (`src/app/sections/closing/`)
+
+Vision and Footer merged (round 2). `Closing` (in `<main>`, `id="closing"`):
+the woodworking loop full-bleed of the site frame (`closing-video.client.tsx`,
+two renditions by viewport, plays on arrival, pauses on leave, poster only
+under reduced motion) under a left-to-right scrim, headline left, one line
+of sub-copy, "Connect with us" (inverse CTA) + "Follow on LinkedIn"
+(outline). `ClosingBar` is the `<footer>` after `<main>`: logo + copyright
+left, LinkedIn / Terms / Privacy / "Made by tonik" right; Terms and Privacy
+render inert while `site.config` has `#`. The dancer/arm trails and the
+figure brackets are gone.
+
+### Navbar
+
+The "Connect with us" cell turns to ink with paper type once the page
+scrolls off the hero (`site-header.module.css` on `:root[data-scrolled]`);
+`CtaLink` gained the matching `inverse` variant.
 
 ### Shared components added
 
@@ -119,13 +148,16 @@ copyright and "Made by tonik" in caption type.
 
 ## Waiting on the client
 
-- In-the-wild footage for "No stage required" (replaces the wild.mp4 trim).
-- Clean exports of `wild`, `navigable`, `measurable` without burned-in
-  graphics (removes the chips in `product.tsx`).
+- In-the-wild footage for "No stage required" (replaces the `wild` trim).
+- Clean exports of `wild` and `navigable` without burned-in graphics; the
+  final `queryable` clip (the current one carries its own tracking HUD).
 - Real URLs: Research cards (`science.tsx`, all point at the Brown lab
   site), `siteConfig.links.calendly`, `.linkedin`, `.terms`, `.privacy`.
-- Copy confirmation: "Meet the team".
+- Final artwork for the three Research card plates.
+- An SVG or white export of the NVIDIA Inception lockup (the PNG is turned
+  white by a CSS filter meanwhile).
 - A >= 1000px portrait of Srinath Sridhar.
+- The manufacturing scene rework (owner) for the intro take and hero cutout.
 
 ## Tooling notes
 
@@ -144,11 +176,14 @@ copyright and "Made by tonik" in caption type.
   temp dir `/private/var/folders/4x/mc_zpzhs71s34sfkzfbf_37m0000gn/T/opencode/`.
   Serve with `npx next start -p 4939` (ports 4321/4939 are sometimes
   contested by other local apps - check before trusting a response).
-- **Media**: videos are served from `public/videos/`; posters are
-  first frames extracted with ffmpeg and colocated with their section.
-  `sports/robotics.mp4` are unused (hero card videos were retired in the
-  floating-cards redesign) but kept in case the client returns to them;
-  `manufacturing.mp4` is the intro section's take.
+- **Media**: every slot lives under `public/media/<section>/` and is
+  named in `src/media.config.ts`; posters are first frames extracted with
+  ffmpeg (`/opt/homebrew/bin/ffmpeg`, installed 2026-09-11). See
+  `docs/asset-swap-guide.md`. The client's raw drops sit in
+  `public/feedback-*/` (gitignored - never ship them).
+- **Native bindings in the sandboxed shell**: `next build` and Tailwind's
+  oxide fail with "library load disallowed by system policy" inside the
+  agent sandbox; run the build outside it.
 - **Known trap, fixed once already**: the React hooks lint forbids
   synchronous `setState` inside effects - drive state from media/DOM
   events instead.

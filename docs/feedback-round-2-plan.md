@@ -10,6 +10,16 @@ Status legend: **DO** = in scope now · **DEFER** = animation/asset work the
 owner does later (explicitly out of scope for this round) · **ASK** = needs a
 decision before or during the build.
 
+**Status (2026-09-11):** T0-T13 implemented on branch
+`claude/feedback-round-2-2026-09-11`. Owner's answers to §6: ffmpeg
+installed via Homebrew; closing sub-copy is approved text; bottom bar stays
+dark; frame counter per the reference; overlay dropped with the clip swap;
+`safari-issue.png` deleted. Departures from the proposals: hero scale 1.4
+(not 1.3) with the flanks moved out; the round-robin echo also plays in
+colour; the closing block is two exports (`Closing` in `<main>`,
+`ClosingBar` as the `<footer>`); the Capture HUD moved bottom-left to clear
+the dial. Swap guide: `docs/asset-swap-guide.md`.
+
 ---
 
 ## 0. What the client sent, and what each file is for

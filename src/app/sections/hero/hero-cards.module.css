@@ -59,7 +59,11 @@
   gap: 0.5rem;
   width: 100%;
   padding-inline: var(--gutter);
-  margin-top: 3rem;
+  /* Centred in whatever height the hero has left between the copy and the
+     ruler, at least 3rem under the copy - on a phone the hero is a full
+     screen tall, and a strip pinned to the copy left a bare band below. */
+  margin-block: auto;
+  padding-top: 3rem;
 }
 
 .card {
