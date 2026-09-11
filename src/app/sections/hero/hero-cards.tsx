@@ -126,10 +126,13 @@ const cards: StandingCard[] = [
     label: "Manufacturing",
     pieces: [
       {
+        // The client's new manufacturing scene (11 Sep 2026): two workers
+        // at a machine with a robot arm, cropped to its opaque bounds, so
+        // the aspect is the file's own pixel ratio.
         image: media.hero.manufacturing,
         left: "-1.47%",
         width: "102.83%",
-        aspect: "252.352 / 109.353",
+        aspect: "1582 / 773",
       },
     ],
     left: "40.9%",
