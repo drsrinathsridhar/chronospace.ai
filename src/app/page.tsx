@@ -7,8 +7,7 @@ import { Product } from "./sections/product";
 import { Capture } from "./sections/capture";
 import { Team } from "./sections/team";
 import { Science } from "./sections/science";
-import { Vision } from "./sections/vision";
-import { Footer } from "./sections/footer";
+import { Closing, ClosingBar } from "./sections/closing";
 
 export default function HomePage() {
   return (
@@ -23,9 +22,9 @@ export default function HomePage() {
           <Capture />
           <Team />
           <Science />
-          <Vision />
+          <Closing />
         </main>
-        <Footer />
+        <ClosingBar />
       </SiteFrame>
     </>
   );

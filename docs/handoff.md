@@ -33,7 +33,7 @@ branch `backup/pre-feedback-2026-09-10` at `4e8a41b`.
 - Verify with `npm run format`, `npm run lint`, `npm run typecheck`,
   and `next build`.
 
-## Page state (`src/app/page.tsx`: Hero -> Backers -> Problem -> Product -> Capture -> Team -> Science -> Vision, then Footer)
+## Page state (`src/app/page.tsx`: Hero -> Backers -> Problem -> Product -> Capture -> Team -> Science -> Closing, then ClosingBar as the `<footer>`)
 
 Every section sits on one rhythm: `py-section` (120px) above and below,
 `mt-section-gap` (80px) from the centred header stack to the content
