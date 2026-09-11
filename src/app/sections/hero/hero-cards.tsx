@@ -46,7 +46,7 @@ import styles from "./hero-cards.module.css";
 // grown 1.6x and measured in the site frame's cqw so the figures keep their
 // proportion to the room on any display (client feedback, round 2: with
 // the centre call to action gone, the figures stand in a row and grow a
-// step). The scales are per card - 1.75 / 1.62 / 1.0 - chosen so the
+// step). The scales are per card - 1.75 / 1.62 / 1.08 - chosen so the
 // PEOPLE in the three pictures stand at one height (owner's request, 11
 // Sep 2026): the robotics figure is a small man beside a large arm, the
 // manufacturing workers fill about 72% of their frame, and the dancer
@@ -57,7 +57,7 @@ import styles from "./hero-cards.module.css";
 // placed by what shows, not by the invisible card boxes: the robot's pieces
 // span 0..82% of its body, the line -1..101%, the dancer 26..73%, and the
 // 9-degree stances foreshorten the flanks. The flanks stand at 8.3% /
-// 77.3%, the line at 39.8% (its centre a hair right of the vanishing
+// 76.5%, the line at 39.8% (its centre a hair right of the vanishing
 // point, where the client had nudged it): the robot's box just clears the
 // line's at 1496 (1px) - it cannot come closer without the boxes
 // overlapping - and the dancer's smaller box sits where her figure stood
@@ -163,9 +163,9 @@ const cards: StandingCard[] = [
         aspect: "97 / 135",
       },
     ],
-    left: "77.3%",
+    left: "76.5%",
     feet: 1.0917,
-    scale: 1,
+    scale: 1.08,
     shiftX: "-1.44cqw",
     shiftY: "-0.45cqw",
     tilt: "-9deg",
