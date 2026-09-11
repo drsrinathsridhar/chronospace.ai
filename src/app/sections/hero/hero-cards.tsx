@@ -115,7 +115,7 @@ const cards: StandingCard[] = [
       },
       {
         image: media.hero.roboticsMan,
-        left: "72.5%",
+        left: "64%",
         width: "9.6%",
         aspect: "161 / 579",
       },
