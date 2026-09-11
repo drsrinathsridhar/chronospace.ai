@@ -1,0 +1,51 @@
+/*
+ * The closing block's stage. The section is the site frame's full width;
+ * the take fills it edge to edge behind the copy and the scrim sits between
+ * the two so the type reads on the left and the take shows on the right.
+ *
+ * The scrim is two gradients on the page ground: left to right, paper at
+ * 80% behind the copy easing to 35% where the take is meant to be seen,
+ * and top to bottom a fade into solid paper over the lower third, so the
+ * block hands off to the bar underneath on the same ground with no seam.
+ *
+ * At desktop the stage takes at least 80% of the small viewport height so
+ * the take has room to be a picture, and the copy centres in it; below
+ * that the section's own padding sets the height.
+ */
+
+.stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  isolation: isolate;
+  overflow: clip;
+}
+
+@media (min-width: 64rem) {
+  .stage {
+    min-height: 80svh;
+  }
+}
+
+.video {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(to bottom, transparent 55%, var(--paper) 100%),
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--paper) 80%, transparent) 0%,
+      color-mix(in srgb, var(--paper) 55%, transparent) 50%,
+      color-mix(in srgb, var(--paper) 35%, transparent) 100%
+    );
+}
