@@ -46,7 +46,7 @@ import styles from "./hero-cards.module.css";
 //
 // Geometry: one line. All three feet stand on 109.17% of the plate height -
 // the floor line the manufacturing capture always stood on, now shared - at
-// one scale of 1.3 over a base card of 19.1cqw, the comp's 178.826px at the
+// one scale of 1.4 over a base card of 19.1cqw, the comp's 178.826px at the
 // design width grown 1.6x and measured in the site frame's cqw so the
 // figures keep their proportion to the room on any display (client
 // feedback, round 2: with the centre call to action gone, the figures stand
@@ -61,8 +61,9 @@ import styles from "./hero-cards.module.css";
 // 96/97px at 1496) and the row of them is centred on the vanishing point
 // (49.82%), which puts the manufacturing line's centre at 53.3% - within
 // half a percent of where the client had nudged it (2% left of the comp's
-// 41.71%). The dancer's box stands 6px off the line's at 1496: the flank
-// lefts cannot come closer without the boxes overlapping.
+// 41.71%). At the 1.4 scale the dancer's box just clears the line's at 1496
+// (1px) and the robot's stands 35 off: the flank lefts cannot come closer
+// without the boxes overlapping.
 // With every card at the same depth the shift factors are one number:
 // physically eyeshift * -z / (P - z) at 30cqw in front of the plate plane,
 // with the room's P of 100cqw and its 8cqw / 5.1cqh travel, is -3.5cqw /
@@ -115,9 +116,9 @@ const cards: StandingCard[] = [
         aspect: "22.87 / 68.61",
       },
     ],
-    left: "14.7%",
+    left: "13.4%",
     feet: 1.0917,
-    scale: 1.3,
+    scale: 1.4,
     shiftX: "-1.44cqw",
     shiftY: "-0.45cqw",
     tilt: "9deg",
@@ -136,7 +137,7 @@ const cards: StandingCard[] = [
     ],
     left: "40.9%",
     feet: 1.0917,
-    scale: 1.3,
+    scale: 1.4,
     shiftX: "-1.44cqw",
     shiftY: "-0.45cqw",
     /* Facing the viewer squarely, and barely turning with the eye: the
@@ -155,9 +156,9 @@ const cards: StandingCard[] = [
         aspect: "97 / 135",
       },
     ],
-    left: "66.12%",
+    left: "67.7%",
     feet: 1.0917,
-    scale: 1.3,
+    scale: 1.4,
     shiftX: "-1.44cqw",
     shiftY: "-0.45cqw",
     tilt: "-9deg",

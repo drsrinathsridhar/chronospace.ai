@@ -41,7 +41,7 @@ import wildPoster from "./wild-poster.jpg";
 // offsets this one 598/1416 into the content box; the client read that as
 // the heading skewed right (feedback, September 2026), so the offset is
 // gone and every section header sits the same way. Under it the cards run
-// in a full-width row of three on a 22px gap, each plate held at the comp's
+// in a full-width row of three on the page-wide 40px panel gap, each plate held at the comp's
 // 577/310, on the site-wide 80px header-to-content gap.
 
 type Card = {
@@ -124,7 +124,7 @@ export function Product() {
           </p>
         </div>
 
-        <div className="mt-section-gap grid grid-cols-1 gap-5.5 md:grid-cols-3">
+        <div className="mt-section-gap gap-panel grid grid-cols-1 md:grid-cols-3">
           {cards.map((card, index) => (
             <article
               key={card.label}
