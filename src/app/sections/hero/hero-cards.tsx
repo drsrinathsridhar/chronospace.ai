@@ -135,11 +135,14 @@ const cards: StandingCard[] = [
       {
         // The client's manufacturing scene (14 Sep 2026): two workers at a
         // machine under a gantry crane, cropped to its opaque bounds, so
-        // the aspect is the file's own pixel ratio.
+        // the aspect is the file's own pixel ratio. Narrower than the
+        // first cut of the scene (the pallet is gone), so the piece takes
+        // 81% of the card, centred, to keep the workers at the height the
+        // scale was set for.
         image: media.hero.manufacturing,
-        left: "-1.47%",
-        width: "102.83%",
-        aspect: "1563 / 923",
+        left: "9.45%",
+        width: "81.1%",
+        aspect: "1232 / 923",
       },
     ],
     left: "40.9%",
