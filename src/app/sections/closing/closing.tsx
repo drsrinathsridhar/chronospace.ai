@@ -25,12 +25,14 @@ import styles from "./closing.module.css";
 // on the blocks - one beat apart.
 //
 // Under the block the bar (ClosingBar) is the page's <footer>, rendered
-// after <main> so it keeps its landmark role: the mark and the copyright
-// on the left, the links on the right, on the page ground - the reference
-// screenshot's light bar would break the page's one-ground rule. The
-// legal links are still "#" in site.config: they render, inert, so the bar
-// has its final shape, and they come alive on their own the moment the
-// config carries real URLs.
+// after <main> so it keeps its landmark role: two rows on the page ground -
+// the reference screenshot's light bar would break the page's one-ground
+// rule. The first row is the mark on the left and the links on the right;
+// under a hairline the second is the small print, copyright left and the
+// credit right (owner's request, 14 Sep 2026). The legal links are still
+// "#" in site.config: they render, inert, so the bar has its final shape,
+// and they come alive on their own the moment the config carries real
+// URLs.
 
 const { poster, sources } = media.closing.woodworking;
 
@@ -100,26 +102,18 @@ const links: { label: string; href: string; external?: boolean }[] = [
 export function ClosingBar() {
   return (
     <footer className="section-container border-line border-t">
-      <RevealScope className="flex flex-col gap-6 py-6 md:flex-row md:items-center md:justify-between">
-        <div
-          className="sweep-in flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6"
-          style={{ "--beat": 0 }}
-        >
+      <RevealScope>
+        <div className="flex flex-col gap-6 py-6 md:flex-row md:items-center md:justify-between">
           <ChronospaceLogoIcon
             role="img"
             aria-label="ChronoSpace"
             width={120}
             height={23}
-            className="text-ink shrink-0"
+            className="sweep-in text-ink shrink-0"
+            style={{ "--beat": 0 }}
           />
-          <p className="type-caption text-muted">© 2026 ChronoSpace AI</p>
-        </div>
 
-        <div
-          className="sweep-in flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8"
-          style={{ "--beat": 1 }}
-        >
-          <nav aria-label="Footer">
+          <nav aria-label="Footer" className="sweep-in" style={{ "--beat": 1 }}>
             <ul className="flex flex-wrap items-center gap-x-8 gap-y-3">
               {links.map((link) => {
                 const placeholder = link.href === "#";
@@ -148,6 +142,13 @@ export function ClosingBar() {
               })}
             </ul>
           </nav>
+        </div>
+
+        <div
+          className="border-line sweep-in flex flex-col gap-3 border-t py-5 sm:flex-row sm:items-center sm:justify-between"
+          style={{ "--beat": 2 }}
+        >
+          <p className="type-caption text-muted">© 2026 ChronoSpace AI</p>
           <a
             href={siteConfig.links.madeBy}
             target="_blank"
