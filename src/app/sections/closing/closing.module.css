@@ -7,8 +7,10 @@
  * 80% behind the copy easing to 35% where the take is meant to be seen,
  * and top to bottom a fade into solid paper over the lower third, so the
  * block hands off to the bar underneath on the same ground with no seam.
- * The top edge stays hard: a fade there was tried and dropped (owner, 14
- * Sep 2026), as was revealing the block from under the page.
+ * The top edge stays hard, ruled with the page's hairline so the take is
+ * cut from the ground above it rather than butting against it: a fade
+ * there was tried and dropped (owner, 14 Sep 2026), as was revealing the
+ * block from under the page.
  *
  * At desktop the stage takes at least 80% of the small viewport height so
  * the take has room to be a picture, and the copy centres in it; below
@@ -21,6 +23,7 @@
   align-items: center;
   isolation: isolate;
   overflow: clip;
+  border-top: 1px solid var(--line);
 }
 
 @media (min-width: 64rem) {
