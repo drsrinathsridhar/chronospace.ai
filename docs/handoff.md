@@ -125,12 +125,7 @@ blurb, outline action pinned to the foot. No border box, no header strip.
 
 ### Closing + bar (`src/app/sections/closing/`)
 
-Vision and Footer merged (round 2). Both sit in a `sticky bottom-0 z-0`
-wrapper after `<main>` (which is `relative z-10 bg-paper`), so the page
-scrolls off them like a lifted sheet - the "footer reveal" (owner, 14 Sep).
-A `[data-closing-sentinel]` at the end of `<main>` is what the closing
-video and its `RevealScope` (`watch` prop) observe, since a pinned block
-always intersects the viewport. `Closing` (`id="closing"`):
+Vision and Footer merged (round 2). `Closing` (in `<main>`, `id="closing"`):
 the woodworking loop full-bleed of the site frame (`closing-video.client.tsx`,
 two renditions by viewport, plays on arrival, pauses on leave, poster only
 under reduced motion) under a left-to-right scrim, headline left, one line

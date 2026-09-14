@@ -5,15 +5,10 @@ import { useEffect, useRef } from "react";
 // The closing block's backdrop: the woodworking loop, muted, behind the
 // claim. It is an arrival, not a page load - the same discipline as the
 // timeline player: nothing is fetched (preload="none") until the block
-// comes into view, then the take starts, and it pauses again whenever it
-// leaves so an eleven-megabyte loop is never decoding under the rest of
-// the page. The block is pinned under the page and revealed as <main>
-// scrolls off it (app/page.tsx), so "in view" cannot be read off the
-// video itself - a pinned element intersects the viewport from the first
-// scroll, covered or not. The island watches the sentinel at the end of
-// <main> instead: when that reaches the viewport the sheet is lifting and
-// the take is about to show. Under prefers-reduced-motion the take never
-// starts: the poster stands in for it.
+// scrolls into view, then the take starts, and it pauses again whenever
+// the block leaves the viewport so an eleven-megabyte loop is never
+// decoding under the rest of the page. Under prefers-reduced-motion the
+// take never starts: the poster stands in for it.
 //
 // Two renditions, one element. The browser picks the 1080p source from
 // 96rem up (the site frame's widest run), the 720p source everywhere else.
@@ -38,7 +33,6 @@ export function ClosingVideo({
     if (!video) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const sentinel = document.querySelector("[data-closing-sentinel]");
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries.some((entry) => entry.isIntersecting)) {
@@ -47,12 +41,9 @@ export function ClosingVideo({
           video.pause();
         }
       },
-      // The sentinel is a point: any intersection means the sheet's edge
-      // is on screen. Without one (the block rendered on its own) the
-      // video watches itself, a fifth of it showing.
-      sentinel ? { rootMargin: "0px 0px 15% 0px" } : { threshold: 0.2 },
+      { threshold: 0.2 },
     );
-    observer.observe(sentinel ?? video);
+    observer.observe(video);
 
     return () => observer.disconnect();
   }, []);

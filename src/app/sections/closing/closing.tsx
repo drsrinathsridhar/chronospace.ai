@@ -22,10 +22,7 @@ import styles from "./closing.module.css";
 // closing-video.client.tsx.
 //
 // The copy reveals like every other section - shimmer on the type, sweep
-// on the blocks - one beat apart. The cue is the sentinel at the end of
-// <main>, not the block itself: the block is pinned under the page and
-// uncovered as the page scrolls off it (app/page.tsx), so its own
-// position is always "in view".
+// on the blocks - one beat apart.
 //
 // Under the block the bar (ClosingBar) is the page's <footer>, rendered
 // after <main> so it keeps its landmark role: two rows on the page ground -
@@ -53,10 +50,7 @@ export function Closing() {
       <div aria-hidden className={styles.scrim} />
 
       <div className="section-container">
-        <RevealScope
-          watch="[data-closing-sentinel]"
-          className="py-section flex flex-col items-start gap-6"
-        >
+        <RevealScope className="py-section flex flex-col items-start gap-6">
           <h2
             className="type-display-xs sm:type-display-sm lg:type-display-md shimmer-in max-w-160 text-pretty"
             style={{ "--beat": 0 }}
