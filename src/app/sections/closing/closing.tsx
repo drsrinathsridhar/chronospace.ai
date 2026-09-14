@@ -32,7 +32,10 @@ import styles from "./closing.module.css";
 // credit right (owner's request, 14 Sep 2026). The legal links are still
 // "#" in site.config: they render, inert, so the bar has its final shape,
 // and they come alive on their own the moment the config carries real
-// URLs.
+// URLs. The bar does not join the scroll reveal: RevealScope fires once a
+// block has climbed 15% above the fold, and the last thing on the page
+// never can - it sat masked and invisible at the foot of the page - so
+// the bar is simply there, settled, like the navbar at the other end.
 
 const { poster, sources } = media.closing.woodworking;
 
@@ -102,63 +105,57 @@ const links: { label: string; href: string; external?: boolean }[] = [
 export function ClosingBar() {
   return (
     <footer className="section-container border-line border-t">
-      <RevealScope>
-        <div className="flex flex-col gap-6 py-6 md:flex-row md:items-center md:justify-between">
-          <ChronospaceLogoIcon
-            role="img"
-            aria-label="ChronoSpace"
-            width={120}
-            height={23}
-            className="sweep-in text-ink shrink-0"
-            style={{ "--beat": 0 }}
-          />
+      <div className="flex flex-col gap-6 py-6 md:flex-row md:items-center md:justify-between">
+        <ChronospaceLogoIcon
+          role="img"
+          aria-label="ChronoSpace"
+          width={120}
+          height={23}
+          className="text-ink shrink-0"
+        />
 
-          <nav aria-label="Footer" className="sweep-in" style={{ "--beat": 1 }}>
-            <ul className="flex flex-wrap items-center gap-x-8 gap-y-3">
-              {links.map((link) => {
-                const placeholder = link.href === "#";
-                return (
-                  <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className={
-                        placeholder
-                          ? "type-nav text-muted pointer-events-none"
-                          : "type-nav text-ink hover:text-accent focus-visible:text-accent transition-colors duration-150 ease-out"
-                      }
-                      {...(placeholder && {
-                        "aria-disabled": true,
-                        tabIndex: -1,
-                      })}
-                      {...(link.external && {
-                        target: "_blank",
-                        rel: "noreferrer",
-                      })}
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
-          </nav>
-        </div>
+        <nav aria-label="Footer">
+          <ul className="flex flex-wrap items-center gap-x-8 gap-y-3">
+            {links.map((link) => {
+              const placeholder = link.href === "#";
+              return (
+                <li key={link.label}>
+                  <a
+                    href={link.href}
+                    className={
+                      placeholder
+                        ? "type-nav text-muted pointer-events-none"
+                        : "type-nav text-ink hover:text-accent focus-visible:text-accent transition-colors duration-150 ease-out"
+                    }
+                    {...(placeholder && {
+                      "aria-disabled": true,
+                      tabIndex: -1,
+                    })}
+                    {...(link.external && {
+                      target: "_blank",
+                      rel: "noreferrer",
+                    })}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+      </div>
 
-        <div
-          className="border-line sweep-in flex flex-col gap-3 border-t py-5 sm:flex-row sm:items-center sm:justify-between"
-          style={{ "--beat": 2 }}
+      <div className="border-line flex flex-col gap-3 border-t py-5 sm:flex-row sm:items-center sm:justify-between">
+        <p className="type-caption text-muted">© 2026 ChronoSpace AI</p>
+        <a
+          href={siteConfig.links.madeBy}
+          target="_blank"
+          rel="noreferrer"
+          className="type-caption text-muted hover:text-ink transition-colors duration-150 ease-out"
         >
-          <p className="type-caption text-muted">© 2026 ChronoSpace AI</p>
-          <a
-            href={siteConfig.links.madeBy}
-            target="_blank"
-            rel="noreferrer"
-            className="type-caption text-muted hover:text-ink transition-colors duration-150 ease-out"
-          >
-            Made by tonik
-          </a>
-        </div>
-      </RevealScope>
+          Made by tonik
+        </a>
+      </div>
     </footer>
   );
 }
