@@ -5,10 +5,11 @@
  *
  * The scrim is two gradients on the page ground: left to right, paper at
  * 80% behind the copy easing to 35% where the take is meant to be seen,
- * and top to bottom a fade out of solid paper over the top third and back
- * into it over the lower third, so the block arrives from the section
- * above and hands off to the bar underneath on the same ground, with no
- * seam at either edge (the top fade at the owner's request, 14 Sep 2026).
+ * and top to bottom a fade into solid paper over the lower third, so the
+ * block hands off to the bar underneath on the same ground with no seam.
+ * The top edge is hard on purpose: the block sits under the page and the
+ * section above scrolls off it like a sheet (app/page.tsx), so the edge is
+ * the sheet's, not the take's.
  *
  * At desktop the stage takes at least 80% of the small viewport height so
  * the take has room to be a picture, and the copy centres in it; below
@@ -43,13 +44,7 @@
   inset: 0;
   z-index: -1;
   background:
-    linear-gradient(
-      to bottom,
-      var(--paper) 0%,
-      transparent 32%,
-      transparent 55%,
-      var(--paper) 100%
-    ),
+    linear-gradient(to bottom, transparent 55%, var(--paper) 100%),
     linear-gradient(
       to right,
       color-mix(in srgb, var(--paper) 80%, transparent) 0%,
