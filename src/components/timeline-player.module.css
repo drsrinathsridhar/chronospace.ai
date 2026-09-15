@@ -24,6 +24,13 @@
    */
   isolation: isolate;
   background: var(--paper);
+  /*
+   * A size container, so the control surface below can be measured
+   * against the plate it sits on: the same dial that is a quiet corner of
+   * a 460px card at the design width was almost half of a 240px plate at
+   * a laptop's 1100 and a third of a phone's (client feedback, round 3).
+   */
+  container-type: inline-size;
 }
 
 .framed .frame {
@@ -88,7 +95,10 @@
  * plate's button beneath; only the dial inside it does.
  */
 .surface {
-  --arc-radius: 2.75rem;
+  /* Both in the plate's own inline size: at the design width's 460px
+     card they land on the maxima (a 2.75rem plan in a 7.5rem box), and
+     they step down with the plate rather than swallowing it. */
+  --arc-radius: clamp(1.5rem, 9.5cqw, 2.75rem);
   position: absolute;
   right: 0.625rem;
   bottom: 0.625rem;
@@ -99,7 +109,7 @@
   /* A set width, wide enough for the plan (2rx plus its inset) and for the
      longest counter ("View 563 / 563" in caption type) with both centred
      in it, so the box holds still as the digits tick over. */
-  width: 7.5rem;
+  width: clamp(4.75rem, 26cqw, 7.5rem);
   padding: 0.5rem;
   border-radius: 0.5rem;
   background: color-mix(in srgb, var(--paper) 55%, transparent);
@@ -117,6 +127,14 @@
 .surface > .counter,
 .surface > .play {
   pointer-events: none;
+}
+
+/* On a plate under 300px the surface is ~4.75rem wide: the counter alone
+   fills it, so the "Camera path" caption steps out. */
+@container (max-width: 18.75rem) {
+  .surface > .caption {
+    display: none;
+  }
 }
 
 /*
