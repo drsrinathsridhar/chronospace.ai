@@ -123,6 +123,8 @@ export function Product() {
                 src={card.take.src}
                 poster={card.take.poster}
                 fallbackDuration={card.take.duration}
+                fps={card.take.fps}
+                camera={card.take.camera}
                 aspect="577 / 310"
                 name={`the ${card.label.toLowerCase()} take`}
                 compact

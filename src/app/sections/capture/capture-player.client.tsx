@@ -151,6 +151,8 @@ export function CapturePlayer() {
       src={take.src}
       poster={take.poster}
       fallbackDuration={take.duration}
+      fps={take.fps}
+      camera={take.camera}
       aspect="640 / 368"
       name="the capture"
       onTick={(t, duration) => setReadout(measure(t, duration))}

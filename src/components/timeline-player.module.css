@@ -1,17 +1,18 @@
 /*
  * The timeline player's chrome, shared by the capture viewer and the
- * product cards: the take held over the page's paper, the one control
+ * product cards: the take held over the page's paper, the one instrument
  * overlaid inside the plate's bottom-right corner on a translucent surface
- * (client feedback round 2: the linear transport under the plate became
- * the arc dial on the picture). The dial itself is arc-scrubber.module.css;
- * this file holds the plate, the surface and the frame counter under the
- * dial. The play/pause glyph and the "Timecode" caption are gone (owner's
- * request, 11 Sep 2026).
+ * (client feedback round 2: the linear transport under the plate became a
+ * dial on the picture; round 3: the dial became the camera's path). The
+ * dial itself is camera-path-dial.module.css; this file holds the plate,
+ * the tap-to-play button over it, the surface, the caption and the view
+ * counter under the dial, and the play glyph that shows when the take
+ * stands still after being asked to play.
  *
  * Two builds of the same instrument. Framed (the capture viewer) draws its
  * own hairline around the plate and runs the larger surface; embedded (the
  * product columns) draws no outline at all - the take stands on the page -
- * and the surface steps down to a tighter arc.
+ * and the surface steps down to a tighter plan.
  */
 
 .frame {
@@ -55,15 +56,39 @@
 }
 
 /*
+ * The tap: an invisible button the size of the plate, over the take and
+ * its overlays, under the surface. It draws nothing of its own - the play
+ * glyph in the surface is the state - except its focus ring, kept inside
+ * the frame's edge.
+ */
+.toggle {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+}
+
+.toggle:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: -2px;
+}
+
+/*
  * The control surface: paper at 55% with the picture blurred through it,
  * as in the reference, sitting 10px in from the plate's bottom-right
  * corner. Its radius is the one soft corner on the site - the reference's
  * dial is rounded and the panel/card tokens are 0 - so it is a module
- * value rather than a token, on purpose. --arc-radius is the dial's, read
- * by arc-scrubber.module.css; the framed build steps it up.
+ * value rather than a token, on purpose. --arc-radius is the plan's rx,
+ * read by camera-path-dial.module.css; the framed build steps it up. The
+ * surface itself takes no pointer, so a tap on its caption reaches the
+ * plate's button beneath; only the dial inside it does.
  */
 .surface {
-  --arc-radius: 2rem;
+  --arc-radius: 2.75rem;
   position: absolute;
   right: 0.625rem;
   bottom: 0.625rem;
@@ -71,9 +96,9 @@
   flex-direction: column;
   align-items: center;
   gap: 0.375rem;
-  /* A set width, wide enough for the longest counter ("Frame 563 / 563"
-     in caption type) with the dial centred in it, so the box holds still
-     as the digits tick over. */
+  /* A set width, wide enough for the plan (2rx plus its inset) and for the
+     longest counter ("View 563 / 563" in caption type) with both centred
+     in it, so the box holds still as the digits tick over. */
   width: 7.5rem;
   padding: 0.5rem;
   border-radius: 0.5rem;
@@ -81,6 +106,17 @@
   /* Unprefixed only: the build adds -webkit- itself, and a hand-written
      pair made it drop the standard property instead. */
   backdrop-filter: blur(12px);
+  pointer-events: none;
+}
+
+.surface > * {
+  pointer-events: auto;
+}
+
+.surface > .caption,
+.surface > .counter,
+.surface > .play {
+  pointer-events: none;
 }
 
 /*
@@ -91,7 +127,7 @@
  */
 @media (min-width: 40rem) {
   .framed .surface {
-    --arc-radius: 2.75rem;
+    --arc-radius: 3.5rem;
     right: 1rem;
     bottom: 1rem;
     gap: 0.5rem;
@@ -101,14 +137,39 @@
 }
 
 /*
- * The frame counter, centred under the dial inside the surface's set
- * width; its figures are tabular so the digits hold their width as they
- * tick over, and the text never wraps.
+ * The caption and the view counter, centred under the dial inside the
+ * surface's set width; the counter's figures are tabular so the digits
+ * hold their width as they tick over, and neither line wraps.
  */
+.caption,
 .counter {
   width: 100%;
   margin: 0;
   text-align: center;
   white-space: nowrap;
+}
+
+.counter {
   font-variant-numeric: tabular-nums;
+}
+
+/*
+ * The play glyph: in the surface's top-right corner, where the plan's
+ * ellipse leaves the box empty. It fades in once the take has been asked
+ * to play and stands still - the player's root carries data-needs-play -
+ * and out the moment it moves, so a running take shows only the dial.
+ */
+.play {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  color: var(--ink);
+  opacity: 0;
+  transition: opacity 150ms;
+}
+
+[data-needs-play] .play {
+  opacity: 1;
 }
