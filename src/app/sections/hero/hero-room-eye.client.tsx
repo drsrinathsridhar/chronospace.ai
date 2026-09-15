@@ -144,9 +144,11 @@ const TAU_SPEED_DOWN = 350;
     have drained to grey (figure-intro ends at ~3.45s), so the first turn
     reads as a new event, not a stutter of the first. */
 const ECHO_FIRST = 6000;
-/** Interval between automatic trails, ms, and how long each stays out. */
+/** Interval between automatic trails, ms, and how long each stays out. The
+    hold is shared with the phone carousel's pager (hero-pager.client.tsx),
+    which gives the arriving slide the same turn. */
 const ECHO_EVERY = 5000;
-const ECHO_HOLD = 1600;
+export const ECHO_HOLD = 1600;
 
 /** iOS puts the permission request on the event constructor; nobody else
     has it, and the DOM typings do not know it. */
@@ -179,6 +181,13 @@ export function HeroRoomEye() {
     // the hand.
     const hovers = window.matchMedia("(hover: hover)").matches;
     const amp = hovers ? DRIFT.hover : DRIFT.touch;
+    // Below md the cards are a carousel and the pager owns the trail: each
+    // swipe colours the slide that arrives (hero-pager.client.tsx), so a
+    // turn firing here as well would light a card that is off screen or
+    // stack two holds on the one that shows. The round robin runs from md
+    // up, where all three stand in view, and follows a resize across the
+    // line either way.
+    const wide = window.matchMedia("(min-width: 48rem)");
 
     let pointerX = 0;
     let pointerY = 0;
@@ -289,7 +298,7 @@ export function HeroRoomEye() {
     }
 
     function startEcho() {
-      if (reduced || cards.length === 0) return;
+      if (reduced || cards.length === 0 || !wide.matches) return;
       if (echoTimer !== undefined || echoInterval !== undefined) return;
       echoTimer = setTimeout(
         () => {
@@ -421,9 +430,17 @@ export function HeroRoomEye() {
       else resume();
     }
 
+    // Crossing md: the cycle stops (and clears any turn in progress) and
+    // resume() starts it again only if the new width allows it.
+    function onWide() {
+      stopEcho();
+      resume();
+    }
+
     const observer = new IntersectionObserver(onIntersect, { threshold: 0 });
     observer.observe(section);
     document.addEventListener("visibilitychange", onVisibility);
+    wide.addEventListener("change", onWide);
     window.addEventListener("pointermove", onMove, { passive: true });
     window.addEventListener("pointerdown", onMove, { passive: true });
     window.addEventListener("pointerup", onUp);
@@ -453,6 +470,7 @@ export function HeroRoomEye() {
       pause();
       observer.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
+      wide.removeEventListener("change", onWide);
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerdown", onMove);
       window.removeEventListener("pointerup", onUp);

@@ -52,11 +52,25 @@ export function Hero() {
   // past that the room stops growing (cqw), and a hero still chasing a
   // taller viewport would open a band of bare paper under the figures.
   //
+  // Below md the floor is a different sum: the captures are a carousel
+  // standing on the room's floor line at 65.5% of the hero (60% plate x
+  // 1.0917 feet), and the tallest of them, the robot arm at 59.3cqw, has to
+  // clear the headline, whose foot sits at 251px on a 360-390 phone (three
+  // lines of display-xs under the 56px bar and 96px of padding). So the
+  // hero is at least 25rem + 90.5cqw tall there - 753 at 390, 726 at 360 -
+  // which the viewport term already exceeds on an 844px phone (772) and a
+  // 360x800 one (728), so the ruler and the band still close the first
+  // screen on both; a shorter phone gets the room whole and the band under
+  // the fold, as the wide layouts do.
+  //
   // `touch-pan-y`: a finger on the hero steers the room while it is down
   // (hero-room-eye.client.tsx). The browser keeps vertical swipes for the
   // scroll and hands us the sideways ones as pointer moves; without the
   // declaration it would take every touch for a scroll and cancel our
-  // pointer the moment it moved.
+  // pointer the moment it moved. The carousel below md is its own scroll
+  // container and declares pan-x pan-y itself (hero-cards.module.css), and
+  // touch-action stops walking up at a scroll container, so a sideways
+  // swipe over the figures moves the slides rather than the eye.
   //
   // The trail's mode and colour (tuning.config.ts, `heroTrail`) ride the
   // root as data attributes, which hero-cards.module.css selects on - set
@@ -67,7 +81,7 @@ export function Hero() {
   // engines take as "no filter", so it is sized away rather than hidden.
   return (
     <section
-      className="pt-navbar-rest relative flex min-h-[max(min(calc(100svh-var(--backing-band-height)),87rem),calc(52.84cqw+2.5rem))] touch-pan-y flex-col overflow-clip"
+      className="pt-navbar-rest relative flex min-h-[max(min(calc(100svh-var(--backing-band-height)),87rem),calc(52.84cqw+2.5rem))] touch-pan-y flex-col overflow-clip max-md:min-h-[max(calc(100svh-var(--backing-band-height)),calc(25rem+90.5cqw))]"
       data-trail-mode={tuning.heroTrail.mode}
       data-trail-colour={tuning.heroTrail.colour}
     >
@@ -88,8 +102,9 @@ export function Hero() {
        * the headline stood while it shared a block centred on the wall's
        * midline with the call to action - the height the client signed off -
        * so losing the action moved the figures, not the words. Below xl the
-       * cards fall into a strip under the copy, so the copy keeps the comp's
-       * padding and the flow.
+       * copy keeps the comp's padding and the flow, with the cards in a
+       * strip under it (md to xl) or one at a time on the floor line below
+       * it (under md).
        */}
       <div
         className="section-container relative flex flex-col items-center pt-24 text-center md:pt-26 xl:absolute xl:inset-x-0 xl:top-(--copy-centre) xl:z-10 xl:-translate-y-1/2 xl:pt-0"
@@ -116,9 +131,12 @@ export function Hero() {
       </div>
 
       {/*
-       * The captures. At xl they stand on the room's floor at the comp's
-       * positions and drift with the pointer; below that they fall into a
-       * strip here, between the copy and the ruler.
+       * The captures, and the pager that goes with them on a phone. At xl
+       * they stand on the room's floor at the comp's positions and drift
+       * with the pointer; from md to xl they fall into a strip here,
+       * between the copy and the ruler; below md they are a carousel
+       * standing on the floor line, one figure a screen, with three of the
+       * ruler's ticks under it to swipe or tap between (hero-cards.tsx).
        */}
       <HeroCards />
 

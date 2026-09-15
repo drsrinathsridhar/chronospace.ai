@@ -73,6 +73,18 @@ hover is gone.
   `smear | flare` and `true | accent | ink` (data attributes on the hero
   root) and multiplies length / blur / opacity; numbers and fallbacks in
   `hero-cards.module.css` (`.trail`).
+- **Phone carousel** (below `md`, round 3, slide 8a): the same three cards
+  are scroll-snap slides (`[data-float]` is the scroller, `overflow-x: auto;
+scroll-snap-type: x mandatory`, one figure a screen, centred on its
+  visible pieces, feet on the room's floor line at 65.5% of the hero; card
+  base 56cqw x 1.5 / 1.45 / 1.22, so the cell reads at ~66vw, the arm group
+  ~62vw, the dancer ~34vw), with `hero-pager.client.tsx` drawing three
+  `TimelineTickIcon` ticks in 44px targets under the floor (active
+  `text-accent`; tap scrolls smoothly, instantly under reduced motion) and
+  handing the arriving slide `data-echo` for `ECHO_HOLD` on every swipe -
+  the eye island's round robin runs from `md` up only. The sub-`md` hero
+  floor is `25rem + 90.5cqw` so the arm clears the headline; 768-1279 keep
+  the 3-up strip, three CSS blocks in `hero-cards.module.css`.
 - **The eye** (`hero-room-eye.client.tsx`): any pointer steers - mouse,
   trackpad, pen, finger (the hero root has `touch-action: pan-y`, so a
   vertical swipe scrolls and a sideways drag steers). A hovering pointer

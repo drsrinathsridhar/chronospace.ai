@@ -1,13 +1,28 @@
 /*
  * The standing captures. Each card is a measured window with no frame or
  * header of its own - the body is transparent, the room showing through
- * around the figure - 178.826px wide in the strip and 19.1cqw at xl, where
- * the card stands on the room's floor:
+ * around the figure. It has three layouts, one per band of viewport width,
+ * each its own block below:
+ *
+ *   Below md (48rem) one figure at a time: the cards are slides in a
+ *   scroll-snap carousel standing on the room's floor line, the pager's
+ *   ticks under it (client feedback, round 3, slide 8a: the three together
+ *   were "too tiny" on a phone - "one asset centred, swipe to move").
+ *
+ *   From md to xl a three-column strip in the flow between the copy and
+ *   the ruler, each card capped at the comp's 178.826px.
+ *
+ *   From xl (80rem) the room: the cards stand on the floor at the comp's
+ *   positions, 19.1cqw wide times their scale, and ride the eye.
+ *
+ * What every layout shares:
  *
  *   The stand. The card's bottom edge is pinned at a fraction of the plate
  *   height - top: plate * --card-feet, pulled up by the card's own height -
  *   and the card scales from that edge by --card-scale, so a nearer capture
- *   is a larger frame whose feet stay put.
+ *   is a larger frame whose feet stay put. In the carousel the scroller
+ *   itself stands on that line and the slides hold their cards to its
+ *   bottom edge, so the three feet share it without a transform each.
  *
  *   The move. --float-x/--float-y arrive from hero-room-eye.client.tsx as
  *   the same -1..1 eye the room reads, on the same clock - the cards are
@@ -17,7 +32,10 @@
  *   hero-room.module.css), so a card's shift is that factor at the depth
  *   its feet stand. The three stand on one line since feedback round 2, in
  *   front of the plate plane, so they all move against the eye by the same
- *   amount and the row moves as one (hero-cards.tsx has the numbers).
+ *   amount and the row moves as one (hero-cards.tsx has the numbers). The
+ *   slide takes the same shift and the same eye-driven turn, so a phone's
+ *   tilt leans the figure with the room it stands in; the strip stands
+ *   still, being in the flow under the copy.
  *
  *   The trail. Each subject ships with a motion smear behind it: one more
  *   copy of its pieces, each stretched back along the travel axis from its
@@ -31,7 +49,8 @@
  *   hero-room-eye.client.tsx) lengthens the stretch and lifts the opacity,
  *   so a fast pointer pulls a long smear and a still one leaves a short
  *   soft one while it shows. At rest the layer is at opacity 0; hover and
- *   the round-robin turn (`data-echo`, set by the same island) fade it in
+ *   the round-robin turn (`data-echo`, set by the same island - or, in the
+ *   carousel, by hero-pager.client.tsx on each slide change) fade it in
  *   on the old timing, and on load it is out through the page's reveal and
  *   fades once the hold is over (trail-intro). The trail is not clipped to
  *   the body, whose sweep mask would take its tail, so it sits on the card
@@ -58,46 +77,170 @@
  * --figure-brightness is the resting lift, --hero-wiggle scales every move
  * the eye makes here, as it does the room's (hero-room.module.css), so
  * figures and walls stay in step at any setting.
- *
- * Below the xl breakpoint the scatter would sit in the headline's lap, so
- * the cards fall back into a three-column strip in the flow.
  */
 
 .cards {
   --trail-hold: 2.4s;
   position: relative;
   z-index: 1;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  justify-items: center;
-  gap: 0.5rem;
-  width: 100%;
-  padding-inline: var(--gutter);
-  /* Centred in whatever height the hero has left between the copy and the
-     ruler, at least 3rem under the copy - on a phone the hero is a full
-     screen tall, and a strip pinned to the copy left a bare band below. */
-  margin-block: auto;
-  padding-top: 3rem;
 }
 
 .card {
   /* Positioned so the shadow and trail copies can pin themselves to the
-     card's own box in the strip layout too, where the card is a plain flex
-     item. */
+     card's own box in every layout, the strip's plain grid item included. */
   position: relative;
   display: flex;
-  width: 100%;
-  max-width: 11.1875rem; /* 178.826px */
   flex-direction: column;
 }
 
-@media (min-width: 80rem) {
+/*
+ * 1. Below md: the carousel.
+ *
+ * The .cards layer is the scroller: absolute in the hero like the room
+ * layer, spanning the width, its bottom edge on the room's floor line - the
+ * plate is max(60%, 48.4cqw) of the hero tall (hero-room.module.css) and
+ * the cards' shared --card-feet is 1.0917 of that (hero-cards.tsx), so
+ * `bottom` is what is left of the hero under the line. Each .slide is one
+ * viewport wide and snaps to the centre; the card stands centred at the
+ * slide's foot, so all three feet share the scroller's bottom edge.
+ *
+ * Sizes keep the room's proportions: the base is 56cqw times the card's
+ * --card-scale, chosen so the manufacturing cell's visible piece (81.1% of
+ * a 1.45 card) is about two thirds of a phone's width - 257px at 390 -
+ * with the arm group at 62% and the dancer at 34% of the width, the three
+ * ASSETS matched as the client asked for the room (round 3, slide 2). Any
+ * bigger and the arm, the tallest of the three at 59.3cqw, runs into the
+ * headline on an 800px-tall phone: hero.tsx floors the hero's height at
+ * 25rem + 90.5cqw below md for exactly this clearance. A card is centred
+ * on its VISIBLE pieces, not its box - the robot's span sits at 36.74% of
+ * its card - by translating it 50% - --card-centre of its own width.
+ *
+ * No scrollbar in either engine, and `touch-action: pan-x pan-y` written
+ * out: the hero root declares pan-y for the eye (hero.tsx), but a scroll
+ * container is where the browser stops walking up for touch-action, so a
+ * sideways swipe here scrolls the slides and a vertical one still scrolls
+ * the page - neither is taken for steering, and the eye island gets a
+ * pointercancel and lets go. overflow-y is hidden rather than auto so no
+ * vertical scroller can ever appear inside the strip (auto on one axis
+ * would make the other auto too); nothing overflows it vertically - the
+ * shadows squash toward the feet and the trails share the card's height.
+ */
+@media (width < 48rem) {
+  .cards {
+    position: absolute;
+    inset-inline: 0;
+    bottom: calc(100% - max(60%, 48.4cqw) * 1.0917);
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    touch-action: pan-x pan-y;
+  }
+
+  .cards::-webkit-scrollbar {
+    display: none;
+  }
+
+  .slide {
+    display: flex;
+    flex: none;
+    width: 100%;
+    align-items: flex-end;
+    justify-content: center;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+
+  .card {
+    width: calc(56cqw * var(--card-scale, 1));
+    /*
+     * The visible centring plus the eye: shift and turn as in the room
+     * (block 3 explains each term), minus the standing angle - a figure
+     * alone in the middle of the screen faces the viewer, not a corner.
+     */
+    transform-origin: 50% 100%;
+    transform: translate3d(
+        calc(
+          50% - var(--card-centre, 50%) + var(--float-x, 0) *
+            var(--card-shift-x, 0px) * var(--hero-wiggle, 1)
+        ),
+        calc(
+          var(--float-y, 0) * var(--card-shift-y, 0px) * var(--hero-wiggle, 1)
+        ),
+        0
+      )
+      perspective(56rem)
+      rotateY(
+        calc(
+          var(--float-x, 0) * var(--card-tilt-gain, 2deg) *
+            var(--hero-wiggle, 1)
+        )
+      );
+  }
+
+  /*
+   * The pager: three of the ruler's corner ticks in a row under the floor
+   * line, each in a 44px target (hero-pager.client.tsx). Positioned from
+   * the same line as the scroller so the two never drift apart.
+   */
+  .pager {
+    position: absolute;
+    inset-inline: 0;
+    top: calc(max(60%, 48.4cqw) * 1.0917);
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+  }
+
+  .tick {
+    display: grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    place-items: center;
+  }
+}
+
+/* From md up the slide wrappers vanish from the layout - the cards are the
+   grid's items and the room's children directly - and the pager with them. */
+@media (width >= 48rem) {
+  .slide {
+    display: contents;
+  }
+
+  .pager {
+    display: none;
+  }
+}
+
+/*
+ * 2. md to xl: the strip. Three columns in the flow, centred in whatever
+ * height the hero has left between the copy and the ruler, at least 3rem
+ * under the copy - a strip pinned to the copy left a bare band below.
+ */
+@media (48rem <= width < 80rem) {
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    justify-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding-inline: var(--gutter);
+    margin-block: auto;
+    padding-top: 3rem;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 11.1875rem; /* 178.826px */
+  }
+}
+
+/* 3. From xl: the room. */
+@media (width >= 80rem) {
   .cards {
     position: absolute;
     inset: 0;
-    display: block;
-    margin: 0;
-    padding: 0;
     /* The layer spans the hero; only the cards themselves take the eye. */
     pointer-events: none;
   }
@@ -123,7 +266,6 @@
      * scaled up 1.6x so the figures read near life-size in the room.
      */
     width: 19.1cqw;
-    max-width: none;
     pointer-events: auto;
     /*
      * Three moves in one transform: the eye move at this card's depth; the
