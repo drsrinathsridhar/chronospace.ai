@@ -104,7 +104,7 @@ export function Product() {
             One capture, three things nobody else can hand you
           </h2>
           <p
-            className="type-body-xl shimmer-in max-w-115 text-pretty opacity-60"
+            className="type-body-xl shimmer-in max-w-144.25 text-pretty opacity-60"
             style={{ "--beat": 1 }}
           >
             For anyone training models on the physical world, the capture itself

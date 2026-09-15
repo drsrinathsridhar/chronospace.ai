@@ -28,7 +28,7 @@ export function Capture() {
             Everything is measurable
           </h2>
           <p
-            className="type-body-xl shimmer-in max-w-162.75 text-pretty opacity-60"
+            className="type-body-xl shimmer-in max-w-144.25 text-pretty opacity-60"
             style={{ "--beat": 1 }}
           >
             Our capture, self-hosted and running in your browser. Drag the

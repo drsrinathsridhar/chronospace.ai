@@ -87,7 +87,7 @@ export function Science() {
             Research &amp; Insights
           </h2>
           <p
-            className="type-body-xl shimmer-in text-pretty opacity-60"
+            className="type-body-xl shimmer-in max-w-144.25 text-pretty opacity-60"
             style={{ "--beat": 1 }}
           >
             Papers, technical notes and results from the team.
