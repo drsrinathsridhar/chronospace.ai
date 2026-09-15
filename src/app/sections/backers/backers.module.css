@@ -1,29 +1,33 @@
 /*
  * The backing band's one gesture: a conveyor of marks crossing the screen
- * right to left, the way the hero's playhead crossed the timeline. Two
- * identical tracks sit side by side and both travel their own width, so the
- * second is exactly where the first began when the loop restarts - no seam.
+ * right to left, the way the hero's playhead crossed the timeline. Several
+ * identical tracks sit side by side and each travels its own width, so the
+ * next is exactly where the first began when the loop restarts - no seam.
  *
- * The band's edges are masked to nothing, so marks enter and leave through
- * a fade instead of a hard clip. Hovering anywhere on the band holds the
- * conveyor for reading; reduced motion parks it entirely, leaving the first
- * track standing as a plain row.
+ * The band clips hard at its edges; the fade a mark arrives and leaves
+ * through is written per mark by backers-fade.client.tsx, so a mark dims as
+ * one piece and is gone before the clip could cut it (a gradient mask here
+ * used to take the icon off a two-part mark and leave its word standing
+ * alone - client feedback round 3). What remains is a sliver of soft edge
+ * for the frames before the island wakes. Hovering anywhere on the band
+ * holds the conveyor for reading; reduced motion parks it entirely, leaving
+ * the first track standing as a plain row.
  */
 
 .band {
-  --band-fade: 4rem;
+  --band-edge: 1rem;
   -webkit-mask-image: linear-gradient(
     90deg,
     transparent,
-    #000 var(--band-fade),
-    #000 calc(100% - var(--band-fade)),
+    #000 var(--band-edge),
+    #000 calc(100% - var(--band-edge)),
     transparent
   );
   mask-image: linear-gradient(
     90deg,
     transparent,
-    #000 var(--band-fade),
-    #000 calc(100% - var(--band-fade)),
+    #000 var(--band-edge),
+    #000 calc(100% - var(--band-edge)),
     transparent
   );
 }
@@ -45,6 +49,18 @@
 @media (prefers-reduced-motion: reduce) {
   .track {
     animation: none;
+  }
+}
+
+/*
+ * The flare copy of each mark (the header module supplies the gesture; see
+ * backers.tsx). It only ever shows under a pointer that can hover and with
+ * motion allowed, so anywhere else it is not rendered at all rather than
+ * left sitting invisibly behind the mark.
+ */
+@media (hover: none), (prefers-reduced-motion: reduce) {
+  .flare {
+    display: none;
   }
 }
 
