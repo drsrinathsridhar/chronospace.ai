@@ -21,6 +21,25 @@ the URL fallback chain covers the Vercel domain until a custom domain exists
 Work happens on `claude/feedback-round-3-2026-09-15`; the reviewed state is
 tagged `backup/pre-feedback-3-2026-09-15` (= `a7dd404`).
 
+**Status (2026-09-16, early hours):** T0-T16 implemented on the branch, one
+commit per task, most built by parallel worktree agents and cherry-picked in
+after review. Departures from the proposals: the backers marks stay icon +
+text and the fade moved from the band's mask to a per-mark island (D6);
+the camera path dial is drawn in CSS, not inline SVG, because the house lint
+forbids SVG in TSX (D7); the About picture keeps its full column width and
+only takes the 7px cap-line nudge (D8); Product and Science rows stay full
+width - only the ledes were unified at 577px (D16); the closing stage gained
+a section margin so Science → Closing meets across two paddings like every
+other pair (2f); the list-size CTA shrinks to its column (it overflowed a
+tablet by 3px); the carousel figure and hero height are capped on landscape
+phones. Lighthouse (production build, localhost, median of 3 mobile / 2
+desktop): mobile 82 / 97 / 100 / 100, desktop 100 / 97 / 100 / 100, against
+the baseline's 78 / 96 and 100 / 96; reports under `docs/lighthouse/`. The
+remaining mobile LCP (~5 s under Lighthouse's simulated slow 4G) is the hero
+figure itself; the accessibility 97 is three deliberate contrasts (the
+white-on-accent CTA label, the decorative timecode caption and the About
+words fading in). Not pushed to `main` - waiting for the owner's word.
+
 The client's own priority order (slide 9): (1) hero image quality and a
 revised motion-trail effect, (2) video scrubber sync, (3) mobile version
 and format check, (4) metadata fixes. The task list below is ordered so the
