@@ -1,10 +1,12 @@
 export { A16zSpeedrunIcon } from "./a16z-speedrun";
 export { BrownAngelGroupIcon } from "./brown-angel-group";
 export { ChronospaceLogoIcon } from "./chronospace-logo";
+export { CloseIcon } from "./close";
 export { CtaArrowIcon } from "./cta-arrow";
 export { GithubIcon } from "./github";
 export { LinkedinIcon } from "./linkedin";
 export { MeasureBracketIcon } from "./measure-bracket";
+export { MenuIcon } from "./menu";
 export { NvidiaIcon } from "./nvidia";
 export { PlayIcon } from "./play";
 export { TekVenturesIcon } from "./tek-ventures";

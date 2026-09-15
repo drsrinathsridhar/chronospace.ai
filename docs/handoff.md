@@ -141,6 +141,24 @@ The "Connect with us" cell turns to ink with paper type once the page
 scrolls off the hero (`site-header.module.css` on `:root[data-scrolled]`);
 `CtaLink` gained the matching `inverse` variant.
 
+### Mobile scale and menu (round 3, slide 8)
+
+- One phone scale, in `globals.css`: the `type-*` utilities that step down
+  read `--type-*-size` variables and the section rhythm reads
+  `--section-space` / `--section-gap` / `--panel-gap`; a single
+  `@media (width < 40rem)` block on `:root` steps them all (display
+  36/32/30, titles 20/18, body 17/16, lede 24; section 64, stack gap 48,
+  panel 24, backing band 72, resting bar 56). Change a phone value there,
+  never in a section.
+- Header below `sm`: logo `h-6` (about 126px wide), CTA `gap-2 px-3` with a
+  short "Connect" label (`aria-label` keeps the full name); the row is
+  `min-w-0 overflow-clip`. Widths: 320 leaves ~24px of slack, 360 ~64, 390 ~94.
+- Below `lg` a Menu button opens a sheet under the bar
+  (`src/components/site-menu.client.tsx`: provider + button + sheet, the
+  sheet a child of the header so the row's clip and reveal mask cannot hide
+  it). Closes on link, Escape, outside press, `hashchange`, or a scroll of
+  more than 60px; `:root[data-menu-open]` locks the page scroll meanwhile.
+
 ### Shared components added
 
 - `src/components/measure-overlay.client.tsx` (+ `.module.css`): keyframed

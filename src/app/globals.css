@@ -127,6 +127,16 @@
   --navbar-height: 3rem;
 }
 
+/*
+ * While the phone menu sheet is open (site-menu.client.tsx flips
+ * `data-menu-open` on the root) the page behind it holds still: the sheet
+ * is the only thing that should scroll, and the anchors it offers do their
+ * own scrolling once it has closed.
+ */
+:root[data-menu-open] {
+  overflow: hidden;
+}
+
 @theme inline {
   --color-paper: var(--paper);
   --color-paper-ink: var(--paper-ink);

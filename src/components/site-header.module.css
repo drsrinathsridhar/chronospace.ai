@@ -59,3 +59,35 @@ a:focus-visible .flare {
 :root[data-scrolled] .cta:focus-visible {
   background: var(--ink-hover);
 }
+
+/*
+ * The phone menu sheet (site-menu.client.tsx) hangs off the bar's bottom
+ * edge. It arrives in 200ms - a fade with eight pixels of drop - and simply
+ * goes when it closes; the keyframe replays every time the sheet comes out
+ * of `hidden`, so no transition has to be coaxed out of display: none. It
+ * never grows past the screen: a phone on its side has room for the bar and
+ * about three rows, and the rest scrolls inside the sheet while the page
+ * behind it is locked (globals.css, [data-menu-open]).
+ */
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    translate: 0 -0.5rem;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+.sheet {
+  max-height: calc(100svh - var(--navbar-height));
+  overflow-y: auto;
+  animation: menu-in 0.2s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet {
+    animation: none;
+  }
+}
