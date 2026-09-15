@@ -6,12 +6,12 @@ import { SiteHeaderScroll } from "./site-header-scroll.client";
 import styles from "./site-header.module.css";
 
 // The navbar floats over the hero rather than sitting above it: a 60px bar
-// with nothing but a blur behind it, so the room keeps its light. A
-// hairline closes it underneath - the same 1px of --line the timecode
-// ruler draws above the backing band, so the first screen is ruled top and
-// bottom alike (owner's request, 11 Sep 2026); otherwise the links are bare
-// labels centred on the bar's midline, and the CTA's accent fill is the
-// only block in the bar.
+// (56 on phones, globals.css) with nothing but a blur behind it, so the
+// room keeps its light. A hairline closes it underneath - the same 1px of
+// --line the timecode ruler draws above the backing band, so the first
+// screen is ruled top and bottom alike (owner's request, 11 Sep 2026);
+// otherwise the links are bare labels centred on the bar's midline, and the
+// CTA's accent fill is the only block in the bar.
 //
 // The bar is on screen from the first frame; its contents lead the page
 // reveal at index 0. On hover a cell fills with a tenth of ink, nothing
@@ -24,6 +24,15 @@ import styles from "./site-header.module.css";
 // and carried down the page it read as a distraction (client feedback,
 // round 2 - site-header.module.css). Hovering the logo sends an orange band
 // of light across the mark - the hero copy's reveal, played as a flare.
+//
+// On phones the bar has 280px to work with at its narrowest (320 less the
+// gutters), and the 168px logo next to the 169px "Connect with us" block
+// used to overlap below 375 and push the page wider than the screen (client
+// feedback, round 3, slide 8). Below `sm` the mark drops to 24px tall (about
+// 126 wide - the SVG keeps its ratio, the width attribute is only a hint),
+// the block tightens to an 87px "Connect" (the full label stays as its
+// accessible name), and the row clips whatever could still overflow so
+// nothing ever reaches past the gutter.
 
 const navCell = "flex h-full items-center";
 // The plain links fill with a tenth of ink on hover - the page ground they
@@ -38,7 +47,7 @@ export function SiteHeader() {
       <SiteHeaderScroll />
       {/* The bar runs full-bleed; its contents stop at the site frame's width
           (max-w-site) and centre, in step with the page under it. */}
-      <div className="section-container sweep-reveal max-w-site mx-auto flex h-full items-center">
+      <div className="section-container sweep-reveal max-w-site mx-auto flex h-full min-w-0 items-center overflow-clip">
         <Link
           href="/"
           className="focus-visible:outline-ink relative flex shrink-0 items-center focus-visible:outline-2 focus-visible:outline-offset-2"
@@ -47,13 +56,13 @@ export function SiteHeader() {
           <ChronospaceLogoIcon
             width={168}
             height={32}
-            className="text-ink shrink-0"
+            className="text-ink h-6 w-auto shrink-0 sm:h-8"
           />
           <span aria-hidden className={`${styles.flare} absolute inset-0`}>
             <ChronospaceLogoIcon
               width={168}
               height={32}
-              className="text-accent shrink-0"
+              className="text-accent h-6 w-auto shrink-0 sm:h-8"
             />
           </span>
         </Link>
@@ -81,8 +90,10 @@ export function SiteHeader() {
             size="nav"
             href={siteConfig.links.contact}
             className={`${navCell} ${styles.cta} lg:ml-4`}
+            aria-label="Connect with us"
           >
-            Connect with us
+            <span className="sm:hidden">Connect</span>
+            <span className="hidden sm:inline">Connect with us</span>
           </CtaLink>
         </nav>
       </div>

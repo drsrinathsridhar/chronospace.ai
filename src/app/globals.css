@@ -60,6 +60,63 @@
    * band closes the first screen with the ruler as its top border.
    */
   --backing-band-height: 5.75rem;
+
+  /*
+   * Section rhythm: 120 above and below every section, 80 from a section's
+   * header stack to its content, and 40 between the panels of every
+   * three-column row (product takes, portraits, research cards) - the
+   * comp's 22 read as dense (client feedback, round 2). Runtime variables
+   * rather than bare theme tokens so the phone scale below can step them.
+   */
+  --section-space: 7.5rem;
+  --section-gap: 5rem;
+  --panel-gap: 2.5rem;
+
+  /*
+   * The sizes of the type ramp that step down on phones. Every `type-*`
+   * utility below reads its size from here; the ones that do not change
+   * between a phone and the design width keep a literal.
+   */
+  --type-display-md-size: 3rem;
+  --type-display-sm-size: 2.5rem;
+  --type-display-xs-size: 2rem;
+  --type-title-lg-size: 1.5rem;
+  --type-title-md-size: 1.25rem;
+  --type-body-xl-size: 1.25rem;
+  --type-body-lg-size: 1.125rem;
+  --type-lede-size: 2rem;
+}
+
+/*
+ * The phone scale. Below `sm` the page keeps the same voice at a smaller
+ * size: the whole ramp steps down together (display 48/40/32 -> 36/32/30,
+ * titles 24/20 -> 20/18, reading copy 20/18 -> 17/16, the lede 32 -> 24)
+ * and the rhythm tightens with it (section padding 120 -> 64, header stack
+ * to content 80 -> 48, panel gap 40 -> 24, the backing band 92 -> 72, the
+ * resting bar 60 -> 56). Nothing else changes: the labels, nav and captions
+ * are already small, and every section's layout is untouched. Before this
+ * the ramp was one fixed rem at every width, so on a 390px screen a 20px
+ * lede stood next to the 16px cap-height of the logo and the client read
+ * the proportions as off throughout (feedback round 3, slide 8). The query
+ * is the exact complement of Tailwind's `sm:` (width >= 40rem), so a
+ * `sm:type-*` variant takes over the moment this lets go.
+ */
+@media (width < 40rem) {
+  :root {
+    --navbar-height-rest: 3.5rem;
+    --backing-band-height: 4.5rem;
+    --section-space: 4rem;
+    --section-gap: 3rem;
+    --panel-gap: 1.5rem;
+    --type-display-md-size: 2.25rem;
+    --type-display-sm-size: 2rem;
+    --type-display-xs-size: 1.875rem;
+    --type-title-lg-size: 1.25rem;
+    --type-title-md-size: 1.125rem;
+    --type-body-xl-size: 1.0625rem;
+    --type-body-lg-size: 1rem;
+    --type-lede-size: 1.5rem;
+  }
 }
 
 /*
@@ -90,13 +147,11 @@
   --radius-panel: 0;
   --radius-pill: 999px;
   --shadow-soft: 0 16px 48px rgb(0 0 0 / 24%);
-  /* Section rhythm: 120 above and below every section, 80 from a
-     section's header stack to its content, and 40 between the panels of
-     every three-column row (product takes, portraits, research cards) -
-     the comp's 22 read as dense (client feedback, round 2). */
-  --spacing-section: 7.5rem;
-  --spacing-section-gap: 5rem;
-  --spacing-panel: 2.5rem;
+  /* Section rhythm - the runtime variables above, so `py-section`,
+     `mt-section-gap` and `gap-panel` follow the phone scale. */
+  --spacing-section: var(--section-space);
+  --spacing-section-gap: var(--section-gap);
+  --spacing-panel: var(--panel-gap);
   --spacing-gutter: var(--gutter);
   --spacing-navbar: var(--navbar-height);
   --spacing-navbar-rest: var(--navbar-height-rest);
@@ -296,7 +351,7 @@
 
 @utility type-display-md {
   font-family: var(--font-display-brand);
-  font-size: 3rem;
+  font-size: var(--type-display-md-size);
   font-weight: 378;
   line-height: 1.1;
   letter-spacing: -0.02em;
@@ -304,7 +359,7 @@
 
 @utility type-display-sm {
   font-family: var(--font-display-brand);
-  font-size: 2.5rem;
+  font-size: var(--type-display-sm-size);
   font-weight: 378;
   line-height: 1.1;
   letter-spacing: -0.02em;
@@ -312,7 +367,7 @@
 
 @utility type-display-xs {
   font-family: var(--font-display-brand);
-  font-size: 2rem;
+  font-size: var(--type-display-xs-size);
   font-weight: 378;
   line-height: 1.1;
   letter-spacing: -0.02em;
@@ -320,7 +375,7 @@
 
 @utility type-title-lg {
   font-family: var(--font-display-brand);
-  font-size: 1.5rem;
+  font-size: var(--type-title-lg-size);
   font-weight: 400;
   line-height: 1.2;
   letter-spacing: -0.02em;
@@ -328,7 +383,7 @@
 
 @utility type-title-md {
   font-family: var(--font-display-brand);
-  font-size: 1.25rem;
+  font-size: var(--type-title-md-size);
   font-weight: 400;
   line-height: 1.25;
   letter-spacing: -0.02em;
@@ -344,7 +399,7 @@
 
 @utility type-body-xl {
   font-family: var(--font-sans-brand);
-  font-size: 1.25rem;
+  font-size: var(--type-body-xl-size);
   font-weight: 400;
   line-height: 1.5;
   letter-spacing: -0.01em;
@@ -352,7 +407,7 @@
 
 @utility type-body-lg {
   font-family: var(--font-sans-brand);
-  font-size: 1.125rem;
+  font-size: var(--type-body-lg-size);
   font-weight: 400;
   line-height: 1.5;
   letter-spacing: -0.005em;
@@ -374,11 +429,11 @@
   letter-spacing: 0;
 }
 
-/* The editorial lede: Supreme at 32px on the design's tight 1.2 leading, for
-   the big reading paragraphs that anchor a section. */
+/* The editorial lede: Supreme at 32px (24 on phones) on the design's tight
+   1.2 leading, for the big reading paragraphs that anchor a section. */
 @utility type-lede {
   font-family: var(--font-sans-brand);
-  font-size: 2rem;
+  font-size: var(--type-lede-size);
   font-weight: 400;
   line-height: 1.2;
   letter-spacing: 0;

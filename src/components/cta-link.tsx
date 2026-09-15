@@ -11,17 +11,19 @@ import { cn } from "@/lib/utils";
 // The comp pins the label low in the box; the client read that as the label
 // off-centre in its container (feedback, September 2026), so every size
 // centres its pair vertically instead. The nav cell centres its pair on a
-// tight 10px gap and fills the bar; the hero block is 208x54 - the comp's
-// 60 trimmed a touch at the client's request - with the arrow pushed to the
-// opposite edge; the list block is the comp's 239x54 on the smaller nav
-// label. The solid block darkens by 5% black under the pointer
+// tight 10px gap and fills the bar - below `sm` it closes to 8px on 12px
+// sides, since the phone bar has to hold the logo, the menu button and this
+// block inside 280px (feedback round 3, slide 8); the hero block is 208x54 -
+// the comp's 60 trimmed a touch at the client's request - with the arrow
+// pushed to the opposite edge; the list block is the comp's 239x54 on the
+// smaller nav label. The solid block darkens by 5% black under the pointer
 // (--accent-hover), a quieter answer than the cells' fill.
 
 // The arrow is sized in attributes rather than classes: SVGR emits every icon
 // at 1em square with no intrinsic ratio, so `w-auto` would render it square.
 const sizes = {
   nav: {
-    root: "h-full items-center justify-center gap-2.5 px-6",
+    root: "h-full items-center justify-center gap-2 px-3 sm:gap-2.5 sm:px-6",
     label: "type-nav",
     arrow: { width: 6.4, height: 8 },
   },
