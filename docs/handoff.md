@@ -143,7 +143,8 @@ static HUD of ours bottom-left; the old `measurable.mp4`, its timed
 (`src/components/arc-scrubber.client.tsx`, drawn in CSS, bottom-right
 inside the plate, sized in the plate's own container units): the round-2
 arc, whose handle now stands at the **camera's bearing** in the footage at
-the current moment - the take's mean at the arc's centre, ±90° at its ends
+the current moment - the take's own extremes a tenth in from the arc's
+ends, a camera under 8° of movement holding the centre
 
 - with the accent sweep from the arc's start to the handle, a "Camera
   path" caption and a "View n / N" counter; drag the handle to seek to the

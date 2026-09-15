@@ -44,7 +44,8 @@ words fading in). Not pushed to `main` - waiting for the owner's word.
 dial (D7) was taken out again - the round-2 arc scrubber is back exactly as
 it looked, and its handle now follows the camera's bearing measured off each
 clip (`public/media/**/*.camera.json`, from `scripts/camera-path.py`; the
-mean at the arc's centre, ±90° at the ends), with a drag seeking to the
+take's extremes a tenth in from the arc's ends, a fixed camera at the
+centre), with a drag seeking to the
 moment the camera was nearest that bearing and a linear fallback for a clip
 without a track.
 

@@ -134,8 +134,9 @@ treatment: the figure stays grey and a band of colour flies across it once.
 
 The arc scrubber on every video plate (`src/components/arc-scrubber.client.tsx`)
 is the camera's trajectory around the scene: the handle on the arc stands
-where the camera is in the footage at the current moment - the take's mean
-position at the arc's centre, 90° either way at its ends - the accent
+where the camera is in the footage at the current moment - the take's own
+extremes stand a tenth in from the arc's ends, whatever they measure in
+degrees, and a camera that never moves more than 8° holds the centre - the accent
 sweep shows how far around the scene it has come, and the counter reads
 "View n / N" (a view per frame). It works with any clip of any length as
 long as the clip's slot in `media.config.ts` carries two things:

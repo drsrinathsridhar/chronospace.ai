@@ -32,7 +32,7 @@ export function Capture() {
             style={{ "--beat": 1 }}
           >
             Our capture, self-hosted and running in your browser. Drag the
-            timeline. <span className="block">See the echo.</span>
+            timeline. See the echo.
           </p>
         </div>
 

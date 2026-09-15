@@ -90,14 +90,36 @@ type TimelinePlayerProps = {
  * fields (the clip's name, its kind and span, the lens) describe the
  * measurement and are not needed to draw it.
  */
-type CameraTrack = { fps: number; bearing: number[] };
+type CameraTrack = {
+  fps: number;
+  bearing: number[];
+  /** The track's extremes, taken once when it loads: the arc is scaled
+   *  to them (see `alongOf`). */
+  lo: number;
+  hi: number;
+};
+
+/**
+ * How the arc is shared out. An orbiting camera's own extremes stand at
+ * ARC_MARGIN and 1 - ARC_MARGIN of the arc, whatever they measure in
+ * degrees: the take's motion is what the client asked to see, and a 40°
+ * swing drawn to a fixed 180° scale moved the handle a fifth of the arc,
+ * which read as a wobble rather than a camera going out and coming back
+ * (owner, 16 Sep 2026). A camera whose whole excursion is under FIXED_SPAN
+ * holds the centre - the same threshold scripts/camera-path.py uses to
+ * call a take fixed.
+ */
+const ARC_MARGIN = 0.1;
+const FIXED_SPAN = 8;
 
 /** How far a sample's bearing may sit from the pointer's and still be the
  *  moment it means, in degrees; under this, a drag follows the camera's
  *  current pass rather than jumping to a closer match on another. */
 const NEAR_DEG = 2;
 
-function isCameraTrack(data: unknown): data is CameraTrack {
+function isCameraTrack(
+  data: unknown,
+): data is { fps: number; bearing: number[] } {
   if (typeof data !== "object" || data === null) return false;
   const { fps, bearing } = data as Record<string, unknown>;
   return (
@@ -107,6 +129,16 @@ function isCameraTrack(data: unknown): data is CameraTrack {
     bearing.length > 0 &&
     bearing.every((b) => typeof b === "number")
   );
+}
+
+/** A loaded file as the player keeps it, with its extremes taken once. */
+function toTrack(data: { fps: number; bearing: number[] }): CameraTrack {
+  return {
+    fps: data.fps,
+    bearing: data.bearing,
+    lo: Math.min(...data.bearing),
+    hi: Math.max(...data.bearing),
+  };
 }
 
 /** The camera's bearing at t: linear between the samples, held at the ends. */
@@ -119,21 +151,32 @@ function bearingAt(track: CameraTrack, t: number) {
   return bearing[lo] + (bearing[hi] - bearing[lo]) * (at - lo);
 }
 
-/** Where a bearing puts the handle: the mean at the arc's centre, ±90° at
- *  its ends, and anything further clamped to them. */
-function alongOf(bearing: number) {
-  return Math.min(1, Math.max(0, 0.5 + bearing / 180));
+/** Where a bearing puts the handle: the take's lowest bearing at
+ *  ARC_MARGIN, its highest at 1 - ARC_MARGIN, a fixed camera at the centre. */
+function alongOf(track: CameraTrack, bearing: number) {
+  const span = track.hi - track.lo;
+  if (span < FIXED_SPAN) return 0.5;
+  const share = Math.min(1, Math.max(0, (bearing - track.lo) / span));
+  return ARC_MARGIN + share * (1 - 2 * ARC_MARGIN);
 }
 
 /** The bearing a place on the arc stands for - `alongOf` the other way. */
-function bearingOf(along: number) {
-  return (along - 0.5) * 180;
+function bearingOf(track: CameraTrack, along: number) {
+  const span = track.hi - track.lo;
+  if (span < FIXED_SPAN) return track.lo + span / 2;
+  const share = Math.min(
+    1,
+    Math.max(0, (along - ARC_MARGIN) / (1 - 2 * ARC_MARGIN)),
+  );
+  return track.lo + share * span;
 }
 
 /** The handle's place at t: the camera's bearing when there is a track,
  *  the fraction of the take played when there is not. */
 function handleAt(track: CameraTrack | undefined, t: number, duration: number) {
-  return track ? alongOf(bearingAt(track, t)) : Math.min(1, t / duration);
+  return track
+    ? alongOf(track, bearingAt(track, t))
+    : Math.min(1, t / duration);
 }
 
 /**
@@ -281,7 +324,7 @@ export function TimelinePlayer({
         .then((response) => (response.ok ? response.json() : undefined))
         .then((data: unknown) => {
           if (isCameraTrack(data)) {
-            trackRef.current = data;
+            trackRef.current = toTrack(data);
             wake();
           }
         })
@@ -351,7 +394,7 @@ export function TimelinePlayer({
     const track = trackRef.current;
     if (!track) return seekTo(along * duration, duration);
     const now = videoRef.current?.currentTime ?? 0;
-    seekTo(timeNear(track, bearingOf(along), now), duration);
+    seekTo(timeNear(track, bearingOf(track, along), now), duration);
   }
 
   function scrub(scrubbing: boolean) {
