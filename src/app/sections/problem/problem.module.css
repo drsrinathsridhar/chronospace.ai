@@ -24,15 +24,16 @@
 /*
  * From md the picture top-aligns with the copy (self-start in problem.tsx)
  * instead of floating on the copy's centre, and --visual-nudge is the
- * optical offset that puts the circle's top on the copy's first cap line
- * and its bottom near the last rule. The owner sets it after measuring in
- * the browser at 1496 / 1920 - the type's line box sits above its cap
- * height by an amount that depends on the face, so it is not a value to
- * guess. Positive moves the picture down.
+ * optical offset that puts the circle's top on the copy's first cap line.
+ * Measured at 1496 (15 Sep 2026): the lede's 38.4px line box sits 7px
+ * above the Supreme cap height at 32px, so the picture drops 0.4375rem.
+ * The circle keeps its full column width rather than shrinking to end on
+ * the last rule - the copy reflows at every width, so that fit would hold
+ * at one width and break at the rest. Positive moves the picture down.
  */
 @media (min-width: 48rem) {
   .visual {
-    --visual-nudge: 0px;
+    --visual-nudge: 0.4375rem;
     margin-top: var(--visual-nudge);
   }
 }
