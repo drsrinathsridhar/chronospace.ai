@@ -2,23 +2,23 @@ import Image from "next/image";
 import { RevealScope } from "@/components/reveal-scope.client";
 import { LinkedinIcon } from "@/icons/generated";
 import { media } from "@/media.config";
-import styles from "./team.module.css";
 
 // The team: the claim behind the claims. The header stacks on the centre
 // line like the viewer's, and under it the three founders sit in the
 // capture grammar the rest of the page speaks - a square portrait filling
-// its column, resting in the room's grey like the hero figures and the
-// takes, and under it a caption hung off a hairline the way the product
-// claims hang off their transports: the name and a LinkedIn link on one
-// line, the role beneath. Hovering anywhere on the card hands the colour
-// back to the portrait (team.module.css).
+// its column, in colour, and under it a caption hung off a hairline the
+// way the product claims hang off their transports: the name and a
+// LinkedIn link on one line, the role beneath.
 //
 // Round 2 of client feedback (September 2026) tightened the row: the
 // heading is just "Team", the LinkedIn entry is the network's own glyph
 // beside the word rather than a rotated arrow, and the portraits are a
-// step smaller with more air between them - the row sits on a 1200px
-// measure inside the content box, on the page-wide panel gap
-// (--spacing-panel, 40px) every three-column row now shares.
+// step smaller with more air between them, on the page-wide panel gap
+// (--spacing-panel, 40px) every three-column row now shares. Round 3 took
+// the row down another fifth, to a 976px measure inside the content box,
+// and dropped the grey-at-rest treatment the portraits had shared with the
+// hero figures and the takes (grayscale, colour back on hover) - the
+// client wants the founders in colour, full stop.
 //
 // This replaces the comp's 153px tiles in open columns (node 7802:8912) at
 // the client's request, September 2026: the small tiles with their text
@@ -37,7 +37,7 @@ import styles from "./team.module.css";
 //
 // Geometry is the comp's at the 1496px design width: the lede 20 under the
 // heading on a 577px measure, the cards in a centred row of three on the
-// panel gap (1200px wide, so each portrait is ~373 rather than the comp's
+// panel gap (976px wide, so each portrait is ~299 rather than the comp's
 // 457), and the caption set like the product claim (node 7802:8456): a
 // full-width rule, title and copy on a 12px gap inside 24px of vertical
 // padding.
@@ -91,11 +91,11 @@ export function Team() {
           </p>
         </div>
 
-        <div className="mt-section-gap gap-panel mx-auto grid w-full max-w-300 grid-cols-1 md:grid-cols-3">
+        <div className="mt-section-gap gap-panel mx-auto grid w-full max-w-244 grid-cols-1 md:grid-cols-3">
           {founders.map((founder, index) => (
             <article
               key={founder.name}
-              className={`${styles.card} sweep-in flex flex-col`}
+              className="sweep-in flex flex-col"
               style={{ "--beat": 2 + index }}
             >
               {/* The portrait is a link too, but the caption's link is the
@@ -107,13 +107,13 @@ export function Team() {
                 rel="noreferrer"
                 tabIndex={-1}
                 aria-hidden
-                className={`${styles.portrait} relative block aspect-square overflow-clip`}
+                className="relative block aspect-square overflow-clip"
               >
                 <Image
                   src={founder.photo}
                   alt=""
                   fill
-                  sizes="(min-width: 48rem) 33vw, 100vw"
+                  sizes="(min-width: 48rem) 22vw, 100vw"
                   className="object-cover"
                 />
               </a>

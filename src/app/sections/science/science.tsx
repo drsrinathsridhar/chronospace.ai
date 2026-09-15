@@ -17,6 +17,13 @@ import { media } from "@/media.config";
 // pinned to the card's foot so the three actions land on one line whatever
 // the titles wrap to.
 //
+// Two links per card, one of them accessible (client feedback, round 3):
+// the picture links out so it behaves like everyone expects a card image
+// to, dimming a touch under the pointer to say so, but it is hidden from
+// assistive tech and out of the tab order like the team's portraits; the
+// call to action is the single entry a keyboard or screen reader meets per
+// entry.
+//
 // The pictures are placeholders the client swaps (feedback, round 2): one
 // JPEG per entry under public/media/science (media.config.ts), drawn in
 // the product plate's 577/310 frame with object-fit: cover so any size or
@@ -94,7 +101,17 @@ export function Science() {
               className="sweep-in flex flex-col"
               style={{ "--beat": 2 + index }}
             >
-              <div className="bg-surface relative aspect-577/310 overflow-clip">
+              {/* The plate is a link too, but the call to action below is
+                  the accessible one - one entry per card for the keyboard
+                  and screen readers. */}
+              <a
+                href={entry.href}
+                target="_blank"
+                rel="noreferrer"
+                tabIndex={-1}
+                aria-hidden
+                className="bg-surface relative block aspect-577/310 overflow-clip transition-opacity duration-150 ease-out hover:opacity-90"
+              >
                 <Image
                   src={entry.image}
                   alt=""
@@ -102,7 +119,7 @@ export function Science() {
                   sizes="(min-width: 48rem) 33vw, 100vw"
                   className="object-cover"
                 />
-              </div>
+              </a>
 
               <div className="border-line flex flex-1 flex-col gap-3 border-t py-6">
                 <p className="type-nav text-muted">{entry.label}</p>
