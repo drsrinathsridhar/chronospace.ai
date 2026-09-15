@@ -30,11 +30,19 @@ import styles from "./problem.module.css";
 // few pixels against the pointer while the copy holds still.
 //
 // Geometry on the 12-column grid: the picture takes 5 columns (5/12, which
-// is the comp's 42% offset turned into a column), the copy the remaining 7
-// at the hero headline's 698px measure. At the 1496 design width that is
-// the picture across x 40-616 and the copy from x 638, the picture centred
-// on the copy's height. Under the md breakpoint it stacks above the copy at
-// full width.
+// is the comp's 42% offset turned into a column), the copy the remaining 7,
+// filled to the right gutter - the hero headline's 698px measure used to
+// cap it, which left the copy and its rules stopping ~119px short of the
+// gutter while the picture sat flush left (feedback round 3, slide 6). At
+// the 1496 design width that is the picture across x 40-616 and the copy
+// from x 638 to 1456. Paragraph, reading labels and rules share that one
+// left edge: the accent brackets hang in the 22px column gutter to the left
+// of each row, like margin marks (problem.module.css), rather than
+// indenting the label text. The picture is a true square (placeholder.png
+// is 862x862, so the circle sits on its box centre) and top-aligns with the
+// copy - the owner nudges it onto the first cap line with --visual-nudge in
+// the module. Under the md breakpoint it stacks above the copy at full
+// width and the brackets sit in-flow before the labels.
 
 const paragraphs = [
   "Frontier models have consumed everything that was already digital. The physical world - where the work actually happens - was never recorded in a form a machine can use.",
@@ -60,7 +68,7 @@ export function Problem() {
       <RevealScope className="grid gap-12 md:grid-cols-12 md:gap-5.5">
         <PointerDrift>
           <div
-            className={`${styles.visual} sweep-in relative aspect-square md:col-span-5 md:self-center`}
+            className={`${styles.visual} sweep-in relative aspect-square md:col-span-5 md:self-start`}
             style={{ "--beat": 0 }}
           >
             {/* TODO(client): the final intro visual - swap the file in
@@ -75,7 +83,7 @@ export function Problem() {
           </div>
         </PointerDrift>
 
-        <div className="flex flex-col gap-10 md:col-span-7 md:max-w-174.5">
+        <div className="flex flex-col gap-10 md:col-span-7">
           <div
             className={styles.copy}
             data-read-copy
@@ -106,14 +114,18 @@ export function Problem() {
             {readings.map(([term, value], index) => (
               <div
                 key={term}
-                className="border-line sweep-in flex items-center justify-between gap-6 border-t py-4 last:border-b"
+                className={`${styles.reading} border-line sweep-in flex items-center justify-between gap-6 border-t py-4 last:border-b`}
                 style={{ "--beat": 1 + index }}
               >
+                {/* The bracket sits in-flow before the label on the narrow
+                    stack; from md it hangs in the column gutter to the left
+                    of the row (styles.bracket), so the label text starts on
+                    the copy's left edge. */}
                 <dt className="type-body-lg flex items-center gap-4 font-light">
                   <MeasureBracketIcon
                     width={13.5}
                     height={13.5}
-                    className="text-accent shrink-0"
+                    className={`${styles.bracket} text-accent shrink-0`}
                   />
                   {term}
                 </dt>

@@ -2,9 +2,9 @@
  * The intro spread: the picture on the left, the lede and the three
  * readings on the right. The columns are the 12-col grid's, set in
  * problem.tsx - the picture across 5/12 (the comp's 42% offset turned into
- * a column), the copy across the remaining 7 at the hero headline's 698px
- * measure - so this file only holds what Tailwind cannot: the read calc
- * and the drift transform.
+ * a column), the copy across the remaining 7, filled to the right gutter -
+ * so this file only holds what Tailwind cannot: the read calc, the drift
+ * transform, the picture's optical nudge and the hanging brackets.
  *
  * --read-progress arrives from read-progress.client.tsx as 0..1 and rests
  * at 1, so with no script - or with reduced motion, where the island never
@@ -19,6 +19,56 @@
     calc(var(--drift-x, 0px) * 0.6),
     calc(var(--drift-y, 0px) * 0.6)
   );
+}
+
+/*
+ * From md the picture top-aligns with the copy (self-start in problem.tsx)
+ * instead of floating on the copy's centre, and --visual-nudge is the
+ * optical offset that puts the circle's top on the copy's first cap line
+ * and its bottom near the last rule. The owner sets it after measuring in
+ * the browser at 1496 / 1920 - the type's line box sits above its cap
+ * height by an amount that depends on the face, so it is not a value to
+ * guess. Positive moves the picture down.
+ */
+@media (min-width: 48rem) {
+  .visual {
+    --visual-nudge: 0px;
+    margin-top: var(--visual-nudge);
+  }
+}
+
+/*
+ * The readings, from md: the row's own rule spans exactly the copy width
+ * and the label text starts on the row's left edge, with the accent bracket
+ * hanging in the 22px column gutter to the left (the grid's md gap in
+ * problem.tsx), like a margin mark - so paragraph, labels and rules share
+ * one left edge. Under md the bracket is a flex item before the label,
+ * which the tsx already lays out.
+ *
+ * The row is also swept in, and a mask clips whatever it paints to the
+ * element's border box, which would take the hanging bracket with it. So
+ * the mask paints past the box here and its image starts a gutter's width
+ * to the left, which is the sweep-in utility's mask-position with that
+ * offset taken off: the bracket is under the mask's settled 42% like the
+ * rest of the row, and the sweep still runs across it left to right. The
+ * override wins on cascade order alone: module styles are unlayered, the
+ * utility sits in Tailwind's utilities layer.
+ */
+@media (min-width: 48rem) {
+  .reading {
+    position: relative;
+    -webkit-mask-clip: no-clip;
+    mask-clip: no-clip;
+    -webkit-mask-position: calc((1 - var(--reveal, 1)) * 100% - 1.375rem) 0;
+    mask-position: calc((1 - var(--reveal, 1)) * 100% - 1.375rem) 0;
+  }
+
+  .bracket {
+    position: absolute;
+    top: 50%;
+    left: -1.375rem;
+    translate: 0 -50%;
+  }
 }
 
 .copy {
