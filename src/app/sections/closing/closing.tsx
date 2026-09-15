@@ -40,8 +40,12 @@ import styles from "./closing.module.css";
 const { poster, sources } = media.closing.woodworking;
 
 export function Closing() {
+  // Sections meet across two paddings, 120px above and 120px below; the
+  // stage has none of its own (the take runs to its hairline), so it takes
+  // a section's worth of margin above and the gap after Team is the gap
+  // everywhere else (client feedback round 3, slide 2).
   return (
-    <section id="closing" className={styles.stage}>
+    <section id="closing" className={`${styles.stage} mt-section`}>
       <ClosingVideo
         poster={poster}
         sources={sources}
