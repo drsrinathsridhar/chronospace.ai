@@ -246,6 +246,7 @@ function Pieces({
   pieces,
   scale,
   priority = false,
+  eager = false,
   detail = 1,
 }: {
   pieces: Piece[];
@@ -259,6 +260,12 @@ function Pieces({
    * set from this one flag.
    */
   priority?: boolean;
+  /**
+   * Fetched with the document but not preloaded: the second and third
+   * captures on a phone, where only the first slide is on screen at the
+   * first paint and four preloads were racing it for the connection.
+   */
+  eager?: boolean;
   /** Fraction of the drawn width to ask the variant for - see pieceSizes. */
   detail?: number;
 }) {
@@ -278,6 +285,7 @@ function Pieces({
         fill
         sizes={pieceSizes(piece, scale, detail)}
         priority={priority}
+        loading={eager && !priority ? "eager" : undefined}
         fetchPriority={priority ? "high" : undefined}
         className="object-cover"
       />
@@ -301,7 +309,7 @@ export function HeroCards() {
         aria-roledescription="carousel"
         aria-label="Captures"
       >
-        {cards.map((card) => (
+        {cards.map((card, index) => (
           <div key={card.label} className={styles.slide}>
             <article
               className={styles.card}
@@ -355,7 +363,12 @@ export function HeroCards() {
 
               <div className={`${styles.body} sweep-reveal`}>
                 <span className={styles.subject}>
-                  <Pieces pieces={card.pieces} scale={card.scale} priority />
+                  <Pieces
+                    pieces={card.pieces}
+                    scale={card.scale}
+                    priority={index === 0}
+                    eager
+                  />
                 </span>
               </div>
             </article>

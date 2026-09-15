@@ -33,9 +33,9 @@ a section margin so Science → Closing meets across two paddings like every
 other pair (2f); the list-size CTA shrinks to its column (it overflowed a
 tablet by 3px); the carousel figure and hero height are capped on landscape
 phones. Lighthouse (production build, localhost, median of 3 mobile / 2
-desktop): mobile 82 / 97 / 100 / 100, desktop 100 / 97 / 100 / 100, against
+desktop): mobile 84 / 97 / 100 / 100, desktop 100 / 97 / 100 / 100, against
 the baseline's 78 / 96 and 100 / 96; reports under `docs/lighthouse/`. The
-remaining mobile LCP (~5 s under Lighthouse's simulated slow 4G) is the hero
+remaining mobile LCP (~4.5 s under Lighthouse's simulated slow 4G) is the hero
 figure itself; the accessibility 97 is three deliberate contrasts (the
 white-on-accent CTA label, the decorative timecode caption and the About
 words fading in). Not pushed to `main` - waiting for the owner's word.
