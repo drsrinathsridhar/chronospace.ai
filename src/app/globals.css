@@ -123,9 +123,15 @@
     font-family: var(--font-sans-brand);
   }
 
+  /*
+   * Selected text is a quarter of white over the ground, the ink left as it
+   * is. The selection used to take the accent, and the client read it as
+   * orange blocks behind the headings - they drag-select while capturing
+   * screenshots (feedback round 3, slides 2 and 5). Nothing on the page
+   * draws the accent behind type now.
+   */
   ::selection {
-    background: var(--accent);
-    color: var(--accent-foreground);
+    background: rgb(255 255 255 / 24%);
   }
 }
 

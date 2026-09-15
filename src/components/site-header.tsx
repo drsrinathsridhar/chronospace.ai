@@ -72,10 +72,15 @@ export function SiteHeader() {
             </a>
           ))}
 
+          {/* Sixteen pixels of ground before the orange block, on top of the
+              last link's own padding, so "Team" is not read as part of it
+              (client feedback, round 3, slide 2). Only from `lg`, where the
+              links are shown; the block itself stays flush to the frame's
+              right edge. */}
           <CtaLink
             size="nav"
             href={siteConfig.links.contact}
-            className={`${navCell} ${styles.cta}`}
+            className={`${navCell} ${styles.cta} lg:ml-4`}
           >
             Connect with us
           </CtaLink>
