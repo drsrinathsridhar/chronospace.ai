@@ -114,7 +114,13 @@
   position: absolute;
   inset: 0;
   perspective: 100cqw;
-  perspective-origin: 49.82% 73.09%;
+  /*
+   * The plate's own vanishing point was 510.2 of 1024 across - 49.82% -
+   * and the room kept it; since feedback round 3 it sits at exactly 50%,
+   * where the client wants the centre capture to stand, so the figure and
+   * the room's depth converge on the same line.
+   */
+  perspective-origin: 50% 73.09%;
   transform: translate3d(var(--eye-shift-x), var(--eye-shift-y), 0);
 }
 

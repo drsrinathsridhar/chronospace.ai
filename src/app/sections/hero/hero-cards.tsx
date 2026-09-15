@@ -46,23 +46,29 @@ import styles from "./hero-cards.module.css";
 // grown 1.6x and measured in the site frame's cqw so the figures keep their
 // proportion to the room on any display (client feedback, round 2: with
 // the centre call to action gone, the figures stand in a row and grow a
-// step). The scales are per card - 1.75 / 1.73 / 1.08 - chosen so the
-// PEOPLE in the three pictures stand at one height (owner's request, 11
-// Sep 2026): the robotics figure is a small man beside a large arm, the
-// manufacturing workers fill about 55% of their frame under the gantry, and the dancer
-// fills hers, so equal card scales gave three different people. The comp's
-// scatter was 17.38%/39.71%/68.85% with the flanks a step deeper (feet
-// 95.77%/95.93%, scale 1.153) and the centre nearest (1.386). The row keeps
-// its order - robot left, dancer right, both client feedback - and is
-// placed by what shows, not by the invisible card boxes: the robot's pieces
-// span 0..82% of its body, the line -1..101%, the dancer 26..73%, and the
-// 9-degree stances foreshorten the flanks. The flanks stand at 8.3% /
-// 76.5%, the line at 40.9% (its centre a little right of the vanishing
-// point, where the client had nudged it): the robot's box clears the
-// line's at 1496 by a hair - it cannot come closer without the boxes
-// overlapping - and the dancer's smaller box sits where her figure stood
-// before. Measured at 1496: the robotics man 162px tall, the workers about
-// 167, the dancer's body about 175 (212 to the raised hand).
+// step). The scales were 1.75 / 1.73 / 1.08, chosen so the PEOPLE in the
+// three pictures stood at one height (owner's request, 11 Sep 2026); the
+// client then read the dancer as tiny beside the other two and asked for
+// the flanking assets to come down so the three ASSETS feel matched
+// (feedback round 3, slide 2), so the scales are now 1.5 / 1.45 / 1.22 -
+// at 1496 the arm stands 303px, the cell 252, the dancer 239 (her body;
+// the robotics man is 143, the workers about 138). The comp's scatter was
+// 17.38%/39.71%/68.85% with the flanks a step deeper (feet 95.77%/95.93%,
+// scale 1.153) and the centre nearest (1.386). The row keeps its order -
+// robot left, dancer right, both client feedback - and is placed by what
+// shows, not by the invisible card boxes: the robot's pieces span 0..74% of
+// its body, the line 9..91%, the dancer 25..75%, and the 9-degree stances
+// foreshorten the flanks. The line's visible centre sits at exactly 50% of
+// the frame (client feedback round 3: "align the centre asset exactly to
+// the centre of the page"), which with its 81.1%-wide piece puts the card
+// at 36.15%; the room's vanishing point moved to 50% with it
+// (hero-room.module.css). The flanks stand at 8.05% / 68.4%: the robot
+// keeps the 8% margin the client saw, the dancer takes a little more air on
+// her side (visible 74..86%) because she is the narrower mass - equal gaps
+// of ~11 / 13% either side of the line read as balanced where equal
+// margins would have pushed her against the wall. Measured at 1496 with
+// the eye parked (--hero-wiggle 0): robot 8.0..28.1%, line 38.8..61.2%,
+// dancer 74.2..86.2%.
 // With every card at the same depth the shift factors are one number:
 // physically eyeshift * -z / (P - z) at 30cqw in front of the plate plane,
 // with the room's P of 100cqw and its 8cqw / 5.1cqh travel, is -3.5cqw /
@@ -120,9 +126,9 @@ const cards: StandingCard[] = [
         aspect: "161 / 579",
       },
     ],
-    left: "8.3%",
+    left: "8.05%",
     feet: 1.0917,
-    scale: 1.75,
+    scale: 1.5,
     shiftX: "-1.44cqw",
     shiftY: "-0.45cqw",
     tilt: "9deg",
@@ -145,9 +151,9 @@ const cards: StandingCard[] = [
         aspect: "1232 / 923",
       },
     ],
-    left: "40.9%",
+    left: "36.15%",
     feet: 1.0917,
-    scale: 1.73,
+    scale: 1.45,
     shiftX: "-1.44cqw",
     shiftY: "-0.45cqw",
     /* Facing the viewer squarely, and barely turning with the eye: the
@@ -171,9 +177,9 @@ const cards: StandingCard[] = [
         aspect: "864 / 1152",
       },
     ],
-    left: "76.5%",
+    left: "68.4%",
     feet: 1.0917,
-    scale: 1.08,
+    scale: 1.22,
     shiftX: "-1.44cqw",
     shiftY: "-0.45cqw",
     tilt: "-9deg",
