@@ -74,6 +74,8 @@ type TimelinePlayerProps = {
   fps?: number;
   /** The public path of the take's camera track (`.camera.json`). */
   camera?: string;
+  /** Mirror the track along the arc - see `cameraFlip` in media.config.ts. */
+  cameraFlip?: boolean;
   /** The card build: no own frame, compact controls. */
   compact?: boolean;
   preload?: "none" | "metadata";
@@ -132,12 +134,16 @@ function isCameraTrack(
 }
 
 /** A loaded file as the player keeps it, with its extremes taken once. */
-function toTrack(data: { fps: number; bearing: number[] }): CameraTrack {
+function toTrack(
+  data: { fps: number; bearing: number[] },
+  flip: boolean,
+): CameraTrack {
+  const bearing = flip ? data.bearing.map((b) => -b) : data.bearing;
   return {
     fps: data.fps,
-    bearing: data.bearing,
-    lo: Math.min(...data.bearing),
-    hi: Math.max(...data.bearing),
+    bearing,
+    lo: Math.min(...bearing),
+    hi: Math.max(...bearing),
   };
 }
 
@@ -218,6 +224,7 @@ export function TimelinePlayer({
   name,
   fps = 30,
   camera,
+  cameraFlip = false,
   compact = false,
   preload = "metadata",
   onTick,
@@ -324,7 +331,7 @@ export function TimelinePlayer({
         .then((response) => (response.ok ? response.json() : undefined))
         .then((data: unknown) => {
           if (isCameraTrack(data)) {
-            trackRef.current = toTrack(data);
+            trackRef.current = toTrack(data, cameraFlip);
             wake();
           }
         })
@@ -361,7 +368,7 @@ export function TimelinePlayer({
       video.removeEventListener("pause", onPause);
       video.removeEventListener("seeked", wake);
     };
-  }, [camera, fallbackDuration, fps]);
+  }, [camera, cameraFlip, fallbackDuration, fps]);
 
   // Puts the take at a time and moves the dial and the range at once rather
   // than a frame later, so the handle stays under the hand and the range

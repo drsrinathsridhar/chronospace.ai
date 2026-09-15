@@ -39,6 +39,14 @@ export type Take = {
    * gets a handle that follows playback linearly, as it did before round 3.
    */
   camera?: string;
+  /**
+   * Which way along the arc the camera's rightward motion goes. The track
+   * puts a camera moving right further right on the arc; a take that should
+   * read as leaving the arc's start and coming back to it - the viewer's
+   * echo, which plays forward to its middle and then in reverse - is
+   * flipped so its first move is outward (owner, 16 Sep 2026).
+   */
+  cameraFlip?: boolean;
 };
 
 export const media = {
@@ -111,8 +119,9 @@ export const media = {
 
   /** The viewer's take: 640/368 plate. The measurement overlay drawn on it
    *  (sections/capture) is timed to this clip; a new clip needs its marks
-   *  re-timed or removed. Encoded at 90fps (445 frames), a fixed camera in
-   *  the dome - the figure moves, the room does not. */
+   *  re-timed or removed. Encoded at 90fps (445 frames); the take plays
+   *  forward to its middle and back, the camera panning out and returning
+   *  with it, so its arc is flipped to leave the start and come home. */
   viewer: {
     echo: {
       src: "/media/viewer/echo.mp4",
@@ -120,6 +129,7 @@ export const media = {
       duration: 4.944,
       fps: 90,
       camera: "/media/viewer/echo.camera.json",
+      cameraFlip: true,
     } satisfies Take,
   },
 

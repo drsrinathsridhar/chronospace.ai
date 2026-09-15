@@ -141,6 +141,12 @@ sweep shows how far around the scene it has come, and the counter reads
 "View n / N" (a view per frame). It works with any clip of any length as
 long as the clip's slot in `media.config.ts` carries two things:
 
+A take can also carry `cameraFlip: true` in `media.config.ts`, which mirrors
+its track along the arc: the handle then leaves the arc's start and comes
+back to it instead of the reverse. The viewer's echo take uses it, because
+the footage plays forward to its middle and then in reverse, and the client
+reads that as "out and back".
+
 - `fps` - the frame rate the file is encoded at (from `ffprobe`, above;
   `30/1` is 30). Left out, the counter counts at 30.
 - `camera` - the public path of the clip's camera track, a `.camera.json`
