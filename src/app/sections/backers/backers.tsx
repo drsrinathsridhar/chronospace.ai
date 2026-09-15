@@ -111,7 +111,7 @@ export function Backers() {
         <p className="type-nav text-muted flex-none pr-6 md:pr-10">Backed by</p>
 
         <div
-          className={`${styles.band} flex h-full items-center overflow-clip`}
+          className={`${styles.band} flex h-full min-w-0 flex-1 items-center overflow-clip`}
         >
           <BackersFade>
             {Array.from({ length: trackCopies }, (_, copy) => (
