@@ -162,6 +162,24 @@ scrolls off the hero (`site-header.module.css` on `:root[data-scrolled]`);
 - A >= 1000px portrait of Srinath Sridhar.
 - The manufacturing scene rework (owner) for the intro take and hero cutout.
 
+## URL and metadata
+
+- **`NEXT_PUBLIC_SITE_URL` is not set on Vercel.** Set it in the project's
+  environment variables once the final domain exists (round 3, slide 9c).
+  Until then the build falls back to `https://` +
+  `VERCEL_PROJECT_PRODUCTION_URL` (today `chronospace-v2.vercel.app`), then
+  `VERCEL_URL`, and only a local build lands on localhost - the chain lives
+  in `src/lib/env.ts`; canonical, `og:url`, sitemap and robots all inherit
+  it.
+- Title: `ChronoSpace — AI to digitize the physical world` on the home
+  page, `<page> — ChronoSpace` elsewhere via the root template
+  (`src/lib/metadata.ts`). Share card: the static `public/og.png`
+  (1200x630). Icons: `src/app/icon.svg` (theme-aware), `favicon.ico`
+  16/32/48 and `icon.png` (accent on transparent), `apple-icon.png`
+  (opaque paper), `public/icons/*` for the manifest (`src/app/manifest.ts`),
+  `public/safari-pinned-tab.svg` for Safari. JSON-LD `Organization` in
+  `layout.tsx`. How to redraw any of them: `docs/asset-swap-guide.md`.
+
 ## Tooling notes
 
 - **Figma access**: the Dev Mode MCP tools normally cover it. If they

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { createMetadata } from "@/lib/metadata";
+import { siteConfig } from "@/site.config";
 import { tuning, videoTone } from "@/tuning.config";
 import { fontClassNames } from "./fonts";
 import "./globals.css";
@@ -13,6 +14,25 @@ export const metadata: Metadata = createMetadata();
 export const viewport: Viewport = {
   themeColor: "#090b19",
 };
+
+// Structured data for the company, so a search result can show the mark and
+// the LinkedIn profile next to the name (round 3, slide 9c). React writes a
+// <script>'s string child out as script text - it escapes only `<script`,
+// `</script` and `<!--` - so the JSON goes in as children rather than
+// through dangerouslySetInnerHTML, which the house lint forbids; every `<`
+// is spelled \u003c all the same, so no value could ever close the tag.
+const organization = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: siteConfig.name,
+  url: siteConfig.url,
+  logo: new URL("/icons/icon-512.png", siteConfig.url).toString(),
+  sameAs: [siteConfig.links.linkedin],
+};
+const organizationJsonLd = JSON.stringify(organization).replace(
+  /</g,
+  "\\u003c",
+);
 
 export default function RootLayout({
   children,
@@ -38,6 +58,7 @@ export default function RootLayout({
       }}
     >
       <body className="bg-paper text-ink min-h-screen antialiased">
+        <script type="application/ld+json">{organizationJsonLd}</script>
         {children}
       </body>
     </html>

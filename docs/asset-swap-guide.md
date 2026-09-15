@@ -65,13 +65,14 @@ Grainy footage (the woodworking master) compresses badly; a light denoise
 (`-vf "hqdn3d=3:2:4:4,scale=1920:-2,fps=30"`) with `-crf 31` brought it from
 385 MB to 11 MB.
 
-## The icons
+## The share card and the icons
 
 These are not media slots - they sit where the browser and Next look for
 them - but each is a plain file that can be overwritten in place.
 
 | File                                                                 | Size and format                                                                                                                               | What reads it                                                                            |
 | -------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `public/og.png`                                                      | 1200x630, PNG or JPEG, opaque, under 300 KB.                                                                                                  | Every link unfurler (`og:image`, `twitter:image`; declared in `src/lib/metadata.ts`).    |
 | `src/app/icon.svg`                                                   | Square viewBox, transparent, one `<style>` with a `prefers-color-scheme: dark` rule so the mark is dark ink on light tab bars, white on dark. | Modern browsers' tab icon.                                                               |
 | `src/app/favicon.ico`                                                | 16 + 32 + 48 (PNG-in-ICO), transparent, mark in the accent with a thin ink outline (half a pixel at 16, one at 32 and 48).                    | Browsers without SVG favicons, bookmarks, Windows.                                       |
 | `src/app/icon.png`                                                   | 64x64, transparent, same drawing as the `.ico`.                                                                                               | The PNG fallback Next emits next to the `.ico`.                                          |
@@ -88,6 +89,13 @@ Apple and manifest tiles). The `.ico` is three PNGs behind a 6-byte header
 and one 16-byte entry per image; any icon packer writes it. Keep every
 transparent tile's corner pixels at alpha 0 (`sips -g hasAlpha` says whether
 the alpha channel survived).
+
+To redraw the share card: it is an HTML composition - the wordmark
+(`src/icons/source/chronospace-logo.svg`), the hero headline in Nippo at
+weight 378 / -2% tracking, the three hero cutouts in colour standing on a
+hairline over the room floor (`#020413`) - screenshotted at exactly 1200x630.
+Any tool that exports a 1200x630 PNG under 300 KB will do; the file name and
+the `alt` text in `src/lib/metadata.ts` are the only references.
 
 ## Settings (`src/tuning.config.ts`)
 
