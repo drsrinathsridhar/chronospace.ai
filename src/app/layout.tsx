@@ -1,10 +1,18 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { createMetadata } from "@/lib/metadata";
 import { tuning, videoTone } from "@/tuning.config";
 import { fontClassNames } from "./fonts";
 import "./globals.css";
 
 export const metadata: Metadata = createMetadata();
+
+// theme-color belongs to the viewport export in Next 16, not to metadata.
+// It is the page ground, so a phone browser's own chrome takes the colour
+// of the paper it frames and Android's task switcher tints the card to
+// match (client feedback, round 3, slide 9b).
+export const viewport: Viewport = {
+  themeColor: "#090b19",
+};
 
 export default function RootLayout({
   children,

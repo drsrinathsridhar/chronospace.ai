@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!--
+    The hexagon-S mark alone, on nothing: the two left-hand paths of
+    src/icons/source/chronospace-logo.svg, shifted 2.48 right so the
+    27-unit mark sits centred in the 32-unit square. The tab bar's own
+    colour shows through, and the mark takes the ink that reads on it -
+    dark on a light bar, white on a dark one - which is the one thing a
+    raster favicon cannot do. Browsers without SVG favicons fall back to
+    favicon.ico (client feedback, round 3, slide 9b).
+  -->
+  <style>
+    path { fill: #090b19; }
+    @media (prefers-color-scheme: dark) {
+      path { fill: #ffffff; }
+    }
+  </style>
+  <g transform="translate(2.48 0)">
+    <path d="M27.0409 8.99088V14.3833H24.9959V10.0822L13.6191 2.45621L2.06857 10.0865V15.9988H2.045V21.9097L13.6138 29.538L24.9959 21.7899V19.2298H27.0409V22.8716L13.6325 32L0 23.0115V15.9988H0.0235665L0.0240475 8.98655L13.6272 0L27.0409 8.99088Z"/>
+    <path d="M21.6649 12.6596V14.8152H19.6199V13.7758L13.5445 9.87198L9.49732 12.5081L21.2311 19.7185L13.5354 24.6419L5.41742 19.3443V17.3248H7.46242V18.2367L13.5464 22.2069L17.3815 19.7531L5.6728 12.5586L13.5373 7.43645L21.6649 12.6596Z"/>
+  </g>
+</svg>

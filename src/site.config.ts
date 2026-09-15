@@ -2,6 +2,9 @@ import { env } from "@/lib/env";
 
 export const siteConfig = {
   name: "ChronoSpace",
+  // The client's own line, as it reads in the title tag and the manifest:
+  // "ChronoSpace — AI to digitize the physical world" (round 3, slide 9c).
+  tagline: "AI to digitize the physical world",
   url: env.NEXT_PUBLIC_SITE_URL,
   description:
     "ChronoSpace is building AI to digitize the physical world - full 4D capture of real geometry over time, from any angle, at any moment.",
