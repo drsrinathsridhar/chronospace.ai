@@ -9,8 +9,8 @@ import styles from "./hero-cards.module.css";
 //
 // The subjects are the coloured cutouts, resting desaturated and lifted
 // bright: the capture filed in the room's own grey - "pristine white",
-// how bright is the client's knob, --figure-brightness in
-// src/tuning.config.ts - until the pointer asks about it, when the colour
+// how bright and how crisp are the client's knobs, --figure-brightness and
+// --figure-contrast in src/tuning.config.ts - until the pointer asks about it, when the colour
 // comes back with the trail - the film run, not just the frame. On load
 // the figures arrive in colour with their trails out and drain to the grey
 // as the trails fold (client feedback, round 2: fire the effect once, in
@@ -159,11 +159,16 @@ const cards: StandingCard[] = [
   {
     label: "Sports & entertainment",
     pieces: [
+      // The dancer at the file's own pixel ratio (864x1152 = 0.750). She
+      // was declared 97/135 (0.7185) and object-cover took 4% off her
+      // sides; the width grew by the same ratio and the left edge gave up
+      // half the difference, so she stands as tall and as centred as before
+      // with nothing cropped (client feedback, round 3, slide 2).
       {
         image: media.hero.sports,
-        left: "25.96%",
-        width: "47.5%",
-        aspect: "97 / 135",
+        left: "24.92%",
+        width: "49.58%",
+        aspect: "864 / 1152",
       },
     ],
     left: "76.5%",
@@ -184,7 +189,40 @@ const echoes = [
   { index: 3, opacity: 0.2 },
 ];
 
-function Pieces({ pieces }: { pieces: Piece[] }) {
+// What a piece draws at, for the browser's choice of image variant. In the
+// room (80rem up) a card is 19.1cqw wide (hero-cards.module.css) times its
+// scale, and the piece a fraction of that; the site frame caps at 2560px,
+// so cqw is vw for this purpose, and a tenth on top rounds the hint up
+// rather than down. In the strip below, the cards cap at 178.826px each.
+// The old hint was 30vw for every piece - two to six times what the small
+// ones draw at, so the browser fetched the wrong variant for all of them.
+const roomCardVw = 19.1;
+const stripCardPx = 179;
+
+function pieceSizes(piece: Piece, scale: number) {
+  const fraction = parseFloat(piece.width) / 100;
+  const room = Math.ceil(roomCardVw * scale * fraction * 1.1);
+  const strip = Math.ceil(stripCardPx * fraction);
+  return `(min-width: 80rem) ${room}vw, ${strip}px`;
+}
+
+function Pieces({
+  pieces,
+  scale,
+  priority = false,
+}: {
+  pieces: Piece[];
+  /** The card's --card-scale, which the drawn width depends on. */
+  scale: number;
+  /**
+   * The visible figure is the first screen's largest paint, so it is
+   * fetched first and preloaded; the shadow and the trail are copies of the
+   * same file and ride on its cache. Next 16 keeps the fetch priority a
+   * separate prop from `priority` (eager load plus preload), so both are
+   * set from this one flag.
+   */
+  priority?: boolean;
+}) {
   return pieces.map((piece) => (
     <span
       key={piece.image}
@@ -199,7 +237,9 @@ function Pieces({ pieces }: { pieces: Piece[] }) {
         src={piece.image}
         alt=""
         fill
-        sizes="(min-width: 80rem) 30vw, 180px"
+        sizes={pieceSizes(piece, scale)}
+        priority={priority}
+        fetchPriority={priority ? "high" : undefined}
         className="object-cover"
       />
     </span>
@@ -238,7 +278,7 @@ export function HeroCards() {
            * opacity on the same beat instead (hero-cards.module.css).
            */}
           <span aria-hidden className={styles.shadow}>
-            <Pieces pieces={card.pieces} />
+            <Pieces pieces={card.pieces} scale={card.scale} />
           </span>
 
           <div className={`${styles.body} sweep-reveal`}>
@@ -252,12 +292,12 @@ export function HeroCards() {
                   "--echo-opacity": echo.opacity,
                 }}
               >
-                <Pieces pieces={card.pieces} />
+                <Pieces pieces={card.pieces} scale={card.scale} />
               </span>
             ))}
 
             <span className={styles.subject}>
-              <Pieces pieces={card.pieces} />
+              <Pieces pieces={card.pieces} scale={card.scale} priority />
             </span>
           </div>
         </article>

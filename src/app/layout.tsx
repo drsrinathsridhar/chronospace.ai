@@ -14,9 +14,9 @@ export default function RootLayout({
   // The tuning knobs (tuning.config.ts) ride the root as custom properties,
   // so every effect they drive reads one source: --hero-wiggle scales the
   // room's eye travel (sections/hero/hero-room.module.css),
-  // --figure-brightness is the resting figures' filter
-  // (hero-cards.module.css), --video-grayscale and --video-blend are the
-  // video plates' treatment (components/timeline-player.module.css).
+  // --figure-brightness and --figure-contrast are the resting figures'
+  // filter (hero-cards.module.css), --video-grayscale and --video-blend are
+  // the video plates' treatment (components/timeline-player.module.css).
   return (
     <html
       lang="en"
@@ -24,6 +24,7 @@ export default function RootLayout({
       style={{
         "--hero-wiggle": tuning.heroWiggle,
         "--figure-brightness": tuning.heroFigureBrightness,
+        "--figure-contrast": tuning.heroFigureContrast,
         "--video-grayscale": videoTone.grayscale,
         "--video-blend": videoTone.blend,
       }}

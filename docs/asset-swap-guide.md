@@ -70,11 +70,12 @@ Grainy footage (the woodworking master) compresses badly; a light denoise
 Plain values, commented in the file. They become CSS custom properties on
 the page root, so a change applies everywhere the effect appears.
 
-| Knob                   | Default    | What it does                                                                                          |
-| ---------------------- | ---------- | ----------------------------------------------------------------------------------------------------- |
-| `heroWiggle`           | `1`        | How far the hero room and its figures move with the pointer. `0` parks them, `2` doubles the move.    |
-| `heroFigureBrightness` | `2`        | How bright the resting (desaturated) hero figures are. `1` is the cutout's own luminance.             |
-| `videoTone`            | `"colour"` | `"colour"` shows every take as shot. `"mono"` desaturates the plates into the page's grey (the comp). |
+| Knob                   | Default    | What it does                                                                                                                                                              |
+| ---------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `heroWiggle`           | `1`        | How far the hero room and its figures move with the pointer. `0` parks them, `2` doubles the move.                                                                        |
+| `heroFigureBrightness` | `1.25`     | How bright the resting (desaturated) hero figures are. `1` is the cutout's own luminance. Above about `1.5` the highlights clip to white and the figure loses its detail. |
+| `heroFigureContrast`   | `1.08`     | How much the resting figures' tones are stretched after the lift. `1` leaves them as the cutout has them.                                                                 |
+| `videoTone`            | `"colour"` | `"colour"` shows every take as shot. `"mono"` desaturates the plates into the page's grey (the comp).                                                                     |
 
 ## The arc scrubber
 

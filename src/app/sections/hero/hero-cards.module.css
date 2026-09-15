@@ -168,9 +168,13 @@
 /*
  * The capture at rest and the capture asked about: the coloured subject is
  * desaturated into the room's grey by default and lifted toward white by
- * --figure-brightness (the root's tuning knob; 1.75 was the shipped value
- * before the knob, and stays as the fallback), and hovering the card - or
- * its turn in the round robin - hands the colour back: to the subject and,
+ * --figure-brightness with a touch of --figure-contrast (the root's tuning
+ * knobs, src/tuning.config.ts). The lift used to be brightness(2) alone,
+ * which pushed every highlight of the render past white and threw away
+ * half its tones - the client saw the grey figures as "less clear than the
+ * colour ones" (feedback round 3, slide 2). A gentle lift keeps the detail
+ * and lets the contrast put the light back. Hovering the card - or its
+ * turn in the round robin - hands the colour back: to the subject and,
  * because the echoes are copies of the same pieces, to the whole trail as
  * it grows out.
  *
@@ -184,7 +188,8 @@
  * duration, so the figure is grey from the first frame.
  */
 .piece img {
-  filter: grayscale(1) brightness(var(--figure-brightness, 1.75));
+  filter: grayscale(1) brightness(var(--figure-brightness))
+    contrast(var(--figure-contrast));
   transition: filter 0.35s ease;
   animation: figure-intro 0.9s var(--reveal-ease) backwards;
   animation-delay: calc(var(--echo-hold) + 0.15s);
@@ -200,7 +205,8 @@
     filter: none;
   }
   to {
-    filter: grayscale(1) brightness(var(--figure-brightness, 1.75));
+    filter: grayscale(1) brightness(var(--figure-brightness))
+      contrast(var(--figure-contrast));
   }
 }
 
