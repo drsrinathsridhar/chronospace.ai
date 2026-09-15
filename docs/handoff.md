@@ -64,13 +64,37 @@ hover is gone.
   desaturated rest (`--figure-brightness` from `tuning.config.ts`), and
   hover / the round-robin echo hand the colour back. Eye travel of room
   and figures is scaled by `--hero-wiggle` (same file).
-- **Idle motion** (`hero-room-eye.client.tsx`): with no pointer input for
-  1.5s the eye drifts on a two-period Lissajous (0.35/0.2 fine, 0.22/0.12
-  coarse - touch devices get the drift too). Pointer takes over on move.
-  The loop runs whenever the hero is on screen and the tab visible, and
-  parks otherwise (IntersectionObserver + visibilitychange). The same
-  island runs the **echo round-robin**: from 6s, every 5s one card carries
-  `data-echo` for 1.6s (`hero-cards.module.css` reads it like hover).
+- **The eye** (`hero-room-eye.client.tsx`): any pointer steers - mouse,
+  trackpad, pen, finger (the hero root has `touch-action: pan-y`, so a
+  vertical swipe scrolls and a sideways drag steers). A hovering pointer
+  that stops keeps the room for 1.5s, a lifted finger or a cancelled
+  gesture releases at once. Then the phone's tilt if there is one
+  (`deviceorientation`, calibrated to the first reading, 1.5° dead zone,
+  18° = full lean, 0.6/0.4 of the range; iOS asks for the sensor on the
+  first tap on the hero), then the idle drift on a two-period Lissajous
+  (0.35/0.2 hover, 0.22/0.12 no-hover). The loop runs whenever the hero is
+  on screen and the tab visible, and parks otherwise (IntersectionObserver
+  and visibilitychange). The same island runs the **trail round-robin**:
+  from 6s, every 5s one card carries `data-echo` for 1.6s
+  (`hero-cards.module.css` reads it like hover), and writes `--eye-speed`
+  (0..1) for the trail's length. Reduced motion drops the drift, the tilt
+  and the round robin and keeps the pointer. `PointerDrift` (About) follows
+  the same rules.
+
+  Coverage (round 3, slide 2d) - what moves in each case:
+
+  | Input                       | Room + figures follow                                                  | Idle                     | Auto trail |
+  | --------------------------- | ---------------------------------------------------------------------- | ------------------------ | ---------- |
+  | Mouse                       | pointer over the hero; releases 1.5s after it stops                    | drift (0.35/0.2)         | yes        |
+  | Trackpad                    | same as mouse (the cursor is the pointer)                              | drift                    | yes        |
+  | Touch laptop, finger        | finger while down on the hero; releases on lift                        | drift                    | yes        |
+  | Android, touch              | finger while down; vertical swipe scrolls                              | tilt, else drift         | yes        |
+  | Android, tilt               | lean of the phone from its resting attitude, at 0.6/0.4 of the range   | -                        | yes        |
+  | iOS, touch                  | finger while down; vertical swipe scrolls                              | drift until tilt granted | yes        |
+  | iOS, tilt                   | after the first tap on the hero grants the sensor; denied = touch only | -                        | yes        |
+  | Reduced motion (any device) | pointer / finger only; rests at centre when released                   | none (still)             | no         |
+  | No JS                       | nothing moves; room at centre, figures grey, no trail                  | -                        | no         |
+
 - **Live timecode** (`hero-timecode.client.tsx`): the ruler's readout counts
   at 30fps from 00:00:14:07, DOM-written, pauses when hidden.
 

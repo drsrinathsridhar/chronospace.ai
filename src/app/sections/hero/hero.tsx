@@ -49,8 +49,14 @@ export function Hero() {
   // at 87rem, which is the room's own height at the site frame's 2560 cap:
   // past that the room stops growing (cqw), and a hero still chasing a
   // taller viewport would open a band of bare paper under the figures.
+  //
+  // `touch-pan-y`: a finger on the hero steers the room while it is down
+  // (hero-room-eye.client.tsx). The browser keeps vertical swipes for the
+  // scroll and hands us the sideways ones as pointer moves; without the
+  // declaration it would take every touch for a scroll and cancel our
+  // pointer the moment it moved.
   return (
-    <section className="pt-navbar-rest relative flex min-h-[max(min(calc(100svh-var(--backing-band-height)),87rem),calc(52.84cqw+2.5rem))] flex-col overflow-clip">
+    <section className="pt-navbar-rest relative flex min-h-[max(min(calc(100svh-var(--backing-band-height)),87rem),calc(52.84cqw+2.5rem))] touch-pan-y flex-col overflow-clip">
       <HeroRoom />
 
       {/*
