@@ -62,8 +62,17 @@ hover is gone.
   109.17% of the plate), one scale of 1.4, spaced by what shows rather than
   by their boxes; the load-time trail plays in colour, then drains to the
   desaturated rest (`--figure-brightness` from `tuning.config.ts`), and
-  hover / the round-robin echo hand the colour back. Eye travel of room
-  and figures is scaled by `--hero-wiggle` (same file).
+  hover / the round-robin turn hand the colour back. Eye travel of room
+  and figures is scaled by `--hero-wiggle` (same file). The trail is one
+  **motion smear** layer per card (round 3, slide 3: subject + shadow +
+  smear, 12 hero `<img>` instead of 20; the smear is lazy at half
+  resolution, the subject `priority`): stretched from the leading edge,
+  blurred along x by the SVG filter in `src/icons/source/hero-trail-filters.svg`
+  (mounted once in `hero.tsx`), masked to a fade, its length and opacity
+  following `--eye-speed`. `heroTrail` in `tuning.config.ts` picks
+  `smear | flare` and `true | accent | ink` (data attributes on the hero
+  root) and multiplies length / blur / opacity; numbers and fallbacks in
+  `hero-cards.module.css` (`.trail`).
 - **The eye** (`hero-room-eye.client.tsx`): any pointer steers - mouse,
   trackpad, pen, finger (the hero root has `touch-action: pan-y`, so a
   vertical swipe scrolls and a sideways drag steers). A hovering pointer

@@ -102,12 +102,33 @@ the `alt` text in `src/lib/metadata.ts` are the only references.
 Plain values, commented in the file. They become CSS custom properties on
 the page root, so a change applies everywhere the effect appears.
 
-| Knob                   | Default    | What it does                                                                                                                                                              |
-| ---------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `heroWiggle`           | `1`        | How far the hero room and its figures move with the pointer. `0` parks them, `2` doubles the move.                                                                        |
-| `heroFigureBrightness` | `1.25`     | How bright the resting (desaturated) hero figures are. `1` is the cutout's own luminance. Above about `1.5` the highlights clip to white and the figure loses its detail. |
-| `heroFigureContrast`   | `1.08`     | How much the resting figures' tones are stretched after the lift. `1` leaves them as the cutout has them.                                                                 |
-| `videoTone`            | `"colour"` | `"colour"` shows every take as shot. `"mono"` desaturates the plates into the page's grey (the comp).                                                                     |
+| Knob                   | Default    | What it does                                                                                                                                                               |
+| ---------------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `heroWiggle`           | `1`        | How far the hero room and its figures move with the pointer. `0` parks them, `2` doubles the move.                                                                         |
+| `heroFigureBrightness` | `1.25`     | How bright the resting (desaturated) hero figures are. `1` is the cutout's own luminance. Above about `1.5` the highlights clip to white and the figure loses its detail.  |
+| `heroFigureContrast`   | `1.08`     | How much the resting figures' tones are stretched after the lift. `1` leaves them as the cutout has them.                                                                  |
+| `heroTrail.mode`       | `"smear"`  | The figures' trail on hover, on their turn and on arrival. `"smear"` is the motion smear (below); `"flare"` is the header logo's band of colour instead, no trail.         |
+| `heroTrail.colour`     | `"true"`   | `"true"` paints the trail in the cutout's own colour; `"accent"` floods it with the brand orange; `"ink"` with the page's ink. The logo's flare is `"flare"` + `"accent"`. |
+| `heroTrail.length`     | `1`        | Multiplies the smear's stretch: `0.5` halves the tail, `2` doubles it. Nothing for the flare.                                                                              |
+| `heroTrail.blur`       | `1`        | Multiplies the smear's softness along its length. Below about `0.45` the tail starts to clip. Nothing for the flare.                                                       |
+| `heroTrail.opacity`    | `0.6`      | The trail's strength at a full-speed sweep, `0`..`1`; a still figure shows 70% of it. The flare's band uses it as is.                                                      |
+| `videoTone`            | `"colour"` | `"colour"` shows every take as shot. `"mono"` desaturates the plates into the page's grey (the comp).                                                                      |
+
+### The motion trail
+
+One layer behind each hero figure, a copy of the same cutout: stretched back
+along the figure's travel from its leading edge, blurred along that axis
+(an SVG filter, `src/icons/source/hero-trail-filters.svg`, mounted once in
+the hero), and faded to nothing along the tail. Its length follows how fast
+the pointer is moving the room - a flick pulls a long smear, a still hand
+leaves a short soft one. It shows on hover, on each figure's turn in the
+round robin, and once on arrival; at rest it is invisible. The designed
+numbers live in `src/app/sections/hero/hero-cards.module.css` (`.trail`):
+stretch `0.18 + speed × 0.55` of the piece width, blur deviation `0.012` of
+the card width, mask solid over the figure then `38%` at 40% of the tail
+and gone at its end. The knobs above multiply them; the numbers themselves
+are the designer's. `mode: "flare"` swaps the whole thing for the logo's
+treatment: the figure stays grey and a band of colour flies across it once.
 
 ## The camera path dial
 

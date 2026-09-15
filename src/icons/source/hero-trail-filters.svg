@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1">
+  <defs>
+    <filter id="hero-smear" primitiveUnits="objectBoundingBox" x="-0.1" y="-0.1" width="2.4" height="1.2" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="0.012 0"/>
+    </filter>
+    <filter id="hero-flood-accent" primitiveUnits="objectBoundingBox" x="-0.1" y="-0.1" width="2.4" height="1.2" color-interpolation-filters="sRGB">
+      <feFlood flood-color="#f25324"/>
+      <feComposite in2="SourceAlpha" operator="in"/>
+    </filter>
+    <filter id="hero-flood-ink" primitiveUnits="objectBoundingBox" x="-0.1" y="-0.1" width="2.4" height="1.2" color-interpolation-filters="sRGB">
+      <feFlood flood-color="#ffffff"/>
+      <feComposite in2="SourceAlpha" operator="in"/>
+    </filter>
+  </defs>
+</svg>

@@ -43,8 +43,11 @@ export default function RootLayout({
   // so every effect they drive reads one source: --hero-wiggle scales the
   // room's eye travel (sections/hero/hero-room.module.css),
   // --figure-brightness and --figure-contrast are the resting figures'
-  // filter (hero-cards.module.css), --video-grayscale and --video-blend are
-  // the video plates' treatment (components/timeline-player.module.css).
+  // filter (hero-cards.module.css), --trail-length / --trail-blur /
+  // --trail-opacity size the figures' motion smear (same file; the trail's
+  // mode and colour are data attributes on the hero root, sections/hero),
+  // --video-grayscale and --video-blend are the video plates' treatment
+  // (components/timeline-player.module.css).
   return (
     <html
       lang="en"
@@ -53,6 +56,9 @@ export default function RootLayout({
         "--hero-wiggle": tuning.heroWiggle,
         "--figure-brightness": tuning.heroFigureBrightness,
         "--figure-contrast": tuning.heroFigureContrast,
+        "--trail-length": tuning.heroTrail.length,
+        "--trail-blur": tuning.heroTrail.blur,
+        "--trail-opacity": tuning.heroTrail.opacity,
         "--video-grayscale": videoTone.grayscale,
         "--video-blend": videoTone.blend,
       }}

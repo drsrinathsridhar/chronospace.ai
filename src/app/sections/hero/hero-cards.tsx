@@ -13,10 +13,10 @@ import styles from "./hero-cards.module.css";
 // --figure-contrast in src/tuning.config.ts - until the pointer asks about it, when the colour
 // comes back with the trail - the film run, not just the frame. On load
 // the figures arrive in colour with their trails out and drain to the grey
-// as the trails fold (client feedback, round 2: fire the effect once, in
+// as the trails fade (client feedback, round 2: fire the effect once, in
 // colour, on arrival). The desaturation is a filter
 // (hero-cards.module.css), so the hover trades one filter for none and the
-// echoes inherit the same colour for free.
+// trail, a copy of the same pieces, inherits the same colour for free.
 //
 // The stand is the anchor: each card's bottom edge is pinned to a fraction
 // of the room plate's height (--card-feet), so the frame sits on the floor
@@ -34,11 +34,19 @@ import styles from "./hero-cards.module.css";
 //   move exactly as the room's geometry moves, standing in it rather than
 //   floating over it.
 //
-//   The echo. On arrival each subject carries its motion trail - offset
-//   copies at falling opacities, the reference build's dancer trail - which
-//   then collapses copy by copy into the single figure. Hovering a card
-//   replays it: the trail grows back out, and folds away again on leave,
-//   always staggered.
+//   The trail. One more copy of the pieces stands behind the subject and
+//   in front of the shadow: the motion smear - stretched back along the
+//   figure's travel from its leading edge, blurred along that axis by an
+//   SVG filter and faded to nothing along the tail, its length breathing
+//   with the eye's speed (--eye-speed from hero-room-eye.client.tsx). On
+//   arrival it is out and fades; hovering a card, or its turn in the round
+//   robin, brings it back. It replaced three stepped copies at falling
+//   opacities that the client read as "very extra" (feedback round 3, slide
+//   3) - and as three more full-size image decodes per figure. The client's
+//   knobs for it - smear or the logo's flare, true colour or a brand flood,
+//   length, blur, opacity - are `heroTrail` in src/tuning.config.ts; the
+//   layer is lazy and asks for half the subject's resolution, being
+//   blurred anyway.
 //
 // Geometry: one line. All three feet stand on 109.17% of the plate height -
 // the floor line the manufacturing capture always stood on, now shared -
@@ -188,13 +196,6 @@ const cards: StandingCard[] = [
   },
 ];
 
-// The trail, nearest copy first: opacity falls as the echo reaches back.
-const echoes = [
-  { index: 1, opacity: 0.6 },
-  { index: 2, opacity: 0.35 },
-  { index: 3, opacity: 0.2 },
-];
-
 // What a piece draws at, for the browser's choice of image variant. In the
 // room (80rem up) a card is 19.1cqw wide (hero-cards.module.css) times its
 // scale, and the piece a fraction of that; the site frame caps at 2560px,
@@ -202,11 +203,13 @@ const echoes = [
 // rather than down. In the strip below, the cards cap at 178.826px each.
 // The old hint was 30vw for every piece - two to six times what the small
 // ones draw at, so the browser fetched the wrong variant for all of them.
+// `detail` scales the hint for a copy that need not be sharp: the trail is
+// blurred along its length, so half the subject's resolution is plenty.
 const roomCardVw = 19.1;
 const stripCardPx = 179;
 
-function pieceSizes(piece: Piece, scale: number) {
-  const fraction = parseFloat(piece.width) / 100;
+function pieceSizes(piece: Piece, scale: number, detail: number) {
+  const fraction = (parseFloat(piece.width) / 100) * detail;
   const room = Math.ceil(roomCardVw * scale * fraction * 1.1);
   const strip = Math.ceil(stripCardPx * fraction);
   return `(min-width: 80rem) ${room}vw, ${strip}px`;
@@ -216,6 +219,7 @@ function Pieces({
   pieces,
   scale,
   priority = false,
+  detail = 1,
 }: {
   pieces: Piece[];
   /** The card's --card-scale, which the drawn width depends on. */
@@ -228,6 +232,8 @@ function Pieces({
    * set from this one flag.
    */
   priority?: boolean;
+  /** Fraction of the drawn width to ask the variant for - see pieceSizes. */
+  detail?: number;
 }) {
   return pieces.map((piece) => (
     <span
@@ -243,7 +249,7 @@ function Pieces({
         src={piece.image}
         alt=""
         fill
-        sizes={pieceSizes(piece, scale)}
+        sizes={pieceSizes(piece, scale, detail)}
         priority={priority}
         fetchPriority={priority ? "high" : undefined}
         className="object-cover"
@@ -275,33 +281,33 @@ export function HeroCards() {
            * about the feet line and squashed onto the floor - blackened,
            * blurred and fading as it reaches toward the viewer
            * (hero-cards.module.css). The trail gets no shadow: one per
-           * figure is what the eye expects, and three would read as a
-           * puddle.
+           * figure is what the eye expects, and two would read as a puddle.
            *
            * The reveal is split: the body takes the sweep, but the sweep's
            * mask clips its element to its own box, and the shadow lies
            * entirely outside the card's - so the shadow arrives by plain
            * opacity on the same beat instead (hero-cards.module.css).
+           *
+           * The trail sits on the card for the same reason: its tail runs
+           * out past the body's edge (the robot arm stands at the body's
+           * very left, so a tail inside the body would be cut off whole),
+           * and the body's overflow clip and sweep mask would take it. The
+           * outer span is what the blur filter measures itself against and
+           * what fades; the inner box keeps the card's own width for the
+           * pieces, whatever the blur knob makes of the outer
+           * (hero-cards.module.css explains the two).
            */}
           <span aria-hidden className={styles.shadow}>
             <Pieces pieces={card.pieces} scale={card.scale} />
           </span>
 
-          <div className={`${styles.body} sweep-reveal`}>
-            {echoes.map((echo) => (
-              <span
-                key={echo.index}
-                aria-hidden
-                className={styles.echo}
-                style={{
-                  "--echo-index": echo.index,
-                  "--echo-opacity": echo.opacity,
-                }}
-              >
-                <Pieces pieces={card.pieces} scale={card.scale} />
-              </span>
-            ))}
+          <span aria-hidden className={styles.trail}>
+            <span className={styles.trailBox}>
+              <Pieces pieces={card.pieces} scale={card.scale} detail={0.5} />
+            </span>
+          </span>
 
+          <div className={`${styles.body} sweep-reveal`}>
             <span className={styles.subject}>
               <Pieces pieces={card.pieces} scale={card.scale} priority />
             </span>

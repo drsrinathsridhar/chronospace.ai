@@ -1,4 +1,6 @@
 import { Fragment } from "react";
+import { HeroTrailFiltersIcon } from "@/icons/generated";
+import { tuning } from "@/tuning.config";
 import { HeroCards } from "./hero-cards";
 import { HeroRoom } from "./hero-room";
 import { HeroTimeline } from "./hero-timeline";
@@ -55,8 +57,25 @@ export function Hero() {
   // scroll and hands us the sideways ones as pointer moves; without the
   // declaration it would take every touch for a scroll and cancel our
   // pointer the moment it moved.
+  //
+  // The trail's mode and colour (tuning.config.ts, `heroTrail`) ride the
+  // root as data attributes, which hero-cards.module.css selects on - set
+  // on the server, so the first paint already has the right treatment and
+  // nothing flashes. The SVG filters the trail draws with (the horizontal
+  // blur and the two colour floods) are defined once here, in a zero-size
+  // svg the CSS references by id; it must not be display:none, which some
+  // engines take as "no filter", so it is sized away rather than hidden.
   return (
-    <section className="pt-navbar-rest relative flex min-h-[max(min(calc(100svh-var(--backing-band-height)),87rem),calc(52.84cqw+2.5rem))] touch-pan-y flex-col overflow-clip">
+    <section
+      className="pt-navbar-rest relative flex min-h-[max(min(calc(100svh-var(--backing-band-height)),87rem),calc(52.84cqw+2.5rem))] touch-pan-y flex-col overflow-clip"
+      data-trail-mode={tuning.heroTrail.mode}
+      data-trail-colour={tuning.heroTrail.colour}
+    >
+      <HeroTrailFiltersIcon
+        aria-hidden
+        focusable="false"
+        className="absolute size-0 overflow-hidden"
+      />
       <HeroRoom />
 
       {/*

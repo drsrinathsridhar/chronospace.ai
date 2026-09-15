@@ -33,6 +33,39 @@ export const tuning = {
   heroFigureContrast: 1.08,
 
   /**
+   * The captures' motion trail - what a figure carries when it is hovered,
+   * when it takes its turn in the round robin, and once on arrival. The
+   * three stepped copies of the first build read as "very extra" (client
+   * feedback, round 3, slide 3), so the trail is now one layer behind the
+   * figure, and this is its whole vocabulary:
+   *
+   *   mode: "smear" is the client's option A - the figure stretched back
+   *   along its travel, blurred along that axis and fading to nothing, the
+   *   length breathing with how fast the eye is moving (the "Fading Motion
+   *   Effect" reference). "flare" is option B - the header logo's
+   *   treatment: no trail at all, a band of colour flying once across the
+   *   figure, which stays grey under it.
+   *
+   *   colour: "true" paints the trail in the cutout's own colour (so the
+   *   arrival still lands in colour); "accent" floods it with the brand
+   *   orange, "ink" with the page's ink. The flare is the logo's when it is
+   *   "accent".
+   *
+   *   length and blur multiply the designed smear - 1 is as shipped, 0.5
+   *   halves the tail or the softness, 2 doubles them (blur below ~0.45
+   *   starts clipping the tail; nothing else is bounded). opacity is the
+   *   trail's own, 0..1, at the fastest sweep; a still figure shows 70% of
+   *   it. The flare uses length and blur for nothing.
+   */
+  heroTrail: {
+    mode: "smear" as "smear" | "flare",
+    colour: "true" as "true" | "accent" | "ink",
+    length: 1,
+    blur: 1,
+    opacity: 0.6,
+  },
+
+  /**
    * The colour treatment on every video plate. "colour" shows the take as
    * shot; "mono" desaturates it into the page's grey and lets the paper
    * tint it (the original comp). Client feedback round 2: colour for now.

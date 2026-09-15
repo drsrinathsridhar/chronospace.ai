@@ -28,6 +28,13 @@ for (const sourceFile of sourceFiles) {
   const fileBaseName = basename(sourceFile, ".svg");
   const componentName = `${toPascalCase(fileBaseName)}Icon`;
   const targetFile = `${fileBaseName}.tsx`;
+  // A file that defines <filter>s is a set of definitions for the page's
+  // CSS to reference by url(#id); nothing inside the file points at those
+  // ids, so SVGO's defaults would take the filters for hidden, unreferenced
+  // elements and remove them (removeHiddenElems), and rename or drop the ids
+  // the CSS relies on (cleanupIds). Such files keep their defs and ids as
+  // written; everything else is optimised as before.
+  const definesFilters = svg.includes("<filter");
 
   const rawCode = await transform(
     svg,
@@ -39,7 +46,17 @@ for (const sourceFile of sourceFiles) {
       namedExport: componentName,
       plugins: ["@svgr/plugin-svgo", "@svgr/plugin-jsx"],
       svgoConfig: {
-        plugins: ["preset-default", "removeDimensions"],
+        plugins: [
+          definesFilters
+            ? {
+                name: "preset-default",
+                params: {
+                  overrides: { cleanupIds: false, removeHiddenElems: false },
+                },
+              }
+            : "preset-default",
+          "removeDimensions",
+        ],
       },
     },
     { componentName },

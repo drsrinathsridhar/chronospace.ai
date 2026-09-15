@@ -4,6 +4,7 @@ export { ChronospaceLogoIcon } from "./chronospace-logo";
 export { CloseIcon } from "./close";
 export { CtaArrowIcon } from "./cta-arrow";
 export { GithubIcon } from "./github";
+export { HeroTrailFiltersIcon } from "./hero-trail-filters";
 export { LinkedinIcon } from "./linkedin";
 export { MeasureBracketIcon } from "./measure-bracket";
 export { MenuIcon } from "./menu";

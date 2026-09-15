@@ -19,38 +19,52 @@
  *   front of the plate plane, so they all move against the eye by the same
  *   amount and the row moves as one (hero-cards.tsx has the numbers).
  *
- *   The echo. Each subject ships with its trail - three copies stepped back
- *   6.5% of the body apiece at falling opacities, the reference build's
- *   dancer trail. On load the trail holds while the page reveals, then
- *   collapses copy by copy from the farthest in (echo-intro, fill
- *   backwards so it falls back to the resting opacity of 0 and never
- *   blocks the hover). Hover grows it back nearest-first; leave collapses
- *   it farthest-first. All of it is opacity only. After the load, the
- *   cards also take turns replaying it on their own (`data-echo`, set by
- *   hero-room-eye.client.tsx), so the trail is never only a hover state.
+ *   The trail. Each subject ships with a motion smear behind it: one more
+ *   copy of its pieces, each stretched back along the travel axis from its
+ *   leading edge (scaleX from the right edge - the old copies trailed to
+ *   the left, and the trail keeps that direction), blurred along that axis
+ *   by an SVG filter and faded to nothing along the tail by a mask, so
+ *   it reads as the figure's movement rather than as more figures (client
+ *   feedback, round 3, slide 3: the three stepped copies were "very extra";
+ *   the reference is a directional smear that fades out behind the figure).
+ *   The length breathes with the eye's speed: --eye-speed (0..1, written by
+ *   hero-room-eye.client.tsx) lengthens the stretch and lifts the opacity,
+ *   so a fast pointer pulls a long smear and a still one leaves a short
+ *   soft one while it shows. At rest the layer is at opacity 0; hover and
+ *   the round-robin turn (`data-echo`, set by the same island) fade it in
+ *   on the old timing, and on load it is out through the page's reveal and
+ *   fades once the hold is over (trail-intro). The trail is not clipped to
+ *   the body, whose sweep mask would take its tail, so it sits on the card
+ *   like the shadow and arrives on the card's own reveal beat
+ *   (trail-arrive) instead of with the body's sweep.
  *
  *   The colour. The figures rest in the room's grey, lifted bright; the
  *   trail is what shows them in their own colour. On load the whole
- *   figure and its echoes arrive in colour and stay so through the hold,
- *   and the colour drains into the grey as the last echo folds
- *   (figure-intro, on the same clock as echo-intro) - the one "wow" the
- *   client asked for (feedback round 2). Hover and the round-robin turn
- *   hand the colour back the same way, so a trail is always a coloured
- *   trail. Under reduced motion the global rule collapses both intros to
- *   their resting frames: grey, no trail, from the first paint.
+ *   figure and its trail arrive in colour and stay so through the hold,
+ *   and the colour drains into the grey as the trail fades (figure-intro,
+ *   on the same clock as trail-intro) - the one "wow" the client asked for
+ *   (feedback round 2). Hover and the round-robin turn hand the colour back
+ *   the same way, so a trail is always a coloured trail. Under reduced
+ *   motion the global rule collapses both intros to their resting frames:
+ *   grey, no trail, from the first paint.
  *
- * Two of the numbers are the client's to turn (src/tuning.config.ts,
- * written on the root by app/layout.tsx): --figure-brightness is the
- * resting lift, --hero-wiggle scales every move the eye makes here, as it
- * does the room's (hero-room.module.css), so figures and walls stay in
- * step at any setting.
+ * The trail is the client's to tune (`heroTrail` in src/tuning.config.ts):
+ * --trail-length and --trail-blur multiply the designed stretch and blur,
+ * --trail-opacity is its strength, all written on the root by
+ * app/layout.tsx; its mode (smear, or the header logo's flare instead) and
+ * colour (the cutout's own, or a flood of accent or ink) are the hero
+ * root's data-trail-mode / data-trail-colour, which the rules at the end of
+ * this file select on. Two more numbers are the client's as well:
+ * --figure-brightness is the resting lift, --hero-wiggle scales every move
+ * the eye makes here, as it does the room's (hero-room.module.css), so
+ * figures and walls stay in step at any setting.
  *
  * Below the xl breakpoint the scatter would sit in the headline's lap, so
  * the cards fall back into a three-column strip in the flow.
  */
 
 .cards {
-  --echo-hold: 2.4s;
+  --trail-hold: 2.4s;
   position: relative;
   z-index: 1;
   display: grid;
@@ -67,8 +81,9 @@
 }
 
 .card {
-  /* Positioned so the shadow copy can pin itself to the card's own box in
-     the strip layout too, where the card is a plain flex item. */
+  /* Positioned so the shadow and trail copies can pin themselves to the
+     card's own box in the strip layout too, where the card is a plain flex
+     item. */
   position: relative;
   display: flex;
   width: 100%;
@@ -175,15 +190,14 @@
  * colour ones" (feedback round 3, slide 2). A gentle lift keeps the detail
  * and lets the contrast put the light back. Hovering the card - or its
  * turn in the round robin - hands the colour back: to the subject and,
- * because the echoes are copies of the same pieces, to the whole trail as
- * it grows out.
+ * because the trail is a copy of the same pieces, to the smear as it
+ * comes out.
  *
  * On load the figure arrives in colour instead and drains to the rest
- * state as its trail folds: figure-intro holds `filter: none` through the
- * echo hold (fill backwards) and runs the drain over the trail's collapse,
- * starting as the farthest echo starts to fold and ending as the nearest
- * finishes (--echo-hold + 0.15s, 0.9s). No forwards fill, so the property
- * is handed back to the rules above the moment it ends and hover owns it
+ * state as its trail fades: figure-intro holds `filter: none` through the
+ * trail hold (fill backwards) and runs the drain over the trail's fade
+ * (--trail-hold + 0.15s, 0.9s). No forwards fill, so the property is
+ * handed back to the rules above the moment it ends and hover owns it
  * again. Under reduced motion the global rule zeroes the delay and the
  * duration, so the figure is grey from the first frame.
  */
@@ -192,7 +206,7 @@
     contrast(var(--figure-contrast));
   transition: filter 0.35s ease;
   animation: figure-intro 0.9s var(--reveal-ease) backwards;
-  animation-delay: calc(var(--echo-hold) + 0.15s);
+  animation-delay: calc(var(--trail-hold) + 0.15s);
 }
 
 .card:hover .piece img,
@@ -210,9 +224,8 @@
   }
 }
 
-/* One copy of the subject - the figure and every echo of it. */
-.subject,
-.echo {
+/* The figure itself, filling the body. */
+.subject {
   position: absolute;
   inset: 0;
 }
@@ -258,34 +271,237 @@
   }
 }
 
-.echo {
+/*
+ * The motion smear. Two spans and the pieces:
+ *
+ *   .trail is the layer: what fades, and what the blur filter is measured
+ *   against. The filter (#hero-smear, defined once in hero.tsx through the
+ *   icon pipeline, src/icons/source/hero-trail-filters.svg) is a Gaussian
+ *   blur along x only, its deviation in objectBoundingBox units - 0.012 of
+ *   the filtered element's width - so the softness scales with the card on
+ *   any display. That is also how the blur knob works: the deviation is
+ *   fixed in the SVG, so --trail-blur widens the layer instead. The layer
+ *   is the card's width times the knob, and the box inside it is the
+ *   card's width again (100% / knob), so the pieces draw exactly where the
+ *   subject's do while the blur, a fraction of the wider layer, grows with
+ *   the knob. The filter's region is opened to 2.4 widths for the case of a
+ *   knob under 1, where the box is wider than the layer.
+ *
+ *   .trailBox holds the pieces at the card's width, and tucks the whole
+ *   copy a blur's width to the left (the blur spreads both ways, and the
+ *   spill in FRONT of the figure would read as a halo; under the subject's
+ *   own silhouette it is invisible).
+ *
+ *   Each .piece is stretched from its leading edge - transform-origin at
+ *   its right, so the figure's own silhouette stays where the subject's is
+ *   and the tail runs out to the left behind it - and masked along its
+ *   length: solid over the figure's own footprint (the first 1/(1+stretch)
+ *   of the stretched copy, which the subject covers), then one smooth
+ *   fade over the tail to nothing. The mask is applied in the piece's own
+ *   space before the transform, so it stretches with the copy and the tail
+ *   always ends at zero however long it is - no steps, no hard edge, and
+ *   the fade is the same for the arm and the small man. The filter runs on
+ *   the layer, after the masks, so it softens the tail's end too.
+ *
+ * The stretch is base + speed x gain, times the length knob: 0.18 of the
+ * piece width for a still eye, up to 0.73 at a full-speed sweep. The
+ * shown opacity is the knob times 0.7..1 on the same speed. Both read
+ * --eye-speed, which the CSS defaults to 0 - so without scripting, and
+ * under reduced motion where the island never writes it, the smear is the
+ * short soft one.
+ *
+ * Timing: the layer is opacity 0 and fades in over 0.35s on hover or a
+ * round-robin turn (the old trail's feel). On load two animations share
+ * the opacity, later one winning while it runs: trail-arrive lifts the
+ * layer from 0 on the card's reveal beat (fill backwards, so it is unseen
+ * before its turn), ends, and hands over to trail-intro, which has been
+ * holding the shown opacity (fill backwards) and fades it out once the
+ * hold is over. Neither fills forwards, so hover owns the property
+ * afterwards.
+ */
+.trail {
+  --trail-stretch: calc(
+    (0.18 + var(--eye-speed, 0) * 0.55) * var(--trail-length, 1)
+  );
+  --trail-alpha: calc(
+    var(--trail-opacity, 0.6) * (0.7 + 0.3 * var(--eye-speed, 0))
+  );
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: calc(100% * var(--trail-blur, 1));
+  pointer-events: none;
   opacity: 0;
-  transform: translateX(calc(var(--echo-index) * -6.5%));
+  filter: url(#hero-smear);
   transition: opacity 0.35s ease;
-  /* Leaving: the farthest copy folds away first. */
-  transition-delay: calc((3 - var(--echo-index)) * 90ms);
-  animation: echo-intro 0.45s var(--reveal-ease) backwards;
-  /* Arriving: hold the full trail while the page reveals, then collapse it
-     from the farthest copy in. `backwards` shows the trail through the hold
-     and hands the property back afterwards, so hover still owns it. */
-  animation-delay: calc(var(--echo-hold) + (3 - var(--echo-index)) * 0.15s);
+  animation:
+    trail-intro 0.45s var(--reveal-ease) backwards,
+    trail-arrive var(--reveal-duration) var(--reveal-ease) backwards;
+  animation-delay:
+    var(--trail-hold), calc(var(--reveal-index, 0) * var(--reveal-step));
+}
+
+.trailBox {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: calc(100% / var(--trail-blur, 1));
+  transform: translateX(calc(-1.5% * var(--trail-blur, 1)));
+}
+
+.trail .piece {
+  --trail-body: calc(100% / (1 + var(--trail-stretch)));
+  transform-origin: 100% 100%;
+  transform: scaleX(calc(1 + var(--trail-stretch)));
+  mask-image: linear-gradient(
+    to left,
+    rgb(0 0 0 / 100%) var(--trail-body),
+    rgb(0 0 0 / 38%) calc(var(--trail-body) + (100% - var(--trail-body)) * 0.4),
+    transparent 100%
+  );
 }
 
 /* Asked about by the pointer, or taking its turn: hero-room-eye.client.tsx
    sets `data-echo` on one card at a time once the load-time trail has
-   collapsed, so the trail keeps playing round the room unprompted. */
-.card:hover .echo,
-.card[data-echo] .echo {
-  opacity: var(--echo-opacity);
-  /* Entering: the trail grows back out from the subject. */
-  transition-delay: calc((var(--echo-index) - 1) * 90ms);
+   faded, so the trail keeps playing round the room unprompted. */
+.card:hover .trail,
+.card[data-echo] .trail {
+  opacity: var(--trail-alpha);
 }
 
-@keyframes echo-intro {
+@keyframes trail-intro {
   from {
-    opacity: var(--echo-opacity);
+    opacity: var(--trail-alpha);
   }
   to {
     opacity: 0;
+  }
+}
+
+@keyframes trail-arrive {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: var(--trail-alpha);
+  }
+}
+
+/*
+ * The colour knob. "true" (the default) needs no rule: the trail's images
+ * carry the same desaturating filter as the subject's and lose it on the
+ * same hover, so the smear is the cutout's own colour whenever it shows.
+ * "accent" and "ink" flood the layer's silhouette with the brand colour
+ * before the blur: #hero-flood-* is feFlood + feComposite in SourceAlpha,
+ * chained ahead of the smear filter. The two flood colours are the brand
+ * values written out in the SVG (#f25324 and #ffffff, the --accent and
+ * --ink of globals.css) rather than read from the root: a filter primitive
+ * cannot reach a custom property through an attribute, and a `style` on it
+ * is what the house lint forbids in generated components too - so a change
+ * to either token has to be repeated in hero-trail-filters.svg.
+ */
+[data-trail-colour="accent"] .trail {
+  filter: url(#hero-flood-accent) url(#hero-smear);
+}
+
+[data-trail-colour="ink"] .trail {
+  filter: url(#hero-flood-ink) url(#hero-smear);
+}
+
+/*
+ * The flare - the client's option B, the header logo's treatment (see
+ * components/site-header.module.css) instead of a trail: the same layer
+ * sits exactly over the subject, no stretch, no blur, no tuck, and a band
+ * of colour flies across it left to right on hover, on a round-robin turn,
+ * and once on arrival, then leaves no trace. The figure stays grey under it
+ * - the band IS the colour, as it is on the logo - so the colour knob
+ * decides what the band carries: the cutout's own colour, or the logo's
+ * accent. The mask is the logo's, per piece: three widths wide with the
+ * band in the middle third, positioned so the band starts off the left
+ * edge and ends off the right.
+ */
+[data-trail-mode="flare"] .trail {
+  --trail-alpha: var(--trail-opacity, 0.6);
+  z-index: 1;
+  width: 100%;
+  filter: none;
+  animation-delay:
+    calc(var(--trail-hold) + 0.9s),
+    calc(var(--reveal-index, 0) * var(--reveal-step));
+}
+
+[data-trail-mode="flare"][data-trail-colour="accent"] .trail {
+  filter: url(#hero-flood-accent);
+}
+
+[data-trail-mode="flare"][data-trail-colour="ink"] .trail {
+  filter: url(#hero-flood-ink);
+}
+
+[data-trail-mode="flare"] .trailBox {
+  width: 100%;
+  transform: none;
+}
+
+[data-trail-mode="flare"] .trail .piece {
+  --flare-mask: linear-gradient(
+    90deg,
+    transparent 35%,
+    rgb(0 0 0 / 85%) 46%,
+    #000 50%,
+    rgb(0 0 0 / 85%) 54%,
+    transparent 65%
+  );
+  transform: none;
+  mask-image: var(--flare-mask);
+  mask-repeat: no-repeat;
+  mask-size: 300% 100%;
+  mask-position: 100% 0;
+  /* Once on arrival, while trail-intro still holds the layer visible. */
+  animation: trail-flare 0.9s var(--reveal-ease) backwards;
+  animation-delay: var(--trail-hold);
+}
+
+[data-trail-mode="flare"] .card:hover .trail .piece,
+[data-trail-mode="flare"] .card[data-echo] .trail .piece {
+  animation: trail-flare 0.9s var(--reveal-ease) both;
+}
+
+[data-trail-mode="flare"] .card:hover .subject .piece img,
+[data-trail-mode="flare"] .card[data-echo] .subject .piece img {
+  filter: grayscale(1) brightness(var(--figure-brightness))
+    contrast(var(--figure-contrast));
+}
+
+@keyframes trail-flare {
+  from {
+    mask-position: 100% 0;
+  }
+  to {
+    mask-position: 0 0;
+  }
+}
+
+/*
+ * Without the blur. An engine that cannot do `filter: url()` ignores the
+ * declaration and shows the smear crisp and in the cutout's colour; the
+ * mask alone gives the fade. Reduced motion drops the blur on purpose:
+ * the trail then only ever shows on a deliberate hover, holds still (no
+ * speed is written), and a soft-edged copy is the kind of visual noise the
+ * setting asks us to spare - but a chosen brand colour is kept.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .trail {
+    filter: none;
+  }
+
+  [data-trail-colour="accent"] .trail {
+    filter: url(#hero-flood-accent);
+  }
+
+  [data-trail-colour="ink"] .trail {
+    filter: url(#hero-flood-ink);
   }
 }
