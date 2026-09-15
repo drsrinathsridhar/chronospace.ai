@@ -153,7 +153,22 @@
   }
 
   .card {
-    width: calc(56cqw * var(--card-scale, 1));
+    /*
+     * 56% of the frame, times the card's depth scale, so a phone's figure
+     * fills the screen the way the room's does - capped at 24rem so a
+     * landscape phone (640-767 wide, still below md) does not get a robot
+     * arm the height of its screen.
+     */
+    width: calc(min(56cqw, 24rem) * var(--card-scale, 1));
+    /*
+     * A phone held sideways is wide but short: 56% of a 640-767 frame
+     * stands a figure taller than the screen, so there the cap comes down
+     * to 14rem and the section fits in about two screens rather than
+     * three.
+     */
+    @media (orientation: landscape) {
+      width: calc(min(56cqw, 14rem) * var(--card-scale, 1));
+    }
     /*
      * The visible centring plus the eye: shift and turn as in the room
      * (block 3 explains each term), minus the standing angle - a figure

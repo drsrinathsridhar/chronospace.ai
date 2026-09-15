@@ -81,7 +81,7 @@ export function Hero() {
   // engines take as "no filter", so it is sized away rather than hidden.
   return (
     <section
-      className="pt-navbar-rest relative flex min-h-[max(min(calc(100svh-var(--backing-band-height)),87rem),calc(52.84cqw+2.5rem))] touch-pan-y flex-col overflow-clip max-md:min-h-[max(calc(100svh-var(--backing-band-height)),calc(25rem+90.5cqw))]"
+      className="pt-navbar-rest relative flex min-h-[max(min(calc(100svh-var(--backing-band-height)),87rem),calc(52.84cqw+2.5rem))] touch-pan-y flex-col overflow-clip max-md:min-h-[max(calc(100svh-var(--backing-band-height)),calc(25rem+min(90.5cqw,26rem)))] max-md:landscape:min-h-[calc(26rem+min(90.5cqw,22rem))]"
       data-trail-mode={tuning.heroTrail.mode}
       data-trail-colour={tuning.heroTrail.colour}
     >
