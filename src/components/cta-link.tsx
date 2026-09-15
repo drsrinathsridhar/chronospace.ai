@@ -33,7 +33,7 @@ const sizes = {
     arrow: { width: 8, height: 10 },
   },
   list: {
-    root: "h-13.5 w-59.75 items-center justify-between px-4",
+    root: "h-13.5 w-full max-w-59.75 items-center justify-between px-4",
     label: "type-nav",
     arrow: { width: 8, height: 10 },
   },
