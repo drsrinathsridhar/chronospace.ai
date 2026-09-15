@@ -139,25 +139,30 @@ client sends in-the-wild footage. Card 3 is the client's `queryable` clip
 (round 2; 3.2 s, carries its own burned-in body-tracking HUD) with a small
 static HUD of ours bottom-left; the old `measurable.mp4`, its timed
 `MeasureOverlay` and the cover chips are gone. Every plate runs in colour
-(`videoTone` in `tuning.config.ts`) and carries the **camera path dial**
-(`src/components/camera-path-dial.client.tsx`, drawn in CSS, bottom-right
-inside the plate, sized in the plate's own container units): a plan of the
-camera's path around the subject with the camera dot travelling it in step
-with playback, a view ray to the subject and a "View n / N" counter; drag
-the camera along the path to seek, a hidden native range for keyboard; it
-reads progress plus the clip's `fps` and `camera` from `media.config.ts`
-(orbit for `wild` and `navigable`, fixed for `queryable`), so any clip
-works once those two are set (round 3, slide 5). Tapping the plate toggles
-playback, and a refused autoplay shows a play glyph on the dial.
+(`videoTone` in `tuning.config.ts`) and carries the **arc scrubber**
+(`src/components/arc-scrubber.client.tsx`, drawn in CSS, bottom-right
+inside the plate, sized in the plate's own container units): the round-2
+arc, whose handle now stands at the **camera's bearing** in the footage at
+the current moment - the take's mean at the arc's centre, ±90° at its ends
+
+- with the accent sweep from the arc's start to the handle, a "Camera
+  path" caption and a "View n / N" counter; drag the handle to seek to the
+  moment the camera was there, a hidden native range steps through time for
+  keyboard. The bearing comes from a `.camera.json` next to each clip
+  (`camera` in `media.config.ts`, written by `scripts/camera-path.py`);
+  without one the handle follows playback linearly (round 3, slide 5, on the
+  owner's clarification). Tapping the plate toggles playback, and a refused
+  autoplay shows a play glyph on the dial.
 
 ### Capture / viewer (`src/app/sections/capture/`)
 
 `capture-player.client.tsx` renders a `MeasureOverlay` over `echo.mp4`
 (`media.viewer.echo`): height bracket following the taller figure (21
 keyframes at 0.25s), path tag integrating to 1.04 m, speed tag; corner HUD
-(Frames kept / Tracked joints / Timebase) now bottom-left, the camera path
-dial bottom-right (fixed camera, 90 fps). Note the take is a camera orbit - the figure sweeps x 29% ->
-97% -> 26%. The marks are timed to this clip.
+(Frames kept / Tracked joints / Timebase) now bottom-left, the arc
+scrubber bottom-right (handle at the camera's bearing from
+`viewer/echo.camera.json`, 90 fps). Note the figure sweeps x 29% -> 97% ->
+26% across the frame. The marks are timed to this clip.
 
 ### Team (`src/app/sections/team/`)
 

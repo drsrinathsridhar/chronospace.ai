@@ -40,6 +40,14 @@ figure itself; the accessibility 97 is three deliberate contrasts (the
 white-on-accent CTA label, the decorative timecode caption and the About
 words fading in). Not pushed to `main` - waiting for the owner's word.
 
+**Rework of 5a (2026-09-16):** on the owner's clarification the camera path
+dial (D7) was taken out again - the round-2 arc scrubber is back exactly as
+it looked, and its handle now follows the camera's bearing measured off each
+clip (`public/media/**/*.camera.json`, from `scripts/camera-path.py`; the
+mean at the arc's centre, ±90° at the ends), with a drag seeking to the
+moment the camera was nearest that bearing and a linear fallback for a clip
+without a track.
+
 The client's own priority order (slide 9): (1) hero image quality and a
 revised motion-trail effect, (2) video scrubber sync, (3) mobile version
 and format check, (4) metadata fixes. The task list below is ordered so the

@@ -23,17 +23,17 @@ so a new file may have a different size or ratio; only what is listed as
 
 ## Slots
 
-| Slot                    | File(s)                                                                                                       | Format and size                                                                                     | Notes                                                                                                                                                                                   |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Hero figures            | `hero/robotics-arm.png`, `hero/robotics-man.png`, `hero/manufacturing-subject.png`, `hero/sports-subject.png` | PNG, transparent background, figure only, feet at the bottom edge. 1000-1600px tall.                | **Tight.** Each cutout's place in its card (left, width, aspect) is in `src/app/sections/hero/hero-cards.tsx`; a cutout with different proportions needs those three numbers updated.   |
-| Backing band, NVIDIA    | `backers/nvidia-inception.png`                                                                                | PNG, black on transparent (the page turns it white).                                                | The other marks are SVG icons (`src/icons/source/`).                                                                                                                                    |
-| Intro picture           | `intro/placeholder.png`                                                                                       | PNG or JPEG, roughly square; transparent background welcome. 900px or larger.                       | The placeholder split circle. Shown in a square box with `object-fit: contain`. To go back to a video here, `sections/problem/problem.tsx` needs the player again (see git history).    |
-| Intro take (parked)     | `intro/manufacturing.mp4` + `intro/manufacturing-poster.jpg`                                                  | MP4 H.264, portrait, 768x1024, 30fps, muted. Poster = first frame, JPEG.                            | Not rendered at the moment; kept for the rebuilt manufacturing scene. Update `duration` in `media.config.ts` with the clip.                                                             |
-| Product takes (3)       | `product/wild.mp4`, `product/navigable.mp4`, `product/queryable.mp4` + `*-poster.jpg`                         | MP4 H.264, landscape, 960px wide (960x540 today), 30fps, muted, 3-20 s. Poster = first frame, JPEG. | Plate is 577/310; a 16:9 clip is cropped ~2% top and bottom. Update `duration`, `fps` and `camera` (see "The camera path dial").                                                        |
-| Viewer take             | `viewer/echo.mp4` + `viewer/echo-poster.jpg`                                                                  | MP4 H.264, 640x368, 90fps today (any rate; set `fps`), muted.                                       | The measurement overlay (`src/app/sections/capture/capture-player.client.tsx`) is keyframed to this clip. A new clip needs the marks re-timed, or the overlay removed; update `camera`. |
-| Team portraits (3)      | `team/srinath-sridhar.jpg`, `team/tamar-kreitman.jpg`, `team/aashish-rai.jpg`                                 | JPEG, square, 800-1200px.                                                                           | Displayed square, in colour (round 3: no grayscale).                                                                                                                                    |
-| Research card pictures  | `science/paper.jpg`, `science/press.jpg`, `science/post.jpg`                                                  | JPEG, landscape, 1154x650 or larger.                                                                | Plate is 577/310. Current files are stills from the site's own captures - placeholders.                                                                                                 |
-| Closing background loop | `closing/woodworking-1080.mp4`, `closing/woodworking-720.mp4`, `closing/woodworking-poster.jpg`               | MP4 H.264, 1920x1080 and 1280x720, 30fps, muted, ~20 s loop. Keep each under ~12 MB / ~8 MB.        | The browser loads the 1080 file on screens 1536px and wider, the 720 file otherwise. Both should be the same cut.                                                                       |
+| Slot                    | File(s)                                                                                                       | Format and size                                                                                     | Notes                                                                                                                                                                                                 |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Hero figures            | `hero/robotics-arm.png`, `hero/robotics-man.png`, `hero/manufacturing-subject.png`, `hero/sports-subject.png` | PNG, transparent background, figure only, feet at the bottom edge. 1000-1600px tall.                | **Tight.** Each cutout's place in its card (left, width, aspect) is in `src/app/sections/hero/hero-cards.tsx`; a cutout with different proportions needs those three numbers updated.                 |
+| Backing band, NVIDIA    | `backers/nvidia-inception.png`                                                                                | PNG, black on transparent (the page turns it white).                                                | The other marks are SVG icons (`src/icons/source/`).                                                                                                                                                  |
+| Intro picture           | `intro/placeholder.png`                                                                                       | PNG or JPEG, roughly square; transparent background welcome. 900px or larger.                       | The placeholder split circle. Shown in a square box with `object-fit: contain`. To go back to a video here, `sections/problem/problem.tsx` needs the player again (see git history).                  |
+| Intro take (parked)     | `intro/manufacturing.mp4` + `intro/manufacturing-poster.jpg`                                                  | MP4 H.264, portrait, 768x1024, 30fps, muted. Poster = first frame, JPEG.                            | Not rendered at the moment; kept for the rebuilt manufacturing scene. Update `duration` in `media.config.ts` with the clip.                                                                           |
+| Product takes (3)       | `product/wild.mp4`, `product/navigable.mp4`, `product/queryable.mp4` + `*-poster.jpg`                         | MP4 H.264, landscape, 960px wide (960x540 today), 30fps, muted, 3-20 s. Poster = first frame, JPEG. | Plate is 577/310; a 16:9 clip is cropped ~2% top and bottom. Update `duration` and `fps`; regenerate the `.camera.json` (see "The camera track").                                                     |
+| Viewer take             | `viewer/echo.mp4` + `viewer/echo-poster.jpg`                                                                  | MP4 H.264, 640x368, 90fps today (any rate; set `fps`), muted.                                       | The measurement overlay (`src/app/sections/capture/capture-player.client.tsx`) is keyframed to this clip. A new clip needs the marks re-timed, or the overlay removed; regenerate the `.camera.json`. |
+| Team portraits (3)      | `team/srinath-sridhar.jpg`, `team/tamar-kreitman.jpg`, `team/aashish-rai.jpg`                                 | JPEG, square, 800-1200px.                                                                           | Displayed square, in colour (round 3: no grayscale).                                                                                                                                                  |
+| Research card pictures  | `science/paper.jpg`, `science/press.jpg`, `science/post.jpg`                                                  | JPEG, landscape, 1154x650 or larger.                                                                | Plate is 577/310. Current files are stills from the site's own captures - placeholders.                                                                                                               |
+| Closing background loop | `closing/woodworking-1080.mp4`, `closing/woodworking-720.mp4`, `closing/woodworking-poster.jpg`               | MP4 H.264, 1920x1080 and 1280x720, 30fps, muted, ~20 s loop. Keep each under ~12 MB / ~8 MB.        | The browser loads the 1080 file on screens 1536px and wider, the 720 file otherwise. Both should be the same cut.                                                                                     |
 
 Copy and links are not media: headlines and blurbs live in each section's
 file under `src/app/sections/`, URLs in `src/site.config.ts`.
@@ -130,36 +130,40 @@ and gone at its end. The knobs above multiply them; the numbers themselves
 are the designer's. `mode: "flare"` swaps the whole thing for the logo's
 treatment: the figure stays grey and a band of colour flies across it once.
 
-## The camera path dial
+## The camera track
 
-The dial on every video plate (`src/components/camera-path-dial.client.tsx`)
-is a plan of the capture seen from above: the subject at the centre, the
-camera's path as an arc around it, the camera as the dot travelling that
-arc in step with the take, a view ray from the camera to the subject, and
-the counter "View n / N" (a view per frame). It works with any clip of any
-length as long as the clip's slot in `media.config.ts` carries two fields:
+The arc scrubber on every video plate (`src/components/arc-scrubber.client.tsx`)
+is the camera's trajectory around the scene: the handle on the arc stands
+where the camera is in the footage at the current moment - the take's mean
+position at the arc's centre, 90° either way at its ends - the accent
+sweep shows how far around the scene it has come, and the counter reads
+"View n / N" (a view per frame). It works with any clip of any length as
+long as the clip's slot in `media.config.ts` carries two things:
 
 - `fps` - the frame rate the file is encoded at (from `ffprobe`, above;
   `30/1` is 30). Left out, the counter counts at 30.
-- `camera` - where the camera went, one of:
-  - `{ kind: "orbit", from: 30, to: -60 }` - the camera moves around the
-    subject from one bearing to the other over the length of the take.
-  - `{ kind: "fixed", at: 0 }` - the camera stands still; the dial then
-    shows playback on the ring around the subject and never moves the
-    camera.
+- `camera` - the public path of the clip's camera track, a `.camera.json`
+  next to the clip (`product/wild.camera.json` beside `product/wild.mp4`),
+  measured off the footage by `scripts/camera-path.py`:
 
-Bearings are degrees around the subject, seen from above: `0` is straight
-in front of the subject (the bottom of the plan, nearest you), and they
-grow clockwise - `90` looks at the subject's right side, `180` from behind,
-`-90` (or `270`) at its left side. `to` below `from` is a camera moving
-counter-clockwise; a full turn is `0` to `360`. Read the numbers off the
-footage: step through it and see which way the scene turns - if the scene
-appears to turn to the right, the camera is moving to its left, which is
-clockwise (`to` above `from`). The exact angles are a judgement of the eye;
-tune them in the browser.
+  ```sh
+  …/cvenv/bin/python scripts/camera-path.py public/media/product/wild.mp4
+  ```
 
-The plan's size is `--arc-radius` in `timeline-player.module.css` (cards
-and, from 640px, the viewer); the drawing is `camera-path-dial.module.css`.
+  writes `public/media/product/wild.camera.json` - the camera's horizontal
+  bearing in degrees relative to the take's mean, sampled at 10 Hz, positive
+  when the camera has moved to the right of its mean, all zeros for a fixed
+  camera. Run it once per new clip and commit the JSON with the video; read
+  the script's header for its dependencies and what it measures.
+
+Without a track (no `camera`, or the file missing or unreadable) the plate
+still plays and scrubs: the handle simply follows playback linearly, as it
+did before round 3. A fixed camera's handle holds the arc's centre while the
+counter ticks, and dragging it moves nothing; on a moving camera, dragging
+the handle seeks to the moment the camera was nearest that bearing.
+
+The arc's size is `--arc-radius` in `timeline-player.module.css` (cards
+and, from 640px, the viewer); the drawing is `arc-scrubber.module.css`.
 
 ## Things that are still placeholders
 

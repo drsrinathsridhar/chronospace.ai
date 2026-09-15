@@ -13,39 +13,32 @@
 // the ffmpeg lines and the sizes each slot was cut at). Every take names
 // its poster (the first frame, JPEG) and its length in seconds - the player
 // seeks against that before the file's own metadata arrives, so update it
-// with the clip - and, where the camera path dial sits over it, the frame
-// rate the file is encoded at and where the camera went (feedback round 3,
-// item 5a): the dial draws the path from `camera`, so a new clip needs its
-// motion described here or the dial would show the old one's.
+// with the clip - and, where the arc scrubber sits over it, the frame rate
+// the file is encoded at and the camera track measured off the footage
+// (feedback round 3, item 5a): the arc's handle follows `camera`, so a new
+// clip needs its track regenerated or the handle would trace the old one's.
 
-/**
- * Where the camera went during a take, seen from above. Bearings are
- * degrees around the subject: 0 is straight in front of it - the bottom of
- * the plan, nearest the viewer - and they grow clockwise as seen from
- * above, so 90 looks at the subject's right side, 180 from behind, 270 (or
- * -90) at its left side. An orbit runs from `from` to `to` over the length
- * of the take, `to` below `from` for a camera that moves counter-clockwise;
- * the span may exceed a half turn, and a full turn is 0 to 360. A fixed
- * camera holds `at`, and the dial shows playback on the ring around the
- * subject instead of moving the camera.
- */
-export type CameraPath =
-  | { kind: "orbit"; from: number; to: number }
-  | { kind: "fixed"; at: number };
-
-/** A video slot: the take, its still, its length, and its camera. */
+/** A video slot: the take, its still, its length, and its camera track. */
 export type Take = {
   src: string;
   poster: string;
   /** Seconds. Used for seeking before the metadata arrives. */
   duration: number;
-  /** Frames per second the file is encoded at; the dial's "View n / N"
+  /** Frames per second the file is encoded at; the scrubber's "View n / N"
    *  counts in it. 30 when left out. */
   fps?: number;
-  /** The camera's path over the take; a fixed camera in front (at 0) when
-   *  left out. Read off the footage: step through it and see which way the
-   *  scene turns. */
-  camera?: CameraPath;
+  /**
+   * The camera track: the public path of a `.camera.json` next to the clip,
+   * written by `scripts/camera-path.py` from the footage itself (feature
+   * tracking between frames; read the script's header for how). The file
+   * carries the camera's horizontal bearing in degrees, sampled at 10 Hz,
+   * relative to the take's mean position - positive when the camera has
+   * moved to the right of it, all zeros for a fixed camera - and the arc
+   * scrubber puts its handle at that bearing at every moment of playback:
+   * the mean at the arc's centre, ±90° at its ends. A take without one
+   * gets a handle that follows playback linearly, as it did before round 3.
+   */
+  camera?: string;
 };
 
 export const media = {
@@ -84,37 +77,35 @@ export const media = {
     } satisfies Take,
   },
 
-  /** The three product takes: landscape, 577/310 plates, 960px wide, 30fps.
-   *  The camera paths are read off the footage, frame by frame (round 3);
-   *  the angles are a judgement of the eye, tuned in the browser. */
+  /** The three product takes: landscape, 577/310 plates, 960px wide, 30fps,
+   *  each with its camera track measured off the file (round 3). */
   product: {
     // TODO(client): in-the-wild footage (outdoor / factory / field). The
     // current file is trimmed to the reconstruction pass; it is a stand-in.
     // The synthesised camera starts in front of the table, facing the two
-    // figures, swings left around the scene and rises, and ends behind the
-    // man in blue: a clockwise sweep of a little under a half turn.
+    // figures, swings around the scene and rises, and ends behind the man
+    // in blue.
     wild: {
       src: "/media/product/wild.mp4",
       poster: "/media/product/wild-poster.jpg",
       duration: 9.47,
-      camera: { kind: "orbit", from: -40, to: 120 },
+      camera: "/media/product/wild.camera.json",
     } satisfies Take,
     // The first seven seconds are the real footage from a fixed wide shot;
-    // then the point cloud takes over and the camera drifts to its right
-    // around the seated man and the robot, ending front-right and closer.
-    // One counter-clockwise arc stands for the whole take.
+    // then the point cloud takes over and the camera drifts around the
+    // seated man and the robot, ending front-right and closer.
     navigable: {
       src: "/media/product/navigable.mp4",
       poster: "/media/product/navigable-poster.jpg",
       duration: 18.73,
-      camera: { kind: "orbit", from: 15, to: -60 },
+      camera: "/media/product/navigable.camera.json",
     } satisfies Take,
     // A fixed camera on the tracked dancer.
     queryable: {
       src: "/media/product/queryable.mp4",
       poster: "/media/product/queryable-poster.jpg",
       duration: 3.2,
-      camera: { kind: "fixed", at: 0 },
+      camera: "/media/product/queryable.camera.json",
     } satisfies Take,
   },
 
@@ -128,7 +119,7 @@ export const media = {
       poster: "/media/viewer/echo-poster.jpg",
       duration: 4.944,
       fps: 90,
-      camera: { kind: "fixed", at: 0 },
+      camera: "/media/viewer/echo.camera.json",
     } satisfies Take,
   },
 
