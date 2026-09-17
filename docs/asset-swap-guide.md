@@ -73,19 +73,21 @@ them - but each is a plain file that can be overwritten in place.
 | File                                                                 | Size and format                                                                                                                               | What reads it                                                                            |
 | -------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
 | `public/og.png`                                                      | 1200x630, PNG or JPEG, opaque, under 300 KB.                                                                                                  | Every link unfurler (`og:image`, `twitter:image`; declared in `src/lib/metadata.ts`).    |
-| `src/app/icon.svg`                                                   | Square viewBox, transparent, one `<style>` with a `prefers-color-scheme: dark` rule so the mark is dark ink on light tab bars, white on dark. | Modern browsers' tab icon.                                                               |
-| `src/app/favicon.ico`                                                | 16 + 32 + 48 (PNG-in-ICO), transparent, mark in the accent with a thin ink outline (half a pixel at 16, one at 32 and 48).                    | Browsers without SVG favicons, bookmarks, Windows.                                       |
-| `src/app/icon.png`                                                   | 64x64, transparent, same drawing as the `.ico`.                                                                                               | The PNG fallback Next emits next to the `.ico`.                                          |
-| `src/app/apple-icon.png`                                             | 180x180, **opaque** page ground (`#090b19`), white mark at 60%, square corners (iOS rounds them and paints transparency black).               | iOS home screen.                                                                         |
-| `public/icons/icon-192.png`, `icon-512.png`, `icon-512-maskable.png` | Opaque page ground, white mark at 60% (the maskable one at 50%, inside the 80% safe zone).                                                    | Android home screen via `src/app/manifest.ts`; the 512 is also the JSON-LD `logo`.       |
-| `public/safari-pinned-tab.svg`                                       | Single colour, 100% black on transparent, 16-unit viewBox.                                                                                    | Safari pinned tabs; painted in the accent set on the `mask-icon` entry in `metadata.ts`. |
+| `src/app/icon.svg`                                                   | Square viewBox, transparent, the mark in the client's favicon grey (`#939393`) at 71% of the tile, centred; the mid grey reads on light and dark tab bars alike. | Modern browsers' tab icon.                                                               |
+| `src/app/favicon.ico`                                                | 16 + 32 + 48 (PNG-in-ICO), transparent, the grey mark at 71%, no outline.                                                                     | Browsers without SVG favicons, bookmarks, Windows.                                       |
+| `src/app/icon.png`                                                   | 64x64, transparent, same drawing as the `.ico` (this one is the client's own file, `public/09/favicon-chronospace-new.png`, as delivered).    | The PNG fallback Next emits next to the `.ico`.                                          |
+| `src/app/apple-icon.png`                                             | 180x180, **opaque** page ground (`#090b19`), grey mark at 60%, square corners (iOS rounds them and paints transparency black).                | iOS home screen.                                                                         |
+| `public/icons/icon-192.png`, `icon-512.png`, `icon-512-maskable.png` | Opaque page ground, grey mark at 60% (the maskable one at 50%, inside the 80% safe zone).                                                     | Android home screen via `src/app/manifest.ts`; the 512 is also the JSON-LD `logo`.       |
+| `public/safari-pinned-tab.svg`                                       | Single colour, 100% black on transparent, 16-unit viewBox.                                                                                    | Safari pinned tabs; painted in the grey set on the `mask-icon` entry in `metadata.ts`.   |
 
 To redraw the icon set from a new mark: put the mark's paths on a square
 viewBox in `icon.svg` and `safari-pinned-tab.svg` by hand, then render the
 rasters from the same paths at the sizes above with any headless browser
 (`chrome --headless --screenshot=out.png --window-size=64,64 --default-background-color=00000000 file:///…/tile.html`
 gives a transparent PNG; the same page with an opaque `<rect>` gives the
-Apple and manifest tiles). The `.ico` is three PNGs behind a 6-byte header
+Apple and manifest tiles). The current set was rendered with `sharp`
+(already in `node_modules` under Next) straight from the SVG string, which
+gives the same result without a browser. The `.ico` is three PNGs behind a 6-byte header
 and one 16-byte entry per image; any icon packer writes it. Keep every
 transparent tile's corner pixels at alpha 0 (`sips -g hasAlpha` says whether
 the alpha channel survived).

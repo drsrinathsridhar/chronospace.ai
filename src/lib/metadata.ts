@@ -56,7 +56,8 @@ export function createMetadata({
     // has no file convention, so it has to be declared. Hence the whole set
     // is spelled out: the theme-aware SVG first (the browsers that take it
     // prefer it), the PNG for the rest, the Apple tile, and the mask painted
-    // in the accent. favicon.ico needs no entry - Next always puts it first.
+    // in the favicon's grey. favicon.ico needs no entry - Next always puts it
+    // first.
     icons: {
       icon: [
         { url: "/icon.svg", type: "image/svg+xml" },
@@ -64,7 +65,7 @@ export function createMetadata({
       ],
       apple: [{ url: "/apple-icon.png", type: "image/png", sizes: "180x180" }],
       other: [
-        { rel: "mask-icon", url: "/safari-pinned-tab.svg", color: "#f25324" },
+        { rel: "mask-icon", url: "/safari-pinned-tab.svg", color: "#939393" },
       ],
     },
     openGraph: {

@@ -249,9 +249,9 @@ scrolls off the hero (`site-header.module.css` on `:root[data-scrolled]`);
 - Title: `ChronoSpace — AI to digitize the physical world` on the home
   page, `<page> — ChronoSpace` elsewhere via the root template
   (`src/lib/metadata.ts`). Share card: the static `public/og.png`
-  (1200x630). Icons: `src/app/icon.svg` (theme-aware), `favicon.ico`
-  16/32/48 and `icon.png` (accent on transparent), `apple-icon.png`
-  (opaque paper), `public/icons/*` for the manifest (`src/app/manifest.ts`),
+  (1200x630). Icons: `src/app/icon.svg` (grey mark), `favicon.ico`
+  16/32/48 and `icon.png` (grey on transparent), `apple-icon.png`
+  (grey on opaque paper), `public/icons/*` for the manifest (`src/app/manifest.ts`),
   `public/safari-pinned-tab.svg` for Safari. JSON-LD `Organization` in
   `layout.tsx`. How to redraw any of them: `docs/asset-swap-guide.md`.
 
