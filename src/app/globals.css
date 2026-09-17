@@ -1,9 +1,55 @@
 @import "tailwindcss";
 
+/*
+ * The stand-in faces the text is set in until Nippo and Supreme arrive
+ * (fonts.ts turns Next's automatic ones off). Each is Arial scaled so a
+ * line of it runs the same length as the real font's, with the vertical
+ * metrics scaled by the same factor, so the swap changes the glyphs and
+ * nothing else: no reflow, no layout shift. size-adjust was measured in
+ * Chrome as the real font's width over Arial's for the site's copy at the
+ * weights in use (Nippo 378-400 mixed case: 101.2-102.0%; Nippo 400 in
+ * capitals, the nav, buttons and HUD strips: 89-93%; Supreme 300-400:
+ * 97-99.5%); the overrides are Next's computed values for these files
+ * rescaled to each size-adjust (override = metric / (upm x size-adjust)).
+ * Arial is on every Mac and Windows machine; where it is not, the stack
+ * falls through to the system sans-serif unadjusted.
+ */
+@font-face {
+  font-family: "Nippo Fallback";
+  src: local(Arial);
+  size-adjust: 102%;
+  ascent-override: 97.07%;
+  descent-override: 26.47%;
+  line-gap-override: 8.82%;
+}
+
+@font-face {
+  font-family: "Nippo Caps Fallback";
+  src: local(Arial);
+  size-adjust: 92%;
+  ascent-override: 107.61%;
+  descent-override: 29.34%;
+  line-gap-override: 9.78%;
+}
+
+@font-face {
+  font-family: "Supreme Fallback";
+  src: local(Arial);
+  size-adjust: 98.5%;
+  ascent-override: 99.49%;
+  descent-override: 28.43%;
+  line-gap-override: 9.14%;
+}
+
 :root {
   /* Supreme carries reading copy; Nippo carries every piece of chrome. */
   --font-sans-brand: var(--font-brand-sans, Arial, Helvetica, sans-serif);
   --font-display-brand: var(--font-brand-display, var(--font-sans-brand));
+  /* Nippo again with the stand-in tuned for capitals (fonts.ts). */
+  --font-display-brand-caps: var(
+    --font-brand-display-caps,
+    var(--font-display-brand)
+  );
 
   /* Brand palette, straight off the Figma variables. */
   --paper: #090b19; /* c-black */
@@ -458,7 +504,7 @@
  *   type-micro     6px - the tiny counters inside card headers (uppercase)
  */
 @utility type-button {
-  font-family: var(--font-display-brand);
+  font-family: var(--font-display-brand-caps);
   font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.1;
@@ -467,7 +513,7 @@
 }
 
 @utility type-nav {
-  font-family: var(--font-display-brand);
+  font-family: var(--font-display-brand-caps);
   font-size: 0.75rem;
   font-weight: 400;
   line-height: 1.1;
@@ -484,7 +530,7 @@
 }
 
 @utility type-caption {
-  font-family: var(--font-display-brand);
+  font-family: var(--font-display-brand-caps);
   font-size: 0.625rem;
   font-weight: 400;
   line-height: 1.1;
@@ -493,7 +539,7 @@
 }
 
 @utility type-micro {
-  font-family: var(--font-display-brand);
+  font-family: var(--font-display-brand-caps);
   font-size: 0.375rem;
   font-weight: 400;
   line-height: 1.1;

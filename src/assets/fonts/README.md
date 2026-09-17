@@ -10,6 +10,12 @@ ChronoSpace uses two Fontshare families, each bundled as a single variable file:
 
 They are loaded in `src/app/fonts.ts` with `next/font/local` and exposed as the
 CSS variables `--font-brand-display` (Nippo) and `--font-brand-sans` (Supreme).
+A second Nippo declaration, `--font-brand-display-caps`, serves the uppercase
+utilities (same file, one download). Each stack ends in a hand-tuned stand-in
+(`Nippo Fallback`, `Nippo Caps Fallback`, `Supreme Fallback` in
+`src/app/globals.css`): Arial scaled to the real font's measured width so the
+swap does not reflow the page. Re-measure them if a font file changes; the
+method is in `docs/lighthouse/font-fallback-2026-09-17/README.md`.
 `src/app/globals.css` reads those through `--font-display-brand` and
 `--font-sans-brand`; keep the variable names in sync if you swap a family.
 
