@@ -39,7 +39,8 @@ chrome (Nippo's capitals run narrower against Arial's than its lowercase
 does, so `type-button`, `type-nav`, `type-caption` and `type-micro` take
 a second Nippo declaration with its own stand-in), and "Supreme Fallback"
 at 98.5% for body copy. Every text style on the page now measures within
-2% of its stand-in (digits within 6%).
+2% of its stand-in (digits within 6%). Desktop scores 99-100 run to run
+on LCP alone; `desktop.json` here is the 99.
 
 Measured on the production build served with `next start`, headless
 Chrome 153:
@@ -49,9 +50,11 @@ Chrome 153:
 | Client, staging, DevTools desktop (their) | 77   | 0.65  | 0.6 s |
 | Staging before, headless desktop          | 100  | 0     | 0.7 s |
 | Staging before, fonts delayed 1.5 s       | -    | 0.016 | -     |
-| Local build after, headless desktop       | 100  | 0     | 0.7 s |
+| Local build after, headless desktop       | 99   | 0     | 0.8 s |
 | Local build after, fonts delayed 1.5 s    | -    | 0.000 | -     |
 | Local build after, mobile preset          | 84   | 0     | 4.6 s |
+| Staging after, headless desktop           | 100  | 0     | 0.6 s |
+| Staging after, fonts delayed 1.5 s        | -    | 0.000 | -     |
 
 Mobile is unchanged from round 3 (its LCP is the hero imagery on the
 simulated slow connection, see `../round-3-2026-09-15/`).
