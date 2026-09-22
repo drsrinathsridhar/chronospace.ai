@@ -9,25 +9,22 @@ import styles from "./arc-scrubber.module.css";
 // a handle rides the arc, an accent sweep runs from the arc's start to the
 // handle, and a hairline spoke joins the centre to the handle - the
 // reference's "free viewpoint" dial, drawn in the site's tokens. Since
-// round 3 (item 5a) the handle is the camera: the timeline player puts it
-// at the camera's bearing in the footage at the current moment - the
-// take's mean position at the arc's centre, 90 degrees either way at its
-// ends - so the arc reads as the camera's trajectory around the scene and
-// the sweep as how far around it the camera has come.
+// round 3 (item 5a) the handle represents the camera's progress through the
+// take. It moves linearly with presented video time, so replacement clips
+// stay synchronized without clip-specific tracking data.
 //
 // Everything on the dial is CSS reading one custom property, --player-
-// progress in 0..1, that the timeline player's rAF loop writes on the dial
+// progress in 0..1, that the timeline player's frame loop writes on the dial
 // element each frame (arc-scrubber.module.css). The dial never sees the
-// clip's duration, its frame count or its camera track, so the same
+// clip's duration or its frame count, so the same
 // instrument sits over any take - the three product clips and the viewer
 // alike (item 10b).
 //
 // Pointer input: a drag anywhere on the dial moves the handle. The
 // pointer's angle from the arc's centre maps into 0..1 across the sweep
 // and goes to the player as a place on the arc (`onPlace`), which the
-// player turns into a moment of the take - the one the camera was nearest
-// that bearing; points within the arc's span (plus a little overshoot at
-// either end) clamp, points on the far side of the centre are ignored
+// player turns into the corresponding moment of the take; points within the
+// arc's span (plus a little overshoot at either end) clamp, points on the far side of the centre are ignored
 // rather than made to jump. The pointer is captured on the dial for the
 // drag, so the pointer may leave the surface without dropping the handle.
 // Keyboard and assistive tech keep the native range input, visually hidden

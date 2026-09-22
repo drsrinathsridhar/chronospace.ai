@@ -25,11 +25,11 @@ it into the `intro.manufacturing` and `hero.manufacturing` slots of
 
 ## Stack and house rules (enforced by lint)
 
-- Next 16.2.9 (App Router; breaking changes - docs live in
+- Next 16.3.5 (App Router; breaking changes - docs live in
   `node_modules/next/dist/docs/`), React 19, Tailwind v4 (CSS-first,
   tokens in `src/app/globals.css`, arbitrary colors/typography are lint
-  errors), CSS Modules for section geometry, `motion` library used only
-  by the header scroll.
+  errors), CSS Modules for section geometry, native browser observers and
+  events for runtime motion.
 - Read `AGENTS.md`, `docs/architecture.md`, `docs/styling.md`, and
   `docs/section-workflow.md` before broad changes.
 - Patterns: sections in `src/app/sections/<name>/` (server root +
@@ -39,7 +39,7 @@ it into the `intro.manufacturing` and `hero.manufacturing` slots of
   `src/icons/source` + `npm run icons:generate` (generated output is
   read-only), raster media through `next/image` (`<video>` is fine).
 - Verify with `npm run format`, `npm run lint`, `npm run typecheck`,
-  and `next build`.
+  `npm run build`, and `npm run test:e2e`.
 
 ## Page state (`src/app/page.tsx`: Hero -> Backers -> Problem -> Product -> Capture -> Team -> Science -> Closing, then ClosingBar as the `<footer>`)
 
@@ -81,7 +81,8 @@ scroll-snap-type: x mandatory`, one figure a screen, centred on its
   ~62vw, the dancer ~34vw), with `hero-pager.client.tsx` drawing three
   `TimelineTickIcon` ticks in 44px targets under the floor (active
   `text-accent`; tap scrolls smoothly, instantly under reduced motion) and
-  handing the arriving slide `data-echo` for `ECHO_HOLD` on every swipe -
+  handing the arriving slide `data-echo` for `ECHO_HOLD` on every swipe when
+  reduced motion is not enabled -
   the eye island's round robin runs from `md` up only. The sub-`md` hero
   floor is `25rem + 90.5cqw` so the arm clears the headline; 768-1279 keep
   the 3-up strip, three CSS blocks in `hero-cards.module.css`.
@@ -98,9 +99,9 @@ scroll-snap-type: x mandatory`, one figure a screen, centred on its
   and visibilitychange). The same island runs the **trail round-robin**:
   from 6s, every 5s one card carries `data-echo` for 1.6s
   (`hero-cards.module.css` reads it like hover), and writes `--eye-speed`
-  (0..1) for the trail's length. Reduced motion drops the drift, the tilt
-  and the round robin and keeps the pointer. `PointerDrift` (About) follows
-  the same rules.
+  (0..1) for the trail's length. Reduced motion disables pointer tracking,
+  drift, tilt, the round robin and `PointerDrift`, leaving centred static
+  artwork.
 
   Coverage (round 3, slide 2d) - what moves in each case:
 
@@ -113,11 +114,12 @@ scroll-snap-type: x mandatory`, one figure a screen, centred on its
   | Android, tilt               | lean of the phone from its resting attitude, at 0.6/0.4 of the range   | -                        | yes        |
   | iOS, touch                  | finger while down; vertical swipe scrolls                              | drift until tilt granted | yes        |
   | iOS, tilt                   | after the first tap on the hero grants the sensor; denied = touch only | -                        | yes        |
-  | Reduced motion (any device) | pointer / finger only; rests at centre when released                   | none (still)             | no         |
+  | Reduced motion (any device) | nothing; room and figures stay centred                                 | none (still)             | no         |
   | No JS                       | nothing moves; room at centre, figures grey, no trail                  | -                        | no         |
 
 - **Live timecode** (`hero-timecode.client.tsx`): the ruler's readout counts
-  at 30fps from 00:00:14:07, DOM-written, pauses when hidden.
+  at 30fps from 00:00:14:07, DOM-written, pauses when hidden and stays static
+  under reduced motion.
 
 ### Problem / intro (`src/app/sections/problem/`)
 
@@ -142,18 +144,12 @@ static HUD of ours bottom-left; the old `measurable.mp4`, its timed
 (`videoTone` in `tuning.config.ts`) and carries the **arc scrubber**
 (`src/components/arc-scrubber.client.tsx`, drawn in CSS, bottom-right
 inside the plate, sized in the plate's own container units): the round-2
-arc, whose handle now stands at the **camera's bearing** in the footage at
-the current moment - the take's own extremes a tenth in from the arc's
-ends, a camera under 8° of movement holding the centre
-
-- with the accent sweep from the arc's start to the handle, a "Camera
-  path" caption and a "View n / N" counter; drag the handle to seek to the
-  moment the camera was there, a hidden native range steps through time for
-  keyboard. The bearing comes from a `.camera.json` next to each clip
-  (`camera` in `media.config.ts`, written by `scripts/camera-path.py`);
-  without one the handle follows playback linearly (round 3, slide 5, on the
-  owner's clarification). Tapping the plate toggles playback, and a refused
-  autoplay shows a play glyph on the dial.
+arc, whose handle follows presented video time linearly. The accent sweep
+runs from the arc's start to the handle, with a "Camera path" caption and a
+"View n / N" counter. Dragging seeks to the same fraction of the clip, and
+pointer moves are coalesced to one seek per display frame. No generated
+camera data is required when replacing a video. Tapping the plate toggles
+playback, and a refused autoplay shows a play glyph on the dial.
 
 ### Capture / viewer (`src/app/sections/capture/`)
 
@@ -161,15 +157,14 @@ ends, a camera under 8° of movement holding the centre
 (`media.viewer.echo`): height bracket following the taller figure (21
 keyframes at 0.25s), path tag integrating to 1.04 m, speed tag; corner HUD
 (Frames kept / Tracked joints / Timebase) now bottom-left, the arc
-scrubber bottom-right (handle at the camera's bearing from
-`viewer/echo.camera.json`, 90 fps). Note the figure sweeps x 29% -> 97% ->
+scrubber bottom-right (linear playback progress, 90 fps counter). Note the figure sweeps x 29% -> 97% ->
 26% across the frame. The marks are timed to this clip.
 
 ### Team (`src/app/sections/team/`)
 
-"Team". Square portraits (JPEG, in colour at rest since round 3 - the
-grayscale module is gone) in a centred 976px row on the panel gap (299px
-each at 1496), caption under a hairline: name, "LinkedIn" link
+"Team". Square portraits (JPEG, in colour at rest since round 3) in a
+centred 976px row on the panel gap (299px each at 1496); below 768px they
+become compact 112-144px horizontal rows. Caption: name, "LinkedIn" link
 (the accessible one) with the LinkedIn glyph in accent, role. Portrait is an
 `aria-hidden tabIndex=-1` link. Srinath's source is 512px - ask for a larger
 one.
@@ -230,7 +225,7 @@ scrolls off the hero (`site-header.module.css` on `:root[data-scrolled]`);
 - Clean exports of `wild` and `navigable` without burned-in graphics; the
   final `queryable` clip (the current one carries its own tracking HUD).
 - Real URLs: Research cards (`science.tsx`, all point at the Brown lab
-  site), `siteConfig.links.calendly`, `.linkedin`, `.terms`, `.privacy`.
+  site), `siteConfig.links.linkedin`, `.terms`, `.privacy`.
 - Final artwork for the three Research card plates.
 - An SVG or white export of the NVIDIA Inception lockup (the PNG is turned
   white by a CSS filter meanwhile).
@@ -239,13 +234,10 @@ scrolls off the hero (`site-header.module.css` on `:root[data-scrolled]`);
 
 ## URL and metadata
 
-- **`NEXT_PUBLIC_SITE_URL` is not set on Vercel.** Set it in the project's
-  environment variables once the final domain exists (round 3, slide 9c).
-  Until then the build falls back to `https://` +
-  `VERCEL_PROJECT_PRODUCTION_URL` (today `chronospace-v2.vercel.app`), then
-  `VERCEL_URL`, and only a local build lands on localhost - the chain lives
-  in `src/lib/env.ts`; canonical, `og:url`, sitemap and robots all inherit
-  it.
+- **`NEXT_PUBLIC_SITE_URL` is required for production builds.** Set it to the
+  final origin, without a path, in every production environment. There is no
+  Vercel or localhost fallback in production; canonical, Open Graph, sitemap
+  and robots URLs all inherit the validated origin from `src/lib/env.ts`.
 - Title: `ChronoSpace — AI to digitize the physical world` on the home
   page, `<page> — ChronoSpace` elsewhere via the root template
   (`src/lib/metadata.ts`). Share card: the static `public/og.png`
@@ -263,15 +255,9 @@ scrolls off the hero (`site-header.module.css` on `:root[data-scrolled]`);
   notifications/initialized -> tools/call; session id arrives in the
   `mcp-session-id` response header). Exported assets download from
   `http://localhost:3845/assets/<hash>.png`.
-- **Visual verification**: the in-app browser pane may report the tab
-  hidden (no rAF, screenshots blank) - the puppeteer MCP (headless, counts
-  as visible) works for motion checks. Otherwise no browser tool in the session - use
-  `playwright-core` with the cached Chromium at
-  `~/Library/Caches/ms-playwright/chromium_headless_shell-1217/chrome-headless-shell-mac-arm64/chrome-headless-shell`.
-  Working scripts (`shot*.mjs`, `check-*.mjs`) live in the approved
-  temp dir `/private/var/folders/4x/mc_zpzhs71s34sfkzfbf_37m0000gn/T/opencode/`.
-  Serve with `npx next start -p 4939` (ports 4321/4939 are sometimes
-  contested by other local apps - check before trusting a response).
+- **Visual verification**: `npm run test:e2e` runs the checked-in Playwright
+  suite against `next start` in desktop and mobile Chromium. Failure artifacts
+  include screenshots and traces under `test-results/` and the HTML report.
 - **Media**: every slot lives under `public/media/<section>/` and is
   named in `src/media.config.ts`; posters are first frames extracted with
   ffmpeg (`/opt/homebrew/bin/ffmpeg`, installed 2026-09-11). See

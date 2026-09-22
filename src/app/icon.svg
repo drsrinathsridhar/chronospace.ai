@@ -1,14 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
   <!--
     The hexagon-S mark alone, on nothing: the two left-hand paths of
-    src/icons/source/chronospace-logo.svg, scaled to 71% of the tile and
+    src/icons/source/chronospace-logo.svg, scaled to 90% of the tile and
     centred, in the flat grey of the client's favicon file
     (public/09/favicon-chronospace-new.png, 17 Sep 2026). A mid grey reads
     on light and dark tab bars alike, so there is no colour-scheme rule.
     Browsers without SVG favicons fall back to favicon.ico, drawn from the
     same paths (client feedback, round 3, slide 9b).
   -->
-  <g transform="translate(6.4005 4.64) scale(0.71)" fill="#939393">
+  <g transform="translate(3.8316 1.6) scale(0.9)" fill="#939393">
     <path d="M27.0409 8.99088V14.3833H24.9959V10.0822L13.6191 2.45621L2.06857 10.0865V15.9988H2.045V21.9097L13.6138 29.538L24.9959 21.7899V19.2298H27.0409V22.8716L13.6325 32L0 23.0115V15.9988H0.0235665L0.0240475 8.98655L13.6272 0L27.0409 8.99088Z"/>
     <path d="M21.6649 12.6596V14.8152H19.6199V13.7758L13.5445 9.87198L9.49732 12.5081L21.2311 19.7185L13.5354 24.6419L5.41742 19.3443V17.3248H7.46242V18.2367L13.5464 22.2069L17.3815 19.7531L5.6728 12.5586L13.5373 7.43645L21.6649 12.6596Z"/>
   </g>

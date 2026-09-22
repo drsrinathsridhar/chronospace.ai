@@ -18,10 +18,7 @@ export const siteConfig = {
   ],
   links: {
     contact: "/contact",
-    // TODO: swap for the real enquiry inbox once it exists.
-    email: "mailto:hello@chronospace.ai",
-    // TODO: swap for the real scheduling link once it exists.
-    calendly: "https://calendly.com/chronospace/intro",
+    email: "mailto:contact@chronospace.ai",
     // TODO: point at the real company profile once it exists.
     linkedin: "https://www.linkedin.com/company/chronospace-ai",
     // TODO: link the legal documents once they are published.

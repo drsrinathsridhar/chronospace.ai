@@ -45,7 +45,8 @@
  * a setting now (tuning.config.ts, `videoTone`): the client asked for the
  * takes in colour for the time being (feedback round 2), so the root
  * carries --video-grayscale 0 and --video-blend normal, and flipping the
- * setting to "mono" brings the comp's grey plate back.
+ * carries data-video-tone="colour" and avoids both compositor effects;
+ * flipping the setting to "mono" brings the comp's grey plate back.
  *
  * Safari never composites a blend on a video layer (WebKit bug 163958), so
  * the desaturation itself rides a filter: grayscale() reduces with the same
@@ -59,8 +60,11 @@
   width: 100%;
   aspect-ratio: var(--player-aspect);
   object-fit: cover;
-  filter: grayscale(var(--video-grayscale, 1));
-  mix-blend-mode: var(--video-blend, luminosity);
+}
+
+:global(:root[data-video-tone="mono"]) .video {
+  filter: grayscale(1);
+  mix-blend-mode: luminosity;
 }
 
 /*

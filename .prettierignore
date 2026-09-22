@@ -4,3 +4,8 @@ package-lock.json
 .agents
 .claude
 .quickshot
+.serena
+artifacts
+docs/asset-swap-guide.md
+docs/lighthouse
+public/**/*.camera.json

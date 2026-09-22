@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { PlayIcon } from "@/icons/generated";
+import { useReducedMotion } from "@/lib/use-reduced-motion.client";
 import { ArcScrubber } from "./arc-scrubber.client";
 import styles from "./timeline-player.module.css";
 
@@ -13,22 +14,16 @@ import styles from "./timeline-player.module.css";
 // plates read as the same instrument. The arc is the round-2 dial (client
 // feedback round 2, item 5b) with a new meaning: its handle is the camera.
 // The client read the arc as a curved timeline and asked for the camera's
-// trajectory around the scene (round 3, item 5a); the owner's steer was to
-// keep the arc as it was and drive the handle by where the camera actually
-// is in the footage, so the handle now stands at the camera's bearing at
-// the current moment - measured off each clip and shipped next to it as a
-// `.camera.json` (media.config.ts, `camera`) - and the accent sweep from
-// the arc's start to the handle reads as how far around the scene the
-// camera has come. A fixed camera holds the arc's centre while the counter
-// ticks; a take without a track falls back to the handle following
-// playback linearly, as it did in round 2.
+// trajectory around the scene (round 3, item 5a). The handle follows the
+// presented video time linearly, so it remains visibly synchronized and a
+// replacement clip needs no separately generated camera data.
 //
 // Two builds, one flag. `compact` is the card build: no frame of its own
 // (the card draws the border) and a smaller surface - a tighter arc radius.
 // The surface is a set width with the dial centred in it and the counter in
 // tabular figures, so the box never changes size as the view number ticks.
 //
-// One rAF loop owns all the motion: it writes the handle's place as a single
+// One video-frame loop owns all the motion: it writes the handle's place as a single
 // custom property (--player-progress) on the dial, keeps the range input in
 // step with the time, and on each decisecond boundary writes the view
 // counter and the range's spoken value and calls onTick - the capture HUD
@@ -38,13 +33,10 @@ import styles from "./timeline-player.module.css";
 // has focus or while the dial is being dragged, so the loop never fights
 // the hand on the control.
 //
-// The camera track is fetched once the player mounts and kept in a ref -
-// the loop reads it each frame without a render - and until it arrives, or
-// if it never does, the loop uses the linear fallback. Scrubbing reads it
-// the other way: the pointer's place on the arc is a bearing, and the take
-// seeks to the moment the camera was nearest that bearing (see `timeNear`).
-// The hidden range steps through time as before; its spoken value is the
-// view number, which is what a keyboard user is moving through.
+// Browsers with requestVideoFrameCallback drive it from mediaTime, the frame
+// actually presented by the decoder. The rAF fallback covers older browsers.
+// Pointer moves are coalesced to one seek per display frame so a fast drag
+// cannot queue hundreds of expensive video seeks.
 //
 // The counter reads `View n / N` - a view per synthesised frame, as in the
 // client's reference - in the take's own frame rate (`fps`, from
@@ -72,10 +64,6 @@ type TimelinePlayerProps = {
   name: string;
   /** The take's frame rate; the view counter counts in it. */
   fps?: number;
-  /** The public path of the take's camera track (`.camera.json`). */
-  camera?: string;
-  /** Mirror the track along the arc - see `cameraFlip` in media.config.ts. */
-  cameraFlip?: boolean;
   /** The card build: no own frame, compact controls. */
   compact?: boolean;
   preload?: "none" | "metadata";
@@ -84,133 +72,6 @@ type TimelinePlayerProps = {
   /** Overlays inside the frame, over the take, under the controls. */
   children?: ReactNode;
 };
-
-/**
- * What the player keeps of a `.camera.json`: the camera's horizontal
- * bearing in degrees relative to the take's mean, one sample every 1/fps
- * seconds from t = 0, positive to the right of the mean. The file's other
- * fields (the clip's name, its kind and span, the lens) describe the
- * measurement and are not needed to draw it.
- */
-type CameraTrack = {
-  fps: number;
-  bearing: number[];
-  /** The track's extremes, taken once when it loads: the arc is scaled
-   *  to them (see `alongOf`). */
-  lo: number;
-  hi: number;
-};
-
-/**
- * How the arc is shared out. An orbiting camera's own extremes stand at
- * ARC_MARGIN and 1 - ARC_MARGIN of the arc, whatever they measure in
- * degrees: the take's motion is what the client asked to see, and a 40°
- * swing drawn to a fixed 180° scale moved the handle a fifth of the arc,
- * which read as a wobble rather than a camera going out and coming back
- * (owner, 16 Sep 2026). A camera whose whole excursion is under FIXED_SPAN
- * holds the centre - the same threshold scripts/camera-path.py uses to
- * call a take fixed.
- */
-const ARC_MARGIN = 0.1;
-const FIXED_SPAN = 8;
-
-/** How far a sample's bearing may sit from the pointer's and still be the
- *  moment it means, in degrees; under this, a drag follows the camera's
- *  current pass rather than jumping to a closer match on another. */
-const NEAR_DEG = 2;
-
-function isCameraTrack(
-  data: unknown,
-): data is { fps: number; bearing: number[] } {
-  if (typeof data !== "object" || data === null) return false;
-  const { fps, bearing } = data as Record<string, unknown>;
-  return (
-    typeof fps === "number" &&
-    fps > 0 &&
-    Array.isArray(bearing) &&
-    bearing.length > 0 &&
-    bearing.every((b) => typeof b === "number")
-  );
-}
-
-/** A loaded file as the player keeps it, with its extremes taken once. */
-function toTrack(
-  data: { fps: number; bearing: number[] },
-  flip: boolean,
-): CameraTrack {
-  const bearing = flip ? data.bearing.map((b) => -b) : data.bearing;
-  return {
-    fps: data.fps,
-    bearing,
-    lo: Math.min(...bearing),
-    hi: Math.max(...bearing),
-  };
-}
-
-/** The camera's bearing at t: linear between the samples, held at the ends. */
-function bearingAt(track: CameraTrack, t: number) {
-  const { fps, bearing } = track;
-  const last = bearing.length - 1;
-  const at = Math.min(Math.max(t * fps, 0), last);
-  const lo = Math.floor(at);
-  const hi = Math.min(lo + 1, last);
-  return bearing[lo] + (bearing[hi] - bearing[lo]) * (at - lo);
-}
-
-/** Where a bearing puts the handle: the take's lowest bearing at
- *  ARC_MARGIN, its highest at 1 - ARC_MARGIN, a fixed camera at the centre. */
-function alongOf(track: CameraTrack, bearing: number) {
-  const span = track.hi - track.lo;
-  if (span < FIXED_SPAN) return 0.5;
-  const share = Math.min(1, Math.max(0, (bearing - track.lo) / span));
-  return ARC_MARGIN + share * (1 - 2 * ARC_MARGIN);
-}
-
-/** The bearing a place on the arc stands for - `alongOf` the other way. */
-function bearingOf(track: CameraTrack, along: number) {
-  const span = track.hi - track.lo;
-  if (span < FIXED_SPAN) return track.lo + span / 2;
-  const share = Math.min(
-    1,
-    Math.max(0, (along - ARC_MARGIN) / (1 - 2 * ARC_MARGIN)),
-  );
-  return track.lo + share * span;
-}
-
-/** The handle's place at t: the camera's bearing when there is a track,
- *  the fraction of the take played when there is not. */
-function handleAt(track: CameraTrack | undefined, t: number, duration: number) {
-  return track
-    ? alongOf(track, bearingAt(track, t))
-    : Math.min(1, t / duration);
-}
-
-/**
- * The moment the camera was nearest a bearing. A camera can swing back over
- * the same bearings, so the nearest sample overall would make a drag jump
- * between passes; the search walks outward from the current moment and
- * takes the first sample within NEAR_DEG, so the handle follows the pass it
- * is on, and only when no sample comes that close does it settle for the
- * nearest one met on the walk - the closest to now among equals, which for
- * a fixed camera is now itself, so dragging its handle moves nothing.
- */
-function timeNear(track: CameraTrack, target: number, from: number) {
-  const { fps, bearing } = track;
-  const last = bearing.length - 1;
-  const start = Math.min(Math.max(Math.round(from * fps), 0), last);
-  let best = start;
-  for (let step = 0; step <= Math.max(start, last - start); step++) {
-    const ahead = start + step;
-    const behind = start - step;
-    for (const i of ahead === behind ? [ahead] : [ahead, behind]) {
-      if (i < 0 || i > last) continue;
-      const off = Math.abs(bearing[i] - target);
-      if (off <= NEAR_DEG) return i / fps;
-      if (off < Math.abs(bearing[best] - target)) best = i;
-    }
-  }
-  return best / fps;
-}
 
 function views(seconds: number, fps: number) {
   return Math.round(seconds * fps);
@@ -223,8 +84,6 @@ export function TimelinePlayer({
   aspect,
   name,
   fps = 30,
-  camera,
-  cameraFlip = false,
   compact = false,
   preload = "metadata",
   onTick,
@@ -235,8 +94,11 @@ export function TimelinePlayer({
   const rangeRef = useRef<HTMLInputElement>(null);
   const counterRef = useRef<HTMLSpanElement>(null);
   const scrubbingRef = useRef(false);
-  const trackRef = useRef<CameraTrack | undefined>(undefined);
   const onTickRef = useRef(onTick);
+  const placeFrameRef = useRef<number | undefined>(undefined);
+  const pendingPlaceRef = useRef<number | undefined>(undefined);
+  const lastPlaceRef = useRef(0);
+  const reducedMotion = useReducedMotion();
 
   // Two facts, not per-frame state: whether the take stands still, from the
   // media events, and whether it has been asked to play at all - by its
@@ -255,21 +117,23 @@ export function TimelinePlayer({
     const range = rangeRef.current;
     const counter = counterRef.current;
     if (!video || !dial || !range || !counter) return;
+    if (reducedMotion) video.pause();
 
     let frame: number | undefined;
+    let videoFrame: number | undefined;
     let lastTick = -1;
     let settle: number | undefined;
 
-    function sync() {
+    function paint(t: number) {
       frame = undefined;
+      videoFrame = undefined;
       if (!video || !dial || !range || !counter) return;
 
       const duration = video.duration || fallbackDuration;
-      const t = video.currentTime;
 
       dial.style.setProperty(
         "--player-progress",
-        handleAt(trackRef.current, t, duration).toFixed(4),
+        Math.min(1, t / duration).toFixed(4),
       );
       if (document.activeElement !== range && !scrubbingRef.current) {
         range.value = String(Math.round(Math.min(1, t / duration) * 1000));
@@ -288,8 +152,21 @@ export function TimelinePlayer({
       if (!video.paused) wake();
     }
 
+    function sync() {
+      paint(video!.currentTime);
+    }
+
     function wake() {
-      frame ??= requestAnimationFrame(sync);
+      if (
+        !video!.paused &&
+        typeof video!.requestVideoFrameCallback === "function"
+      ) {
+        videoFrame ??= video!.requestVideoFrameCallback((_now, metadata) =>
+          paint(metadata.mediaTime),
+        );
+      } else {
+        frame ??= requestAnimationFrame(sync);
+      }
     }
 
     function onPlay() {
@@ -299,6 +176,8 @@ export function TimelinePlayer({
 
     function onPause() {
       setPaused(true);
+      if (videoFrame !== undefined) video!.cancelVideoFrameCallback(videoFrame);
+      videoFrame = undefined;
       wake();
     }
 
@@ -319,36 +198,16 @@ export function TimelinePlayer({
     video.addEventListener("pause", onPause);
     video.addEventListener("seeked", wake);
 
-    // The camera track, once: the JSON is static next to the clip, so the
-    // browser's cache may answer, and a plate unmounted before the answer
-    // drops the request. A missing or malformed file leaves the ref empty
-    // and the handle on the linear fallback; an answer wakes the loop so a
-    // standing plate's handle moves to the camera's bearing at once.
-    trackRef.current = undefined;
-    const fetching = new AbortController();
-    if (camera) {
-      fetch(camera, { cache: "force-cache", signal: fetching.signal })
-        .then((response) => (response.ok ? response.json() : undefined))
-        .then((data: unknown) => {
-          if (isCameraTrack(data)) {
-            trackRef.current = toTrack(data, cameraFlip);
-            wake();
-          }
-        })
-        .catch(() => {});
-    }
-
     // The arrival, every time: play when the plate is properly in view,
     // pause when it leaves - a take nobody can see needs no decoding, and a
     // refused play gets its next chance on the next arrival. Under reduced
     // motion the observer only records that the plate has been reached, so
     // the play glyph shows and the take waits for a hand.
-    const stillness = window.matchMedia("(prefers-reduced-motion: reduce)");
     const observer = new IntersectionObserver(
       (entries) => {
         if (!video) return;
         if (entries.some((entry) => entry.isIntersecting)) {
-          if (stillness.matches) setAsked(true);
+          if (reducedMotion) setAsked(true);
           else ask();
         } else if (!video.paused) {
           video.pause();
@@ -361,14 +220,16 @@ export function TimelinePlayer({
 
     return () => {
       if (frame !== undefined) cancelAnimationFrame(frame);
+      if (videoFrame !== undefined) video.cancelVideoFrameCallback(videoFrame);
+      if (placeFrameRef.current !== undefined)
+        cancelAnimationFrame(placeFrameRef.current);
       window.clearTimeout(settle);
-      fetching.abort();
       observer.disconnect();
       video.removeEventListener("play", onPlay);
       video.removeEventListener("pause", onPause);
       video.removeEventListener("seeked", wake);
     };
-  }, [camera, cameraFlip, fallbackDuration, fps]);
+  }, [fallbackDuration, fps, reducedMotion]);
 
   // Puts the take at a time and moves the dial and the range at once rather
   // than a frame later, so the handle stays under the hand and the range
@@ -380,7 +241,7 @@ export function TimelinePlayer({
     video.currentTime = t;
     dialRef.current?.style.setProperty(
       "--player-progress",
-      handleAt(trackRef.current, t, duration).toFixed(4),
+      Math.min(1, t / duration).toFixed(4),
     );
     if (rangeRef.current) {
       rangeRef.current.value = String(Math.round((t / duration) * 1000));
@@ -393,19 +254,35 @@ export function TimelinePlayer({
     seekTo(played * duration, duration);
   }
 
-  // The arc's pointer: a place on the arc, which is a camera bearing when
-  // the take has a track - the take goes to the moment the camera was
-  // there - and a fraction of the take's length when it has not.
-  function place(along: number) {
+  function placeNow(along: number) {
     const duration = videoRef.current?.duration || fallbackDuration;
-    const track = trackRef.current;
-    if (!track) return seekTo(along * duration, duration);
-    const now = videoRef.current?.currentTime ?? 0;
-    seekTo(timeNear(track, bearingOf(track, along), now), duration);
+    seekTo(along * duration, duration);
+  }
+
+  // At most one seek per display frame, while the handle itself stays under
+  // the pointer immediately. This prevents high-rate pointer devices from
+  // overwhelming the video decoder with stale seek requests.
+  function place(along: number) {
+    lastPlaceRef.current = along;
+    pendingPlaceRef.current = along;
+    dialRef.current?.style.setProperty("--player-progress", along.toFixed(4));
+    placeFrameRef.current ??= requestAnimationFrame(() => {
+      placeFrameRef.current = undefined;
+      const pending = pendingPlaceRef.current;
+      pendingPlaceRef.current = undefined;
+      if (pending !== undefined) placeNow(pending);
+    });
   }
 
   function scrub(scrubbing: boolean) {
     scrubbingRef.current = scrubbing;
+    if (!scrubbing) {
+      if (placeFrameRef.current !== undefined)
+        cancelAnimationFrame(placeFrameRef.current);
+      placeFrameRef.current = undefined;
+      pendingPlaceRef.current = undefined;
+      placeNow(lastPlaceRef.current);
+    }
   }
 
   // The plate's tap. A play here is a deliberate ask, so it counts as one

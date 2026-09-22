@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useReducedMotion } from "@/lib/use-reduced-motion.client";
 import type { ReactNode } from "react";
 import { MeasureBracketIcon } from "@/icons/generated";
 import styles from "./measure-overlay.module.css";
@@ -23,8 +24,8 @@ import styles from "./measure-overlay.module.css";
 // Geometry is in percentages of the frame, so one annotation holds at every
 // size the plate is shown at. Keyframes interpolate linearly; outside the
 // first and last keyframe a mark is hidden, unless it has a single keyframe,
-// in which case it holds. Reduced motion still attaches - the marks follow
-// the paused or scrubbed frame too - but skips the sweep.
+// in which case it holds. Reduced motion leaves the server-rendered resting
+// marks in place and does not attach the animation loop.
 
 export type Keyframe = {
   /** Seconds into the take. */
@@ -132,6 +133,7 @@ export function MeasureOverlay({
 }: MeasureOverlayProps) {
   const ref = useRef<HTMLDivElement>(null);
   const marksRef = useRef(marks);
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
     marksRef.current = marks;
@@ -141,10 +143,7 @@ export function MeasureOverlay({
     const root = ref.current;
     const video = root?.parentElement?.querySelector("video");
     if (!root || !video) return;
-
-    const reduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
+    if (reducedMotion) return;
 
     // The mark nodes, once, by id. Keyframes are sorted defensively so the
     // interpolation can walk them.
@@ -181,7 +180,7 @@ export function MeasureOverlay({
       // The take wrapped (the clock went backwards to the start, not a
       // scrub): run the sweep once. It clears itself after the animation so
       // the next wrap can start it again.
-      if (tokenise && !reduced && t < previousT && t < 0.15) {
+      if (tokenise && t < previousT && t < 0.15) {
         root.dataset.sweep = "";
         clearTimeout(sweepTimer);
         sweepTimer = setTimeout(() => {
@@ -262,12 +261,37 @@ export function MeasureOverlay({
     return () => {
       if (frame !== undefined) cancelAnimationFrame(frame);
       clearTimeout(sweepTimer);
+      delete root.dataset.sweep;
+      for (const entry of live) {
+        const { mark, node, labels } = entry;
+        if (!node) continue;
+        for (const property of [
+          "--mark-opacity",
+          "--mark-x",
+          "--mark-y",
+          "--mark-w",
+          "--mark-h",
+        ]) {
+          node.style.removeProperty(property);
+        }
+        delete node.dataset.active;
+        delete node.dataset.flip;
+        for (const label of labels) {
+          const source =
+            mark.kind === "line" || mark.kind === "tag"
+              ? mark.label
+              : label.dataset.label === "top"
+                ? mark.top
+                : mark.right;
+          label.textContent = resting(source);
+        }
+      }
       video.removeEventListener("play", wake);
       video.removeEventListener("pause", wake);
       video.removeEventListener("seeked", wake);
       video.removeEventListener("timeupdate", wake);
     };
-  }, [tokenise]);
+  }, [reducedMotion, tokenise]);
 
   return (
     <div

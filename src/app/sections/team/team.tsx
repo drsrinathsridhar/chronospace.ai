@@ -91,11 +91,11 @@ export function Team() {
           </p>
         </div>
 
-        <div className="mt-section-gap gap-panel mx-auto grid w-full max-w-244 grid-cols-1 md:grid-cols-3">
+        <div className="mt-section-gap md:gap-panel mx-auto grid w-full max-w-244 grid-cols-1 gap-6 md:grid-cols-3">
           {founders.map((founder, index) => (
             <article
               key={founder.name}
-              className="sweep-in flex flex-col"
+              className="sweep-in flex items-stretch md:flex-col"
               style={{ "--beat": 2 + index }}
             >
               {/* The portrait is a link too, but the caption's link is the
@@ -107,17 +107,17 @@ export function Team() {
                 rel="noreferrer"
                 tabIndex={-1}
                 aria-hidden
-                className="relative block aspect-square overflow-clip"
+                className="relative block size-28 shrink-0 overflow-clip sm:size-36 md:aspect-square md:size-auto md:w-full"
               >
                 <Image
                   src={founder.photo}
                   alt=""
                   fill
-                  sizes="(min-width: 48rem) 22vw, 100vw"
+                  sizes="(min-width: 48rem) 22vw, (min-width: 40rem) 144px, 112px"
                   className="object-cover"
                 />
               </a>
-              <div className="border-line flex flex-col gap-3 border-t py-6">
+              <div className="border-line flex min-w-0 flex-1 flex-col justify-center gap-3 border-l py-3 pl-5 md:block md:flex-none md:border-t md:border-l-0 md:py-6 md:pl-0">
                 <div className="flex items-baseline justify-between gap-4">
                   <h3 className="type-title-lg">{founder.name}</h3>
                   <a

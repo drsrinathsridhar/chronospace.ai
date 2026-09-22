@@ -1,13 +1,9 @@
 import { siteConfig } from "@/site.config";
-import { CtaLink } from "@/components/cta-link";
 import { RevealScope } from "@/components/reveal-scope.client";
 import { ConnectForm } from "./connect-form.client";
 
-// The contact page's single screen, both doors side by side: the ask on the
-// left - the same "tell us where you sit" the footer makes - with the
-// calendar as the fast lane for teams ready to talk, and the lightweight
-// form on the right for everyone who isn't. Nothing else competes with the
-// two actions.
+// The contact page's single screen: the ask and direct email on the left,
+// with the lightweight enquiry form on the right.
 //
 // The header stack shimmers in reading order, the two columns' blocks on
 // the beats after it, left before right.
@@ -44,23 +40,13 @@ export function Connect() {
             className="border-line sweep-in mt-10 flex w-full flex-col gap-5 border-t pt-10"
             style={{ "--beat": 3 }}
           >
-            <p className="type-nav text-muted">Ready to talk now?</p>
-            <CtaLink
-              href={siteConfig.links.calendly}
-              target="_blank"
-              rel="noreferrer"
-              variant="outline"
-              className="w-full max-w-84.75"
-            >
-              Book a call
-            </CtaLink>
             <p className="type-body-sm opacity-60">
-              Or write to us directly:{" "}
+              Write to us directly:{" "}
               <a
                 href={siteConfig.links.email}
                 className="text-ink underline underline-offset-4 hover:no-underline"
               >
-                hello@chronospace.ai
+                contact@chronospace.ai
               </a>
             </p>
           </div>

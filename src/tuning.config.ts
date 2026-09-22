@@ -23,14 +23,14 @@ export const tuning = {
    * owner sets the exact pair in the browser. Hover and the load-time echo
    * show the figure in its true colour.
    */
-  heroFigureBrightness: 1.25,
+  heroFigureBrightness: 1.12,
 
   /**
    * How much the resting figures' tones are stretched after the lift. 1
    * leaves them as the cutout has them; a little over 1 gives the grey
    * figure back the edge the colour one has, without clipping.
    */
-  heroFigureContrast: 1.08,
+  heroFigureContrast: 1,
 
   /**
    * The captures' motion trail - what a figure carries when it is hovered,
@@ -72,14 +72,3 @@ export const tuning = {
    */
   videoTone: "colour" as "colour" | "mono",
 } as const;
-
-/**
- * The video treatment as the two CSS values the plate reads
- * (components/timeline-player.module.css): the grayscale amount and the
- * blend mode. app/layout.tsx writes them on the root next to the other
- * knobs.
- */
-export const videoTone =
-  tuning.videoTone === "mono"
-    ? { grayscale: 1, blend: "luminosity" }
-    : { grayscale: 0, blend: "normal" };

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useReducedMotion } from "@/lib/use-reduced-motion.client";
 
 // Writes the read. The copy's position in the viewport becomes a single
 // number on the block, --read-progress in 0..1, and every word's colour is
@@ -21,6 +22,7 @@ const END = 0.4;
 
 export function ReadProgress() {
   const ref = useRef<HTMLSpanElement>(null);
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
     const copy =
@@ -28,7 +30,7 @@ export function ReadProgress() {
         "[data-read-copy]",
       );
     if (!copy) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (reducedMotion) return;
 
     let frame: number | undefined;
 
@@ -60,7 +62,7 @@ export function ReadProgress() {
       window.removeEventListener("resize", wake);
       copy.style.removeProperty("--read-progress");
     };
-  }, []);
+  }, [reducedMotion]);
 
   return <span ref={ref} hidden />;
 }

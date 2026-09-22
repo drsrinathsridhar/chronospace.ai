@@ -55,13 +55,13 @@
   --paper: #090b19; /* c-black */
   --paper-ink: #0f1224;
   --ink: #ffffff; /* c-white */
-  --muted: rgb(255 255 255 / 32%);
+  --muted: rgb(255 255 255 / 50%);
   --surface: #0f1224;
   --surface-strong: #30323e;
   --line: #30323e; /* c-blue/900 */
   --line-soft: rgb(255 255 255 / 16%);
   --accent: #f25324; /* c-orange/500 */
-  --accent-foreground: #ffffff;
+  --accent-foreground: #090b19;
   /* The orange under a pointer: the same accent with 10% black folded in. */
   --accent-hover: color-mix(in srgb, var(--accent), #000 10%);
   /* The ink block under a pointer: the same white with 10% paper folded in. */

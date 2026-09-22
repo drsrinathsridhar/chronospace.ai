@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useReducedMotion } from "@/lib/use-reduced-motion.client";
 
 // The closing block's backdrop: the woodworking loop, muted, behind the
 // claim. It is an arrival, not a page load - the same discipline as the
@@ -27,11 +28,15 @@ export function ClosingVideo({
   className,
 }: ClosingVideoProps) {
   const ref = useRef<HTMLVideoElement>(null);
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
     const video = ref.current;
     if (!video) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (reducedMotion) {
+      video.pause();
+      return;
+    }
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -46,7 +51,7 @@ export function ClosingVideo({
     observer.observe(video);
 
     return () => observer.disconnect();
-  }, []);
+  }, [reducedMotion]);
 
   return (
     <video

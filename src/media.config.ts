@@ -13,12 +13,10 @@
 // the ffmpeg lines and the sizes each slot was cut at). Every take names
 // its poster (the first frame, JPEG) and its length in seconds - the player
 // seeks against that before the file's own metadata arrives, so update it
-// with the clip - and, where the arc scrubber sits over it, the frame rate
-// the file is encoded at and the camera track measured off the footage
-// (feedback round 3, item 5a): the arc's handle follows `camera`, so a new
-// clip needs its track regenerated or the handle would trace the old one's.
+// with the clip - and the frame rate used by the view counter. The arc
+// follows playback time directly, so replacing a clip needs no sidecar data.
 
-/** A video slot: the take, its still, its length, and its camera track. */
+/** A video slot: the take, its still, its length, and its frame rate. */
 export type Take = {
   src: string;
   poster: string;
@@ -27,26 +25,6 @@ export type Take = {
   /** Frames per second the file is encoded at; the scrubber's "View n / N"
    *  counts in it. 30 when left out. */
   fps?: number;
-  /**
-   * The camera track: the public path of a `.camera.json` next to the clip,
-   * written by `scripts/camera-path.py` from the footage itself (feature
-   * tracking between frames; read the script's header for how). The file
-   * carries the camera's horizontal bearing in degrees, sampled at 10 Hz,
-   * relative to the take's mean position - positive when the camera has
-   * moved to the right of it, all zeros for a fixed camera - and the arc
-   * scrubber puts its handle at that bearing at every moment of playback:
-   * the mean at the arc's centre, ±90° at its ends. A take without one
-   * gets a handle that follows playback linearly, as it did before round 3.
-   */
-  camera?: string;
-  /**
-   * Which way along the arc the camera's rightward motion goes. The track
-   * puts a camera moving right further right on the arc; a take that should
-   * read as leaving the arc's start and coming back to it - the viewer's
-   * echo, which plays forward to its middle and then in reverse - is
-   * flipped so its first move is outward (owner, 16 Sep 2026).
-   */
-  cameraFlip?: boolean;
 };
 
 export const media = {
@@ -85,8 +63,7 @@ export const media = {
     } satisfies Take,
   },
 
-  /** The three product takes: landscape, 577/310 plates, 960px wide, 30fps,
-   *  each with its camera track measured off the file (round 3). */
+  /** The three product takes: landscape, 577/310 plates, 960px wide, 30fps. */
   product: {
     // TODO(client): in-the-wild footage (outdoor / factory / field). The
     // current file is trimmed to the reconstruction pass; it is a stand-in.
@@ -97,7 +74,6 @@ export const media = {
       src: "/media/product/wild.mp4",
       poster: "/media/product/wild-poster.jpg",
       duration: 9.47,
-      camera: "/media/product/wild.camera.json",
     } satisfies Take,
     // The first seven seconds are the real footage from a fixed wide shot;
     // then the point cloud takes over and the camera drifts around the
@@ -106,30 +82,25 @@ export const media = {
       src: "/media/product/navigable.mp4",
       poster: "/media/product/navigable-poster.jpg",
       duration: 18.73,
-      camera: "/media/product/navigable.camera.json",
     } satisfies Take,
     // A fixed camera on the tracked dancer.
     queryable: {
       src: "/media/product/queryable.mp4",
       poster: "/media/product/queryable-poster.jpg",
       duration: 3.2,
-      camera: "/media/product/queryable.camera.json",
     } satisfies Take,
   },
 
   /** The viewer's take: 640/368 plate. The measurement overlay drawn on it
    *  (sections/capture) is timed to this clip; a new clip needs its marks
    *  re-timed or removed. Encoded at 90fps (445 frames); the take plays
-   *  forward to its middle and back, the camera panning out and returning
-   *  with it, so its arc is flipped to leave the start and come home. */
+   *  forward to its middle and back. */
   viewer: {
     echo: {
       src: "/media/viewer/echo.mp4",
       poster: "/media/viewer/echo-poster.jpg",
       duration: 4.944,
       fps: 90,
-      camera: "/media/viewer/echo.camera.json",
-      cameraFlip: true,
     } satisfies Take,
   },
 

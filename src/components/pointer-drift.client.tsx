@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
+import { useReducedMotion } from "@/lib/use-reduced-motion.client";
 
 // The pointer drift: moving across a section eases whatever this wraps a
 // few pixels the other way, so the set pieces hang at their own depths
@@ -22,11 +23,8 @@ import { useEffect, useRef, type ReactNode } from "react";
 // still scrolls and a sideways drag reaches us as pointer moves. A finger
 // that lifts, or a gesture the browser takes for the scroll (pointercancel),
 // eases the pieces home; a hovering pointer keeps them where it left them
-// until it leaves the section. Reduced motion changes nothing here: this
-// is motion the user is causing with their own hand, exactly as far as the
-// hand moves, and it stops when the hand stops - the setting is for motion
-// they did not ask for, and this island has none (no idle drift, no
-// autoplay).
+// until it leaves the section. Reduced motion disables the interaction and
+// leaves the wrapped artwork in its centred static state.
 
 /** Largest drift from centre, px, before each piece's factor. */
 const DRIFT_X = 8;
@@ -36,11 +34,13 @@ const EASE = 0.08;
 
 export function PointerDrift({ children }: { children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
     const node = ref.current;
     const scene = node?.closest("section");
     if (!node || !scene) return;
+    if (reducedMotion) return;
 
     let frame: number | undefined;
     let targetX = 0;
@@ -95,6 +95,8 @@ export function PointerDrift({ children }: { children: ReactNode }) {
     window.addEventListener("pointercancel", onUp);
     return () => {
       if (frame !== undefined) cancelAnimationFrame(frame);
+      node.style.setProperty("--drift-x", "0px");
+      node.style.setProperty("--drift-y", "0px");
       scene.style.touchAction = touchAction;
       scene.removeEventListener("pointermove", onMove);
       scene.removeEventListener("pointerdown", onMove);
@@ -102,7 +104,7 @@ export function PointerDrift({ children }: { children: ReactNode }) {
       window.removeEventListener("pointerup", onUp);
       window.removeEventListener("pointercancel", onUp);
     };
-  }, []);
+  }, [reducedMotion]);
 
   return (
     <div

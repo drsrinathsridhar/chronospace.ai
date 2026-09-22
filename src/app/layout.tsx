@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { createMetadata } from "@/lib/metadata";
 import { siteConfig } from "@/site.config";
-import { tuning, videoTone } from "@/tuning.config";
+import { tuning } from "@/tuning.config";
 import { fontClassNames } from "./fonts";
 import "./globals.css";
 
@@ -45,13 +45,14 @@ export default function RootLayout({
   // --figure-brightness and --figure-contrast are the resting figures'
   // filter (hero-cards.module.css), --trail-length / --trail-blur /
   // --trail-opacity size the figures' motion smear (same file; the trail's
-  // mode and colour are data attributes on the hero root, sections/hero),
-  // --video-grayscale and --video-blend are the video plates' treatment
-  // (components/timeline-player.module.css).
+  // mode and colour are data attributes on the hero root, sections/hero).
+  // Video tone is a data attribute so the default colour mode does not pay
+  // for identity filter and blend compositor layers.
   return (
     <html
       lang="en"
       className={fontClassNames}
+      data-video-tone={tuning.videoTone}
       style={{
         "--hero-wiggle": tuning.heroWiggle,
         "--figure-brightness": tuning.heroFigureBrightness,
@@ -59,8 +60,6 @@ export default function RootLayout({
         "--trail-length": tuning.heroTrail.length,
         "--trail-blur": tuning.heroTrail.blur,
         "--trail-opacity": tuning.heroTrail.opacity,
-        "--video-grayscale": videoTone.grayscale,
-        "--video-blend": videoTone.blend,
       }}
     >
       <body className="bg-paper text-ink min-h-screen antialiased">

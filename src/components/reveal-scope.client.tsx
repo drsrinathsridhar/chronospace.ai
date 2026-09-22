@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type ComponentPropsWithoutRef } from "react";
+import { useReducedMotion } from "@/lib/use-reduced-motion.client";
 
 // The generic scroll trigger for the shimmer-in / sweep-in utilities:
 // everything inside waits with `--reveal: 0` until the block scrolls into
@@ -12,10 +13,15 @@ import { useEffect, useRef, type ComponentPropsWithoutRef } from "react";
 
 export function RevealScope(props: ComponentPropsWithoutRef<"div">) {
   const ref = useRef<HTMLDivElement>(null);
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
     const node = ref.current;
     if (!node) return;
+    if (reducedMotion) {
+      node.dataset.revealed = "";
+      return;
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -30,7 +36,7 @@ export function RevealScope(props: ComponentPropsWithoutRef<"div">) {
 
     observer.observe(node);
     return () => observer.disconnect();
-  }, []);
+  }, [reducedMotion]);
 
   return <div ref={ref} data-reveal-scope {...props} />;
 }

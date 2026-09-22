@@ -8,7 +8,7 @@ export const metadata: Metadata = createMetadata({
   // The root template appends " — ChronoSpace".
   title: "Connect with us",
   description:
-    "Leave your email and sector and we'll come back with a capture proposal - or book a call and talk to the team directly.",
+    "Leave your email and sector and we'll come back with a capture proposal.",
   path: "/contact",
 });
 

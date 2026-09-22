@@ -29,8 +29,8 @@ so a new file may have a different size or ratio; only what is listed as
 | Backing band, NVIDIA    | `backers/nvidia-inception.png`                                                                                | PNG, black on transparent (the page turns it white).                                                | The other marks are SVG icons (`src/icons/source/`).                                                                                                                                                  |
 | Intro picture           | `intro/placeholder.png`                                                                                       | PNG or JPEG, roughly square; transparent background welcome. 900px or larger.                       | The placeholder split circle. Shown in a square box with `object-fit: contain`. To go back to a video here, `sections/problem/problem.tsx` needs the player again (see git history).                  |
 | Intro take (parked)     | `intro/manufacturing.mp4` + `intro/manufacturing-poster.jpg`                                                  | MP4 H.264, portrait, 768x1024, 30fps, muted. Poster = first frame, JPEG.                            | Not rendered at the moment; kept for the rebuilt manufacturing scene. Update `duration` in `media.config.ts` with the clip.                                                                           |
-| Product takes (3)       | `product/wild.mp4`, `product/navigable.mp4`, `product/queryable.mp4` + `*-poster.jpg`                         | MP4 H.264, landscape, 960px wide (960x540 today), 30fps, muted, 3-20 s. Poster = first frame, JPEG. | Plate is 577/310; a 16:9 clip is cropped ~2% top and bottom. Update `duration` and `fps`; regenerate the `.camera.json` (see "The camera track").                                                     |
-| Viewer take             | `viewer/echo.mp4` + `viewer/echo-poster.jpg`                                                                  | MP4 H.264, 640x368, 90fps today (any rate; set `fps`), muted.                                       | The measurement overlay (`src/app/sections/capture/capture-player.client.tsx`) is keyframed to this clip. A new clip needs the marks re-timed, or the overlay removed; regenerate the `.camera.json`. |
+| Product takes (3)       | `product/wild.mp4`, `product/navigable.mp4`, `product/queryable.mp4` + `*-poster.jpg`                         | MP4 H.264, landscape, 960px wide (960x540 today), 30fps, muted, 3-20 s. Poster = first frame, JPEG. | Plate is 577/310; a 16:9 clip is cropped ~2% top and bottom. Update `duration` and `fps`. The scrubber follows playback directly and needs no sidecar file.                                             |
+| Viewer take             | `viewer/echo.mp4` + `viewer/echo-poster.jpg`                                                                  | MP4 H.264, 640x368, 90fps today (any rate; set `fps`), muted.                                       | The measurement overlay (`src/app/sections/capture/capture-player.client.tsx`) is keyframed to this clip. A new clip needs the marks re-timed, or the overlay removed.                                |
 | Team portraits (3)      | `team/srinath-sridhar.jpg`, `team/tamar-kreitman.jpg`, `team/aashish-rai.jpg`                                 | JPEG, square, 800-1200px.                                                                           | Displayed square, in colour (round 3: no grayscale).                                                                                                                                                  |
 | Research card pictures  | `science/paper.jpg`, `science/press.jpg`, `science/post.jpg`                                                  | JPEG, landscape, 1154x650 or larger.                                                                | Plate is 577/310. Current files are stills from the site's own captures - placeholders.                                                                                                               |
 | Closing background loop | `closing/woodworking-1080.mp4`, `closing/woodworking-720.mp4`, `closing/woodworking-poster.jpg`               | MP4 H.264, 1920x1080 and 1280x720, 30fps, muted, ~20 s loop. Keep each under ~12 MB / ~8 MB.        | The browser loads the 1080 file on screens 1536px and wider, the 720 file otherwise. Both should be the same cut.                                                                                     |
@@ -43,12 +43,15 @@ file under `src/app/sections/`, URLs in `src/site.config.ts`.
 With ffmpeg (`brew install ffmpeg`), from the master:
 
 ```bash
-ffmpeg -i master.mov -an -c:v libx264 -preset slow -crf 23 -pix_fmt yuv420p -vf "scale=960:-2,fps=30" -movflags +faststart public/media/product/wild.mp4
+ffmpeg -i master.mov -an -c:v libx264 -preset slow -crf 23 -pix_fmt yuv420p -vf "scale=960:-2,fps=30" -g 15 -keyint_min 15 -sc_threshold 0 -movflags +faststart public/media/product/wild.mp4
 ```
 
 - `scale=960:-2` sets the width (use 1920 / 1280 for the closing loop,
   768 for the intro); `-an` drops audio (every take is muted); `-crf`
   23-29 trades size for quality (higher = smaller).
+- `-g 15 -keyint_min 15 -sc_threshold 0` puts a keyframe every 0.5 seconds
+  at 30fps, so dragging the scrubber does not wait for a distant keyframe.
+  Use `45` for a 90fps source.
 - Poster, the first frame:
 
 ```bash
@@ -73,9 +76,9 @@ them - but each is a plain file that can be overwritten in place.
 | File                                                                 | Size and format                                                                                                                               | What reads it                                                                            |
 | -------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
 | `public/og.png`                                                      | 1200x630, PNG or JPEG, opaque, under 500 KB.                                                                                                  | Every link unfurler (`og:image`, `twitter:image`; declared in `src/lib/metadata.ts`).    |
-| `src/app/icon.svg`                                                   | Square viewBox, transparent, the mark in the client's favicon grey (`#939393`) at 71% of the tile, centred; the mid grey reads on light and dark tab bars alike. | Modern browsers' tab icon.                                                               |
-| `src/app/favicon.ico`                                                | 16 + 32 + 48 (PNG-in-ICO), transparent, the grey mark at 71%, no outline.                                                                     | Browsers without SVG favicons, bookmarks, Windows.                                       |
-| `src/app/icon.png`                                                   | 64x64, transparent, same drawing as the `.ico` (this one is the client's own file, `public/09/favicon-chronospace-new.png`, as delivered).    | The PNG fallback Next emits next to the `.ico`.                                          |
+| `src/app/icon.svg`                                                   | Square viewBox, transparent, the mark in the client's favicon grey (`#939393`) at 90% of the tile, centred; the mid grey reads on light and dark tab bars alike. | Modern browsers' tab icon.                                                               |
+| `src/app/favicon.ico`                                                | 16 + 32 + 48 (PNG-in-ICO), transparent, the grey mark at 90%, no outline.                                                                     | Browsers without SVG favicons, bookmarks, Windows.                                       |
+| `src/app/icon.png`                                                   | 64x64, transparent, same drawing as the `.ico`.                                                                                                | The PNG fallback Next emits next to the `.ico`.                                          |
 | `src/app/apple-icon.png`                                             | 180x180, **opaque** page ground (`#090b19`), grey mark at 60%, square corners (iOS rounds them and paints transparency black).                | iOS home screen.                                                                         |
 | `public/icons/icon-192.png`, `icon-512.png`, `icon-512-maskable.png` | Opaque page ground, grey mark at 60% (the maskable one at 50%, inside the 80% safe zone).                                                     | Android home screen via `src/app/manifest.ts`; the 512 is also the JSON-LD `logo`.       |
 | `public/safari-pinned-tab.svg`                                       | Single colour, 100% black on transparent, 16-unit viewBox.                                                                                    | Safari pinned tabs; painted in the grey set on the `mask-icon` entry in `metadata.ts`.   |
@@ -132,44 +135,14 @@ and gone at its end. The knobs above multiply them; the numbers themselves
 are the designer's. `mode: "flare"` swaps the whole thing for the logo's
 treatment: the figure stays grey and a band of colour flies across it once.
 
-## The camera track
+## The video scrubber
 
 The arc scrubber on every video plate (`src/components/arc-scrubber.client.tsx`)
-is the camera's trajectory around the scene: the handle on the arc stands
-where the camera is in the footage at the current moment - the take's own
-extremes stand a tenth in from the arc's ends, whatever they measure in
-degrees, and a camera that never moves more than 8° holds the centre - the accent
-sweep shows how far around the scene it has come, and the counter reads
-"View n / N" (a view per frame). It works with any clip of any length as
-long as the clip's slot in `media.config.ts` carries two things:
-
-A take can also carry `cameraFlip: true` in `media.config.ts`, which mirrors
-its track along the arc: the handle then leaves the arc's start and comes
-back to it instead of the reverse. The viewer's echo take uses it, because
-the footage plays forward to its middle and then in reverse, and the client
-reads that as "out and back".
-
-- `fps` - the frame rate the file is encoded at (from `ffprobe`, above;
-  `30/1` is 30). Left out, the counter counts at 30.
-- `camera` - the public path of the clip's camera track, a `.camera.json`
-  next to the clip (`product/wild.camera.json` beside `product/wild.mp4`),
-  measured off the footage by `scripts/camera-path.py`:
-
-  ```sh
-  …/cvenv/bin/python scripts/camera-path.py public/media/product/wild.mp4
-  ```
-
-  writes `public/media/product/wild.camera.json` - the camera's horizontal
-  bearing in degrees relative to the take's mean, sampled at 10 Hz, positive
-  when the camera has moved to the right of its mean, all zeros for a fixed
-  camera. Run it once per new clip and commit the JSON with the video; read
-  the script's header for its dependencies and what it measures.
-
-Without a track (no `camera`, or the file missing or unreadable) the plate
-still plays and scrubs: the handle simply follows playback linearly, as it
-did before round 3. A fixed camera's handle holds the arc's centre while the
-counter ticks, and dragging it moves nothing; on a moving camera, dragging
-the handle seeks to the moment the camera was nearest that bearing.
+shows linear playback progress. Its handle is synchronized from the browser's
+presented video frames, and dragging it seeks to the same fraction of the clip.
+This works for any replacement video without generated camera data. Set `fps`
+in `media.config.ts` so the "View n / N" counter matches the new file; it
+defaults to 30.
 
 The arc's size is `--arc-radius` in `timeline-player.module.css` (cards
 and, from 640px, the viewer); the drawing is `arc-scrubber.module.css`.

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useReducedMotion } from "@/lib/use-reduced-motion.client";
 
 // Moves the eye. The pointer's position over the hero becomes `--eye-x` and
 // `--eye-y`, in -1..1 from its centre, and the room reads them as its
@@ -41,16 +42,8 @@ import { useEffect, useRef } from "react";
 //   static until hovered). The chase is slower while the drift drives, so a
 //   hand-off is soft.
 //
-// Reduced motion is honoured by taking away only what the setting is for:
-// motion the user did not cause. The idle drift and the round-robin trail
-// are gone and the eye rests at centre; the pointer still steers, because
-// the room moving exactly as far as the hand moved and stopping when it
-// stops is the direct manipulation the setting leaves alone. The first
-// build returned before wiring anything, which made the hero a still image
-// on every Windows PC with "Show animations" off and every Mac with Reduce
-// Motion on - almost certainly the client's "some of our machines" (round
-// 3, slide 2d) - and that was never the intent. Tilt is off too: a phone in
-// the hand is never still, and the tremor is motion nobody meant.
+// Reduced motion leaves the room centred and static. Pointer tracking, idle
+// drift, device tilt, camera movement and the round-robin trail are all off.
 //
 // The same clock runs the captures' trail: once the load-time trail has
 // collapsed and its colour drained, the cards take turns carrying their
@@ -158,12 +151,14 @@ type OrientationEventConstructor = typeof DeviceOrientationEvent & {
 
 export function HeroRoomEye() {
   const ref = useRef<HTMLSpanElement>(null);
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
     const stage =
       ref.current?.parentElement?.querySelector<HTMLElement>("[data-stage]");
     const section = ref.current?.closest("section");
     if (!stage || !section) return;
+    if (reducedMotion) return;
     // The standing cards, if the layout is showing them. The same eye on the
     // same clock - the cards are geometry in the room, so they move with it
     // exactly; their CSS scales the shared value by each card's depth.
@@ -171,9 +166,6 @@ export function HeroRoomEye() {
     const cards = Array.from(
       section.querySelectorAll<HTMLElement>("[data-float] article"),
     );
-    const reduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
     // Whether the primary pointer can hover decides only two things: how
     // far the drift wanders, and whether a pointer that stops still keeps
     // steering for a moment (a mouse at rest is still pointing; a lifted
@@ -210,7 +202,7 @@ export function HeroRoomEye() {
       let targetY = 0;
       let tau = TAU;
       const steering = tracking && now - lastMove <= IDLE_AFTER;
-      const tilting = !reduced && now - lastTilt <= TILT_STALE;
+      const tilting = now - lastTilt <= TILT_STALE;
 
       if (steering) {
         const box = section!.getBoundingClientRect();
@@ -226,7 +218,7 @@ export function HeroRoomEye() {
         targetX = tiltX;
         targetY = tiltY;
         tau = TAU_TILT;
-      } else if (!reduced) {
+      } else {
         targetX = amp.x * Math.sin((now / DRIFT_PERIOD_X) * 2 * Math.PI);
         targetY = amp.y * Math.sin((now / DRIFT_PERIOD_Y) * 2 * Math.PI + 1);
         tau = TAU_DRIFT;
@@ -245,7 +237,7 @@ export function HeroRoomEye() {
       float?.style.setProperty("--float-x", x.toFixed(4));
       float?.style.setProperty("--float-y", y.toFixed(4));
 
-      if (!reduced && step > 0) {
+      if (step > 0) {
         const raw = Math.min(
           1,
           (Math.hypot(dx, dy) / (step / 1000)) * (1 / SPEED_FULL),
@@ -298,7 +290,7 @@ export function HeroRoomEye() {
     }
 
     function startEcho() {
-      if (reduced || cards.length === 0 || !wide.matches) return;
+      if (cards.length === 0 || !wide.matches) return;
       if (echoTimer !== undefined || echoInterval !== undefined) return;
       echoTimer = setTimeout(
         () => {
@@ -448,7 +440,7 @@ export function HeroRoomEye() {
     document.addEventListener("pointerleave", onGone);
     window.addEventListener("blur", onGone);
 
-    if (!hovers && !reduced && "DeviceOrientationEvent" in window) {
+    if (!hovers && "DeviceOrientationEvent" in window) {
       const Orientation = window.DeviceOrientationEvent as
         | OrientationEventConstructor
         | undefined;
@@ -486,7 +478,7 @@ export function HeroRoomEye() {
       float?.style.removeProperty("--float-y");
       float?.style.removeProperty("--eye-speed");
     };
-  }, []);
+  }, [reducedMotion]);
 
   return <span ref={ref} hidden />;
 }

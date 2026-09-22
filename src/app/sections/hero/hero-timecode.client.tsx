@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useReducedMotion } from "@/lib/use-reduced-motion.client";
 
 // The ruler's timecode runs while the page is up: HH:MM:SS:FF at 30fps
 // from the comp's resting 00:00:14:07, so the instrument reads as an
@@ -29,11 +30,12 @@ function format(frames: number) {
 
 export function HeroTimecode() {
   const ref = useRef<HTMLSpanElement>(null);
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
     const node = ref.current;
     if (!node) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (reducedMotion) return;
 
     // The count is rebased on every resume: `base` is where it stood when
     // the clock stopped, `t0` when it started again.
@@ -41,6 +43,7 @@ export function HeroTimecode() {
     let t0 = performance.now();
     let shown = START_FRAMES;
     let frame: number | undefined;
+    let intersecting = true;
 
     function tick(now: number) {
       const frames = base + Math.floor(((now - t0) / 1000) * FPS);
@@ -52,7 +55,7 @@ export function HeroTimecode() {
     }
 
     function wake() {
-      if (frame !== undefined) return;
+      if (frame !== undefined || !intersecting || document.hidden) return;
       t0 = performance.now();
       frame = requestAnimationFrame(tick);
     }
@@ -68,15 +71,24 @@ export function HeroTimecode() {
       else wake();
     }
 
+    const section = node.closest("section");
+    const observer = new IntersectionObserver(([entry]) => {
+      intersecting = entry?.isIntersecting ?? false;
+      if (intersecting) wake();
+      else sleep();
+    });
+    if (section) observer.observe(section);
+
     document.addEventListener("visibilitychange", onVisibility);
     if (!document.hidden) wake();
 
     return () => {
       sleep();
+      observer.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
       node.textContent = START;
     };
-  }, []);
+  }, [reducedMotion]);
 
   return <span ref={ref}>{START}</span>;
 }

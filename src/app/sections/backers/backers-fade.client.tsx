@@ -64,9 +64,12 @@ export function BackersFade({ children }: { children: ReactNode }) {
     }
 
     let frame: number | undefined;
+    let lastPaint = -Infinity;
 
-    function step() {
+    function step(now: number) {
       frame = requestAnimationFrame(step);
+      if (now - lastPaint < 1000 / 30) return;
+      lastPaint = now;
       if (fade <= 0) return;
 
       // Reads.

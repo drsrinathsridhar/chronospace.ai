@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { TimelineTickIcon } from "@/icons/generated";
 import { cn } from "@/lib/utils";
+import { useReducedMotion } from "@/lib/use-reduced-motion.client";
 import styles from "./hero-cards.module.css";
 import { ECHO_HOLD } from "./hero-room-eye.client";
 
@@ -30,12 +31,10 @@ import { ECHO_HOLD } from "./hero-room-eye.client";
 // it the trail and the colour exactly as a hovered card or a desktop turn
 // gets them - one attribute, no second set of rules. The eye island does
 // not run its round robin below md (it reads the same breakpoint), so the
-// attribute has one owner at any width. The echo still fires under reduced
-// motion: a swipe is the user's own gesture, the colour is its direct
-// result, and the global rule collapses the fade to nothing - what the
-// setting declines is motion nobody asked for, which is the desktop's
-// unprompted turn, not this. It does not fire for the slide the page
-// opens on: the load-time trail already plays every card in colour.
+// attribute has one owner at any width. Reduced motion keeps the pager and
+// instant scroll-snap navigation but does not fire the echo. It does not fire
+// for the slide the page opens on either: the load-time trail already plays
+// every card in colour.
 //
 // The scroller is found through the section rather than passed in: the
 // pager is rendered by the same server component as the cards
@@ -46,6 +45,7 @@ export function HeroPager({ labels }: { labels: string[] }) {
   const ref = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLElement | null>(null);
   const [active, setActive] = useState(0);
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
     const section = ref.current?.closest("section");
@@ -86,7 +86,7 @@ export function HeroPager({ labels }: { labels: string[] }) {
       if (index === current) return;
       current = index;
       setActive(index);
-      if (colour && !wide.matches) echo(index);
+      if (colour && !wide.matches && !reducedMotion) echo(index);
     }
 
     function onScroll() {
@@ -106,17 +106,14 @@ export function HeroPager({ labels }: { labels: string[] }) {
       for (const card of cards) delete card.dataset.echo;
       scrollerRef.current = null;
     };
-  }, []);
+  }, [reducedMotion]);
 
   function show(index: number) {
     const scroller = scrollerRef.current;
     if (!scroller) return;
-    const reduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
     scroller.scrollTo({
       left: index * scroller.clientWidth,
-      behavior: reduced ? "auto" : "smooth",
+      behavior: reducedMotion ? "auto" : "smooth",
     });
   }
 

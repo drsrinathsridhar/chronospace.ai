@@ -25,13 +25,6 @@ const homeTitle = `${siteConfig.name} — ${siteConfig.tagline}`;
 // to redraw it is in docs/asset-swap-guide.md). A static file rather than an
 // image route so every unfurler gets the same bytes and nothing renders at
 // request time.
-const shareImage = {
-  url: "/og.png",
-  width: 1200,
-  height: 630,
-  alt: `${siteConfig.name} builds ${siteConfig.tagline}`,
-};
-
 export function createMetadata({
   title,
   description = siteConfig.description,
@@ -39,6 +32,12 @@ export function createMetadata({
 }: CreateMetadataOptions = {}): Metadata {
   const url = new URL(path, siteConfig.url);
   const fullTitle = title ? `${title} — ${siteConfig.name}` : homeTitle;
+  const shareImage = {
+    url: new URL("/og.png", siteConfig.url).toString(),
+    width: 1200,
+    height: 630,
+    alt: `${siteConfig.name} builds ${siteConfig.tagline}`,
+  };
 
   return {
     metadataBase: new URL(siteConfig.url),
