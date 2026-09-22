@@ -16,7 +16,6 @@ export async function submitEnquiry(
 ): Promise<EnquiryState> {
   const email = String(formData.get("email") ?? "").trim();
   const sector = String(formData.get("sector") ?? "");
-  const demo = formData.get("demo") === "on";
 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return {
@@ -38,7 +37,6 @@ export async function submitEnquiry(
   console.log("[enquiry]", {
     email,
     sector,
-    demo,
     at: new Date().toISOString(),
   });
 

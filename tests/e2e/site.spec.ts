@@ -256,6 +256,35 @@ test("video scrubber follows presented time and seeks linearly", async ({
     })
     .toBeLessThan(0.08);
 
+  const dragTarget = await dial.evaluate((node) => {
+    const box = node.getBoundingClientRect();
+    const radius = box.width - box.height;
+    const angle = ((-75 + 0.75 * 150) * Math.PI) / 180;
+    return {
+      x: box.left + box.width / 2 + Math.sin(angle) * radius,
+      y: box.top + (box.height + radius) / 2 - Math.cos(angle) * radius,
+    };
+  });
+  await page.mouse.move(dragTarget.x, dragTarget.y);
+  await page.mouse.down();
+  await page.waitForTimeout(150);
+  await expect
+    .poll(() =>
+      dial.evaluate((node) =>
+        Number(node.style.getPropertyValue("--player-progress")),
+      ),
+    )
+    .toBeCloseTo(0.75, 2);
+  await page.mouse.up();
+  await expect
+    .poll(() =>
+      video.evaluate((node) => {
+        const media = node as HTMLVideoElement;
+        return media.currentTime / media.duration;
+      }),
+    )
+    .toBeCloseTo(0.75, 1);
+
   await range.evaluate((node) => {
     const input = node as HTMLInputElement;
     input.value = "750";
@@ -280,6 +309,9 @@ test("contact uses the client inbox without a meeting link", async ({
     page.locator('a[href="mailto:contact@chronospace.ai"]'),
   ).toHaveText("contact@chronospace.ai");
   await expect(page.getByText("Book a call", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("Request a demo", { exact: true })).toHaveCount(
+    0,
+  );
   await expect(page.locator('a[href*="calendly.com"]')).toHaveCount(0);
 });
 

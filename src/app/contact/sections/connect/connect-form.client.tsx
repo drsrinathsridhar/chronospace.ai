@@ -5,8 +5,8 @@ import { CtaArrowIcon } from "@/icons/generated";
 import { submitEnquiry, type EnquiryState } from "./actions";
 import { sectors } from "./sectors";
 
-// The lightweight half of the ask: email, sector, an optional demo request,
-// send. The form is a ledger of ruled cells in the site's cell grammar -
+// The lightweight half of the ask: email, sector, send. The form is a ledger
+// of ruled cells in the site's cell grammar -
 // label riding the top of each cell, the control under it, the action as
 // the last cell in the call-to-action's own accent block.
 //
@@ -84,24 +84,6 @@ export function ConnectForm() {
             className="text-muted pointer-events-none absolute top-1/2 right-1 -translate-y-1/2 rotate-90"
           />
         </div>
-      </div>
-
-      <div className={`${cell} hover:bg-paper flex-row items-center gap-4`}>
-        <input
-          id="enquiry-demo"
-          type="checkbox"
-          name="demo"
-          className="accent-accent size-4 shrink-0"
-        />
-        <label
-          htmlFor="enquiry-demo"
-          className="flex cursor-pointer flex-col gap-1"
-        >
-          <span className={label}>Request a demo</span>
-          <span className="type-body-sm opacity-60">
-            We&apos;ll walk you through a finished capture.
-          </span>
-        </label>
       </div>
 
       {state.status === "error" && (

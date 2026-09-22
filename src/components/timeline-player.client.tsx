@@ -35,8 +35,8 @@ import styles from "./timeline-player.module.css";
 //
 // Browsers with requestVideoFrameCallback drive it from mediaTime, the frame
 // actually presented by the decoder. The rAF fallback covers older browsers.
-// Pointer moves are coalesced to one seek per display frame so a fast drag
-// cannot queue hundreds of expensive video seeks.
+// During a drag, the handle follows the pointer immediately. Decoder seeks
+// follow only as each previous seek finishes, using the newest pointer place.
 //
 // The counter reads `View n / N` - a view per synthesised frame, as in the
 // client's reference - in the take's own frame rate (`fps`, from
@@ -95,7 +95,6 @@ export function TimelinePlayer({
   const counterRef = useRef<HTMLSpanElement>(null);
   const scrubbingRef = useRef(false);
   const onTickRef = useRef(onTick);
-  const placeFrameRef = useRef<number | undefined>(undefined);
   const pendingPlaceRef = useRef<number | undefined>(undefined);
   const lastPlaceRef = useRef(0);
   const reducedMotion = useReducedMotion();
@@ -131,10 +130,12 @@ export function TimelinePlayer({
 
       const duration = video.duration || fallbackDuration;
 
-      dial.style.setProperty(
-        "--player-progress",
-        Math.min(1, t / duration).toFixed(4),
-      );
+      if (!scrubbingRef.current) {
+        dial.style.setProperty(
+          "--player-progress",
+          Math.min(1, t / duration).toFixed(4),
+        );
+      }
       if (document.activeElement !== range && !scrubbingRef.current) {
         range.value = String(Math.round(Math.min(1, t / duration) * 1000));
       }
@@ -181,6 +182,16 @@ export function TimelinePlayer({
       wake();
     }
 
+    function onSeeked() {
+      wake();
+      const pending = pendingPlaceRef.current;
+      if (scrubbingRef.current && pending !== undefined) {
+        pendingPlaceRef.current = undefined;
+        const duration = video!.duration || fallbackDuration;
+        video!.currentTime = pending * duration;
+      }
+    }
+
     // Asking is not playing: play() may be refused - then it rejects, and
     // some browsers say nothing at all - so a second after the ask the
     // element's own word settles the state, whatever events did or did not
@@ -196,7 +207,7 @@ export function TimelinePlayer({
 
     video.addEventListener("play", onPlay);
     video.addEventListener("pause", onPause);
-    video.addEventListener("seeked", wake);
+    video.addEventListener("seeked", onSeeked);
 
     // The arrival, every time: play when the plate is properly in view,
     // pause when it leaves - a take nobody can see needs no decoding, and a
@@ -221,13 +232,11 @@ export function TimelinePlayer({
     return () => {
       if (frame !== undefined) cancelAnimationFrame(frame);
       if (videoFrame !== undefined) video.cancelVideoFrameCallback(videoFrame);
-      if (placeFrameRef.current !== undefined)
-        cancelAnimationFrame(placeFrameRef.current);
       window.clearTimeout(settle);
       observer.disconnect();
       video.removeEventListener("play", onPlay);
       video.removeEventListener("pause", onPause);
-      video.removeEventListener("seeked", wake);
+      video.removeEventListener("seeked", onSeeked);
     };
   }, [fallbackDuration, fps, reducedMotion]);
 
@@ -238,7 +247,6 @@ export function TimelinePlayer({
   function seekTo(t: number, duration: number) {
     const video = videoRef.current;
     if (!video) return;
-    video.currentTime = t;
     dialRef.current?.style.setProperty(
       "--player-progress",
       Math.min(1, t / duration).toFixed(4),
@@ -246,6 +254,7 @@ export function TimelinePlayer({
     if (rangeRef.current) {
       rangeRef.current.value = String(Math.round((t / duration) * 1000));
     }
+    video.currentTime = t;
   }
 
   // The range's keys: a fraction of the take's length.
@@ -254,34 +263,30 @@ export function TimelinePlayer({
     seekTo(played * duration, duration);
   }
 
-  function placeNow(along: number) {
-    const duration = videoRef.current?.duration || fallbackDuration;
-    seekTo(along * duration, duration);
-  }
-
-  // At most one seek per display frame, while the handle itself stays under
-  // the pointer immediately. This prevents high-rate pointer devices from
-  // overwhelming the video decoder with stale seek requests.
+  // Show every pointer move immediately, but wait for the decoder before
+  // seeking again. Only the latest place is kept while a seek is in flight.
   function place(along: number) {
     lastPlaceRef.current = along;
-    pendingPlaceRef.current = along;
     dialRef.current?.style.setProperty("--player-progress", along.toFixed(4));
-    placeFrameRef.current ??= requestAnimationFrame(() => {
-      placeFrameRef.current = undefined;
-      const pending = pendingPlaceRef.current;
+    if (rangeRef.current) {
+      rangeRef.current.value = String(Math.round(along * 1000));
+    }
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.seeking) {
+      pendingPlaceRef.current = along;
+    } else {
       pendingPlaceRef.current = undefined;
-      if (pending !== undefined) placeNow(pending);
-    });
+      video.currentTime = along * (video.duration || fallbackDuration);
+    }
   }
 
   function scrub(scrubbing: boolean) {
     scrubbingRef.current = scrubbing;
     if (!scrubbing) {
-      if (placeFrameRef.current !== undefined)
-        cancelAnimationFrame(placeFrameRef.current);
-      placeFrameRef.current = undefined;
       pendingPlaceRef.current = undefined;
-      placeNow(lastPlaceRef.current);
+      const duration = videoRef.current?.duration || fallbackDuration;
+      seekTo(lastPlaceRef.current * duration, duration);
     }
   }
 
