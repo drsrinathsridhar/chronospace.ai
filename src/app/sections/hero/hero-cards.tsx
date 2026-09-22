@@ -248,6 +248,7 @@ function Pieces({
   priority = false,
   eager = false,
   detail = 1,
+  highQuality = false,
 }: {
   pieces: Piece[];
   /** The card's --card-scale, which the drawn width depends on. */
@@ -268,6 +269,8 @@ function Pieces({
   eager?: boolean;
   /** Fraction of the drawn width to ask the variant for - see pieceSizes. */
   detail?: number;
+  /** Preserve detail on the foreground; the shadow and smear stay cheaper. */
+  highQuality?: boolean;
 }) {
   return pieces.map((piece) => (
     <span
@@ -284,6 +287,7 @@ function Pieces({
         alt=""
         fill
         sizes={pieceSizes(piece, scale, detail)}
+        quality={highQuality ? 90 : undefined}
         priority={priority}
         loading={eager && !priority ? "eager" : undefined}
         fetchPriority={priority ? "high" : undefined}
@@ -368,6 +372,7 @@ export function HeroCards() {
                     scale={card.scale}
                     priority={index === 0}
                     eager
+                    highQuality
                   />
                 </span>
               </div>
