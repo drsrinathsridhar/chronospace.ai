@@ -36,10 +36,10 @@ export const media = {
    * needs those numbers checked.
    */
   hero: {
-    roboticsArm: "/media/hero/robotics-arm.png",
-    roboticsMan: "/media/hero/robotics-man.png",
-    manufacturing: "/media/hero/manufacturing-subject.png",
-    sports: "/media/hero/sports-subject.png",
+    roboticsArm: "/media/hero/robotics-arm-smoothed.png",
+    roboticsMan: "/media/hero/robotics-man-smoothed.png",
+    manufacturing: "/media/hero/manufacturing-subject-smoothed.png",
+    sports: "/media/hero/sports-subject-smoothed.png",
   },
 
   /** The backing band's one raster mark (the rest are SVG icons). */

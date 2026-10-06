@@ -57,7 +57,7 @@ type ArcScrubberProps = {
   onPlace: (along: number) => void;
   /** The range's keys have moved to a fraction of the take's length. */
   onSeek: (played: number) => void;
-  /** The drag's start and end, so the player can hold its range sync. */
+  /** The drag's start and end, so the player can pause and hold its range sync. */
   onScrub: (scrubbing: boolean) => void;
 };
 
@@ -136,6 +136,7 @@ export function ArcScrubber({
       onPointerMove={onPointerMove}
       onPointerUp={onPointerEnd}
       onPointerCancel={onPointerEnd}
+      onLostPointerCapture={onPointerEnd}
     >
       <span aria-hidden className={styles.ring} />
       <span aria-hidden className={styles.spoke} />

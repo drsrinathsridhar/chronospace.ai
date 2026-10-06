@@ -301,6 +301,93 @@ test("video scrubber follows presented time and seeks linearly", async ({
   expect(cameraRequests).toEqual([]);
 });
 
+for (const scenario of [
+  { section: "product", paused: false, end: "pointerup" },
+  { section: "product", paused: true, end: "pointercancel" },
+  { section: "viewer", paused: false, end: "lostpointercapture" },
+  { section: "viewer", paused: true, end: "pointerup" },
+]) {
+  test(`${scenario.section} scrubber holds frames and restores ${scenario.paused ? "paused" : "playing"} playback after ${scenario.end}`, async ({
+    page,
+  }) => {
+    await page.goto("/");
+    const video = page.locator(`#${scenario.section} video`).first();
+    const dial = page
+      .locator(`#${scenario.section} input[type="range"]`)
+      .first()
+      .locator("..");
+    await video.scrollIntoViewIfNeeded();
+    await expect
+      .poll(() => video.evaluate((node) => !(node as HTMLVideoElement).paused))
+      .toBe(true);
+    if (scenario.paused)
+      await video.evaluate((node) => (node as HTMLVideoElement).pause());
+
+    for (const along of [0.75, 0.25]) {
+      const target = await dial.evaluate((node, progress) => {
+        const box = node.getBoundingClientRect();
+        const radius = box.width - box.height;
+        const angle = ((-75 + progress * 150) * Math.PI) / 180;
+        return {
+          x: box.left + box.width / 2 + Math.sin(angle) * radius,
+          y: box.top + (box.height + radius) / 2 - Math.cos(angle) * radius,
+        };
+      }, along);
+      await page.mouse.move(target.x, target.y);
+      if (along === 0.75) await page.mouse.down();
+      await expect
+        .poll(() =>
+          video.evaluate((node) => {
+            const media = node as HTMLVideoElement;
+            return {
+              paused: media.paused,
+              seeking: media.seeking,
+              progress: media.currentTime / media.duration,
+            };
+          }),
+        )
+        .toEqual({
+          paused: true,
+          seeking: false,
+          progress: expect.closeTo(along, 2),
+        });
+      const heldTime = await video.evaluate(
+        (node) => (node as HTMLVideoElement).currentTime,
+      );
+      await page.waitForTimeout(250);
+      expect(
+        await video.evaluate((node) => (node as HTMLVideoElement).currentTime),
+      ).toBe(heldTime);
+    }
+
+    if (scenario.end !== "pointerup") {
+      await dial.dispatchEvent(scenario.end, { pointerId: 1 });
+    }
+    await page.mouse.up();
+    await expect
+      .poll(() => video.evaluate((node) => (node as HTMLVideoElement).paused))
+      .toBe(scenario.paused);
+    if (scenario.paused) {
+      await page.waitForTimeout(250);
+      expect(
+        await video.evaluate((node) => {
+          const media = node as HTMLVideoElement;
+          return media.currentTime / media.duration;
+        }),
+      ).toBeCloseTo(0.25, 2);
+    } else {
+      await expect
+        .poll(() =>
+          video.evaluate((node) => {
+            const media = node as HTMLVideoElement;
+            return media.currentTime / media.duration;
+          }),
+        )
+        .toBeGreaterThan(0.25);
+    }
+  });
+}
+
 test("contact uses the client inbox without a meeting link", async ({
   page,
 }) => {

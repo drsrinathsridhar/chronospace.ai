@@ -35,14 +35,13 @@ import styles from "./problem.module.css";
 // cap it, which left the copy and its rules stopping ~119px short of the
 // gutter while the picture sat flush left (feedback round 3, slide 6). At
 // the 1496 design width that is the picture across x 40-616 and the copy
-// from x 638 to 1456. Paragraph, reading labels and rules share that one
-// left edge: the accent brackets hang in the 22px column gutter to the left
-// of each row, like margin marks (problem.module.css), rather than
-// indenting the label text. The picture is a true square (placeholder.png
+// from x 638 to 1456. The reading rules align with the paragraph, with
+// brackets inside each row and values beneath the labels on narrow columns.
+// The picture is a true square (placeholder.png
 // is 862x862, so the circle sits on its box centre) and top-aligns with the
 // copy - the owner nudges it onto the first cap line with --visual-nudge in
 // the module. Under the md breakpoint it stacks above the copy at full
-// width and the brackets sit in-flow before the labels.
+// width.
 
 const paragraphs = [
   "Frontier models have consumed everything that was already digital. The physical world - where the work actually happens - was never recorded in a form a machine can use.",
@@ -114,22 +113,21 @@ export function Problem() {
             {readings.map(([term, value], index) => (
               <div
                 key={term}
-                className={`${styles.reading} border-line sweep-in flex items-center justify-between gap-6 border-t py-4 last:border-b`}
+                className="border-line sweep-in grid grid-cols-1 gap-2 border-t py-4 last:border-b lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-6"
                 style={{ "--beat": 1 + index }}
               >
-                {/* The bracket sits in-flow before the label on the narrow
-                    stack; from md it hangs in the column gutter to the left
-                    of the row (styles.bracket), so the label text starts on
-                    the copy's left edge. */}
-                <dt className="type-body-lg flex items-center gap-4 font-light">
+                <dt className="type-body-lg grid grid-cols-[0.875rem_minmax(0,1fr)] items-center gap-3 font-light">
                   <MeasureBracketIcon
+                    aria-hidden
                     width={13.5}
                     height={13.5}
-                    className={`${styles.bracket} text-accent shrink-0`}
+                    className="text-accent"
                   />
-                  {term}
+                  <span>{term}</span>
                 </dt>
-                <dd className="type-nav text-ink">{value}</dd>
+                <dd className="type-nav text-ink pl-6.5 whitespace-nowrap lg:pl-0 lg:text-right">
+                  {value}
+                </dd>
               </div>
             ))}
           </dl>

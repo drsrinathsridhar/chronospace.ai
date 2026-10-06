@@ -37,6 +37,8 @@ import styles from "./timeline-player.module.css";
 // actually presented by the decoder. The rAF fallback covers older browsers.
 // During a drag, the handle follows the pointer immediately. Decoder seeks
 // follow only as each previous seek finishes, using the newest pointer place.
+// Playback pauses for the drag and resumes after the final seek only if
+// the take was playing before the drag and is still in view.
 //
 // The counter reads `View n / N` - a view per synthesised frame, as in the
 // client's reference - in the take's own frame rate (`fps`, from
@@ -94,6 +96,8 @@ export function TimelinePlayer({
   const rangeRef = useRef<HTMLInputElement>(null);
   const counterRef = useRef<HTMLSpanElement>(null);
   const scrubbingRef = useRef(false);
+  const resumeAfterScrubRef = useRef(false);
+  const inViewRef = useRef(false);
   const onTickRef = useRef(onTick);
   const pendingPlaceRef = useRef<number | undefined>(undefined);
   const lastPlaceRef = useRef(0);
@@ -116,7 +120,10 @@ export function TimelinePlayer({
     const range = rangeRef.current;
     const counter = counterRef.current;
     if (!video || !dial || !range || !counter) return;
-    if (reducedMotion) video.pause();
+    if (reducedMotion) {
+      resumeAfterScrubRef.current = false;
+      video.pause();
+    }
 
     let frame: number | undefined;
     let videoFrame: number | undefined;
@@ -171,6 +178,10 @@ export function TimelinePlayer({
     }
 
     function onPlay() {
+      if (scrubbingRef.current) {
+        video!.pause();
+        return;
+      }
       setPaused(false);
       wake();
     }
@@ -189,6 +200,9 @@ export function TimelinePlayer({
         pendingPlaceRef.current = undefined;
         const duration = video!.duration || fallbackDuration;
         video!.currentTime = pending * duration;
+      } else if (!scrubbingRef.current && resumeAfterScrubRef.current) {
+        resumeAfterScrubRef.current = false;
+        if (inViewRef.current) video!.play().catch(() => {});
       }
     }
 
@@ -198,6 +212,7 @@ export function TimelinePlayer({
     // fire.
     function ask() {
       setAsked(true);
+      if (scrubbingRef.current) return;
       video?.play().catch(() => {});
       window.clearTimeout(settle);
       settle = window.setTimeout(() => {
@@ -217,10 +232,12 @@ export function TimelinePlayer({
     const observer = new IntersectionObserver(
       (entries) => {
         if (!video) return;
-        if (entries.some((entry) => entry.isIntersecting)) {
+        inViewRef.current = entries.some((entry) => entry.isIntersecting);
+        if (inViewRef.current) {
           if (reducedMotion) setAsked(true);
           else ask();
-        } else if (!video.paused) {
+        } else {
+          resumeAfterScrubRef.current = false;
           video.pause();
         }
       },
@@ -282,11 +299,24 @@ export function TimelinePlayer({
   }
 
   function scrub(scrubbing: boolean) {
+    const video = videoRef.current;
+    if (!video) return;
     scrubbingRef.current = scrubbing;
-    if (!scrubbing) {
+    if (scrubbing) {
+      resumeAfterScrubRef.current =
+        !video.paused || resumeAfterScrubRef.current;
+      lastPlaceRef.current =
+        video.currentTime / (video.duration || fallbackDuration);
       pendingPlaceRef.current = undefined;
-      const duration = videoRef.current?.duration || fallbackDuration;
+      video.pause();
+    } else {
+      pendingPlaceRef.current = undefined;
+      const duration = video.duration || fallbackDuration;
       seekTo(lastPlaceRef.current * duration, duration);
+      if (!video.seeking && resumeAfterScrubRef.current) {
+        resumeAfterScrubRef.current = false;
+        if (inViewRef.current) video.play().catch(() => {});
+      }
     }
   }
 
