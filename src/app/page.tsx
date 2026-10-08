@@ -1,8 +1,8 @@
 import { SiteFrame } from "@/components/site-frame";
+import { SiteHeader } from "@/components/site-header";
 import { Hero } from "./sections/hero";
 // Restore these imports and sections for the full launch.
 /*
-import { SiteHeader } from "@/components/site-header";
 import { Backers } from "./sections/backers";
 import { Problem } from "./sections/problem";
 import { Product } from "./sections/product";
@@ -15,7 +15,7 @@ import { Closing, ClosingBar } from "./sections/closing";
 export default function HomePage() {
   return (
     <>
-      {/* <SiteHeader /> */}
+      <SiteHeader showNavigation={false} />
       <SiteFrame>
         <main>
           <Hero />

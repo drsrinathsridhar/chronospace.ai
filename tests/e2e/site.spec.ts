@@ -173,9 +173,7 @@ test("muted text and CTA states meet WCAG AA contrast", async ({ page }) => {
   expect(ratios.ctaHover).toBeGreaterThanOrEqual(4.5);
 });
 
-test("initial release shows only the hero and updated headline", async ({
-  page,
-}) => {
+test("initial release shows a logo-only header and hero", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     "World Models for the Physical World",
@@ -184,7 +182,13 @@ test("initial release shows only the hero and updated headline", async ({
     "ChronoSpace — World Models for the Physical World",
   );
   await expect(page.locator("main > section")).toHaveCount(1);
-  await expect(page.getByRole("banner")).toHaveCount(0);
+  const header = page.getByRole("banner");
+  await expect(header).toBeVisible();
+  await expect(header.getByRole("link")).toHaveCount(1);
+  await expect(
+    header.getByRole("link", { name: "ChronoSpace home" }),
+  ).toHaveAttribute("href", "/");
+  await expect(header.getByRole("button")).toHaveCount(0);
   await expect(page.getByRole("navigation")).toHaveCount(0);
   await expect(page.locator("footer, video")).toHaveCount(0);
   await expect(

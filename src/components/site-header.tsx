@@ -49,33 +49,37 @@ const navCell = "flex h-full items-center";
 // from cta-link.tsx.
 const navLinkCell = `${navCell} hover:bg-ink/10 focus-visible:bg-ink/10 transition-colors duration-150 ease-out`;
 
-export function SiteHeader() {
-  return (
-    <header className="h-navbar border-line fixed inset-x-0 top-0 z-50 border-b backdrop-blur-[8px] transition-[height] duration-300 ease-out">
-      <SiteHeaderScroll />
-      <SiteMenuProvider>
-        {/* The bar runs full-bleed; its contents stop at the site frame's
+export function SiteHeader({
+  showNavigation = true,
+}: {
+  showNavigation?: boolean;
+}) {
+  // The initial release keeps the brand without links to deferred sections.
+  const content = (
+    <>
+      {/* The bar runs full-bleed; its contents stop at the site frame's
             width (max-w-site) and centre, in step with the page under it. */}
-        <div className="section-container sweep-reveal max-w-site mx-auto flex h-full min-w-0 items-center overflow-clip">
-          <Link
-            href="/"
-            className="focus-visible:outline-ink relative flex shrink-0 items-center focus-visible:outline-2 focus-visible:outline-offset-2"
-            aria-label={`${siteConfig.name} home`}
-          >
+      <div className="section-container sweep-reveal max-w-site mx-auto flex h-full min-w-0 items-center overflow-clip">
+        <Link
+          href="/"
+          className="focus-visible:outline-ink relative flex shrink-0 items-center focus-visible:outline-2 focus-visible:outline-offset-2"
+          aria-label={`${siteConfig.name} home`}
+        >
+          <ChronospaceLogoIcon
+            width={168}
+            height={32}
+            className="text-ink h-6 w-auto shrink-0 sm:h-8"
+          />
+          <span aria-hidden className={`${styles.flare} absolute inset-0`}>
             <ChronospaceLogoIcon
               width={168}
               height={32}
-              className="text-ink h-6 w-auto shrink-0 sm:h-8"
+              className="text-accent h-6 w-auto shrink-0 sm:h-8"
             />
-            <span aria-hidden className={`${styles.flare} absolute inset-0`}>
-              <ChronospaceLogoIcon
-                width={168}
-                height={32}
-                className="text-accent h-6 w-auto shrink-0 sm:h-8"
-              />
-            </span>
-          </Link>
+          </span>
+        </Link>
 
+        {showNavigation && (
           <nav
             aria-label="Main"
             className="ml-auto flex h-full min-w-0 flex-none"
@@ -107,13 +111,26 @@ export function SiteHeader() {
               <span className="hidden sm:inline">Connect with us</span>
             </CtaLink>
           </nav>
-        </div>
+        )}
+      </div>
 
+      {showNavigation && (
         <SiteMenuSheet
           nav={siteConfig.nav}
           contactHref={siteConfig.links.contact}
         />
-      </SiteMenuProvider>
+      )}
+    </>
+  );
+
+  return (
+    <header className="h-navbar border-line fixed inset-x-0 top-0 z-50 border-b backdrop-blur-[8px] transition-[height] duration-300 ease-out">
+      <SiteHeaderScroll />
+      {showNavigation ? (
+        <SiteMenuProvider>{content}</SiteMenuProvider>
+      ) : (
+        content
+      )}
     </header>
   );
 }
