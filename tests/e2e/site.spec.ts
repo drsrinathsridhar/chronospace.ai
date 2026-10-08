@@ -173,24 +173,29 @@ test("muted text and CTA states meet WCAG AA contrast", async ({ page }) => {
   expect(ratios.ctaHover).toBeGreaterThanOrEqual(4.5);
 });
 
-test("every main navigation anchor resolves to one section", async ({
+test("initial release shows only the hero and updated headline", async ({
   page,
 }) => {
   await page.goto("/");
-  const hrefs = await page
-    .locator('nav[aria-label="Main"] a[href*="#"]')
-    .evaluateAll((links) => links.map((link) => link.getAttribute("href")));
-
-  expect(hrefs.length).toBeGreaterThan(0);
-  for (const href of hrefs) {
-    expect(href).toBeTruthy();
-    const hash = new URL(href!, page.url()).hash;
-    expect(hash).not.toBe("");
-    await expect(page.locator(hash)).toHaveCount(1);
-  }
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    "World Models for the Physical World",
+  );
+  await expect(page).toHaveTitle(
+    "ChronoSpace — World Models for the Physical World",
+  );
+  await expect(page.locator("main > section")).toHaveCount(1);
+  await expect(page.getByRole("banner")).toHaveCount(0);
+  await expect(page.getByRole("navigation")).toHaveCount(0);
+  await expect(page.locator("footer, video")).toHaveCount(0);
+  await expect(
+    page.getByRole("link", { name: "contact@chronospace.ai", exact: true }),
+  ).toHaveAttribute("href", "mailto:contact@chronospace.ai");
+  await expect(page.locator("main")).toHaveText(
+    "World Models for the Physical Worldcontact@chronospace.ai",
+  );
 });
 
-test("pointer, scroll, and video interactions work without runtime errors", async ({
+test("hero pointer interaction works without runtime errors", async ({
   page,
 }) => {
   await page.goto("/");
@@ -203,28 +208,10 @@ test("pointer, scroll, and video interactions work without runtime errors", asyn
       stage.evaluate((node) => node.style.getPropertyValue("--eye-x")),
     )
     .not.toBe("");
-
-  await page.locator("#product").scrollIntoViewIfNeeded();
-  await expect
-    .poll(() =>
-      page
-        .locator("#product video")
-        .first()
-        .evaluate((video) => !(video as HTMLVideoElement).paused),
-    )
-    .toBe(true);
-  await page.locator("#team").scrollIntoViewIfNeeded();
-  await expect
-    .poll(() =>
-      page
-        .locator("#product video")
-        .first()
-        .evaluate((video) => (video as HTMLVideoElement).paused),
-    )
-    .toBe(true);
 });
 
-test("video scrubber follows presented time and seeks linearly", async ({
+// Preserve video coverage for the full launch, when these sections are restored.
+test.skip("video scrubber follows presented time and seeks linearly", async ({
   page,
 }) => {
   const cameraRequests: string[] = [];
@@ -307,7 +294,7 @@ for (const scenario of [
   { section: "viewer", paused: false, end: "lostpointercapture" },
   { section: "viewer", paused: true, end: "pointerup" },
 ]) {
-  test(`${scenario.section} scrubber holds frames and restores ${scenario.paused ? "paused" : "playing"} playback after ${scenario.end}`, async ({
+  test.skip(`${scenario.section} scrubber holds frames and restores ${scenario.paused ? "paused" : "playing"} playback after ${scenario.end}`, async ({
     page,
   }) => {
     await page.goto("/");
@@ -400,9 +387,14 @@ test("contact uses the client inbox without a meeting link", async ({
     0,
   );
   await expect(page.locator('a[href*="calendly.com"]')).toHaveCount(0);
+  await expect(page.locator("form")).toHaveCount(0);
+  await expect(page.locator("main")).toHaveText("contact@chronospace.ai");
 });
 
-test("team portraits stay compact on narrow displays", async ({ page }) => {
+// The team section is deferred until the full launch.
+test.skip("team portraits stay compact on narrow displays", async ({
+  page,
+}) => {
   await page.goto("/");
   const viewport = page.viewportSize();
   if (!viewport || viewport.width >= 768) return;

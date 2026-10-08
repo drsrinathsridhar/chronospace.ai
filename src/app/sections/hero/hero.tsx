@@ -1,6 +1,7 @@
 import { Fragment } from "react";
-import { HeroTrailFiltersIcon } from "@/icons/generated";
+import { CtaArrowIcon, HeroTrailFiltersIcon } from "@/icons/generated";
 import { tuning } from "@/tuning.config";
+import { siteConfig } from "@/site.config";
 import { HeroCards } from "./hero-cards";
 import { HeroRoom } from "./hero-room";
 import { HeroTimeline } from "./hero-timeline";
@@ -11,23 +12,11 @@ import { HeroTimeline } from "./hero-timeline";
 // room behind it (hero-cards.tsx) - and the timecode ruler underlining the
 // whole screen at its foot.
 //
-// The headline stands alone in the room. The comp put a "Connect with us"
-// under it, 40 below; the client asked for one such call in the first
-// screen, and the navbar's is the one that stays (feedback round 2), so the
-// captures now have the whole floor between the copy and the ruler. The
-// headline's offset scales with the room rather than sitting at a fixed 104
-// below the navbar: at xl+ the copy is centred in the band of back wall
-// above the figures (client feedback, September 2026 - it read as too
-// high), measured in the site frame's cqw so it stays put past the 2560 cap
-// on any display (the headline once escaped the room on wide screens). The
-// backing marks left
-// the hero for the band directly under it (sections/backers): the hero
-// yields exactly the band's height of the viewport, so hero + band close
-// the first screen together, with the ruler as the band's top border.
+// The initial release shows the hero alone. At xl+ the headline stays centred on the back wall above the figures, measured in the site frame's cqw so it stays within the room beyond the 2560px cap.
 //
 // Everything arrives on the same band of light, in reading order - see
 // `shimmer-reveal` / `sweep-reveal` in globals.css. `--reveal-index` is that
-// order; index 0 belongs to the navbar, which leads.
+// order.
 
 // Two spans rather than one string with a break: each line is picked up by
 // the shimmer on its own beat, and the break stays where the comp puts it
@@ -35,33 +24,10 @@ import { HeroTimeline } from "./hero-timeline";
 // the spans in the markup: the flex column never renders it, but without it
 // the text content - what search engines, readers and copy-paste see - ran
 // the lines together ("builds AIto digitize"; client feedback, round 2).
-const headline = ["ChronoSpace builds AI", "to digitize the physical world"];
+const headline = ["World Models", "for the Physical World"];
 
 export function Hero() {
-  // Padded by the navbar's resting height, not its live one: the bar
-  // tightens on scroll, and tracking that here would shift the whole hero
-  // 12px the moment the page moves.
-  //
-  // The height is the viewport minus the backing band, so hero + band close
-  // the first screen together - floored by what the room needs: the three
-  // captures stand on one line at 109.17% of the 48.4cqw plate
-  // (hero-cards.module.css), 52.84cqw, plus clearance for the ruler at the
-  // foot. On viewports too short for both, the hero keeps the room whole and
-  // the band starts just under the fold instead. The viewport term is capped
-  // at 87rem, which is the room's own height at the site frame's 2560 cap:
-  // past that the room stops growing (cqw), and a hero still chasing a
-  // taller viewport would open a band of bare paper under the figures.
-  //
-  // Below md the floor is a different sum: the captures are a carousel
-  // standing on the room's floor line at 65.5% of the hero (60% plate x
-  // 1.0917 feet), and the tallest of them, the robot arm at 59.3cqw, has to
-  // clear the headline, whose foot sits at 251px on a 360-390 phone (three
-  // lines of display-xs under the 56px bar and 96px of padding). So the
-  // hero is at least 25rem + 90.5cqw tall there - 753 at 390, 726 at 360 -
-  // which the viewport term already exceeds on an 844px phone (772) and a
-  // 360x800 one (728), so the ruler and the band still close the first
-  // screen on both; a shorter phone gets the room whole and the band under
-  // the fold, as the wide layouts do.
+  // Fill the viewport without reserving navbar or backers space. The mobile minimum leaves room for the headline and email link above the carousel, including on wider portrait screens.
   //
   // `touch-pan-y`: a finger on the hero steers the room while it is down
   // (hero-room-eye.client.tsx). The browser keeps vertical swipes for the
@@ -81,7 +47,7 @@ export function Hero() {
   // engines take as "no filter", so it is sized away rather than hidden.
   return (
     <section
-      className="pt-navbar-rest relative flex min-h-[max(min(calc(100svh-var(--backing-band-height)),87rem),calc(52.84cqw+2.5rem))] touch-pan-y flex-col overflow-clip max-md:min-h-[max(calc(100svh-var(--backing-band-height)),calc(25rem+min(90.5cqw,26rem)))] max-md:landscape:min-h-[calc(26rem+min(90.5cqw,22rem))]"
+      className="relative flex min-h-[max(min(100svh,87rem),calc(52.84cqw+2.5rem))] touch-pan-y flex-col overflow-clip max-md:min-h-[max(100svh,calc(27rem+min(90.5cqw,39rem)))] max-md:landscape:min-h-[calc(28rem+min(90.5cqw,22rem))]"
       data-trail-mode={tuning.heroTrail.mode}
       data-trail-colour={tuning.heroTrail.colour}
     >
@@ -107,7 +73,7 @@ export function Hero() {
        * it (under md).
        */}
       <div
-        className="section-container relative flex flex-col items-center pt-24 text-center md:pt-26 xl:absolute xl:inset-x-0 xl:top-(--copy-centre) xl:z-10 xl:-translate-y-1/2 xl:pt-0"
+        className="section-container relative flex flex-col items-center gap-6 pt-24 text-center md:pt-26 xl:absolute xl:inset-x-0 xl:top-(--copy-centre) xl:z-10 xl:-translate-y-1/2 xl:pt-0"
         style={{ "--copy-centre": "22.7cqw" }}
       >
         <h1 className="type-display-xs sm:type-display-sm lg:type-display-md flex max-w-174.5 flex-col">
@@ -128,6 +94,19 @@ export function Hero() {
             </Fragment>
           ))}
         </h1>
+        <a
+          href={siteConfig.links.email}
+          className="type-body-sm border-line text-ink sweep-reveal hover:border-accent focus-visible:border-accent focus-visible:outline-accent group inline-flex min-h-10 items-center gap-3 border px-4 py-2 transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-4 max-sm:min-h-11"
+          style={{ "--reveal-index": 3 }}
+        >
+          contact@chronospace.ai
+          <CtaArrowIcon
+            width={6.4}
+            height={8}
+            aria-hidden
+            className="text-accent shrink-0 motion-safe:transition-transform motion-safe:group-hover:translate-x-0.5"
+          />
+        </a>
       </div>
 
       {/*
@@ -140,13 +119,9 @@ export function Hero() {
        */}
       <HeroCards />
 
-      {/*
-       * No padding under the ruler: its track is the hero's last pixel, and
-       * the backing band (sections/backers) starts flush against it, using
-       * the ruler as its top border.
-       */}
-      <div className="section-container relative mt-auto pt-10">
-        <HeroTimeline />
+      {/* Inset the ruler so its line and corner markers clear the page edge. */}
+      <div className="section-container relative mt-auto pt-10 pb-6">
+        <HeroTimeline showLabels={false} />
       </div>
     </section>
   );

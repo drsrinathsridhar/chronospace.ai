@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/site.config";
 
+export const dynamic = "force-static";
+
 // The web app manifest is what Android Chrome reads for "Add to Home
 // Screen" - a plain PNG favicon gets no say there. The tiles under
 // public/icons are the grey mark (#939393, the client's favicon grey) on the

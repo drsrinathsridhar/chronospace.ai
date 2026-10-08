@@ -13,22 +13,24 @@ import styles from "./hero-timeline.module.css";
 // with accent corner ticks at the origin, one measured 111px unit in, and
 // the far end; the labels ride 8px above the line.
 
-export function HeroTimeline() {
+export function HeroTimeline({ showLabels = true }: { showLabels?: boolean }) {
   return (
     <div aria-hidden className={styles.timeline}>
-      <div
-        className="type-caption sweep-reveal flex items-center justify-between"
-        style={{ "--reveal-index": 6 }}
-      >
-        <p className="text-line flex items-center gap-4">
-          <span>Timecode</span>
-          <HeroTimecode />
-        </p>
-        <p className="bg-paper text-ink flex items-center gap-4 px-2">
-          <span className="bg-ink size-0.5" />
-          <span>Scrub</span>
-        </p>
-      </div>
+      {showLabels && (
+        <div
+          className="type-caption sweep-reveal flex items-center justify-between"
+          style={{ "--reveal-index": 6 }}
+        >
+          <p className="text-line flex items-center gap-4">
+            <span>Timecode</span>
+            <HeroTimecode />
+          </p>
+          <p className="bg-paper text-ink flex items-center gap-4 px-2">
+            <span className="bg-ink size-0.5" />
+            <span>Scrub</span>
+          </p>
+        </div>
+      )}
 
       {/*
        * The track is revealed by a left-to-right clip wipe - the playhead
