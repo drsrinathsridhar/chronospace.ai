@@ -119,8 +119,8 @@ export function Hero() {
        */}
       <HeroCards />
 
-      {/* Inset the ruler so its line and corner markers clear the page edge. */}
-      <div className="section-container relative mt-auto pt-10 pb-6">
+      {/* The ruler meets the backers band so the logos sit between its two rules. */}
+      <div className="section-container relative mt-auto pt-10">
         <HeroTimeline showLabels={false} />
       </div>
     </section>

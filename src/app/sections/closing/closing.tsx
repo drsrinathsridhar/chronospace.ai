@@ -1,7 +1,7 @@
 import { siteConfig } from "@/site.config";
 import { CtaLink } from "@/components/cta-link";
 import { RevealScope } from "@/components/reveal-scope.client";
-import { ChronospaceLogoIcon } from "@/icons/generated";
+// import { ChronospaceLogoIcon } from "@/icons/generated";
 import { ClosingVideo } from "./closing-video.client";
 import { media } from "@/media.config";
 import styles from "./closing.module.css";
@@ -25,14 +25,10 @@ import styles from "./closing.module.css";
 // on the blocks - one beat apart.
 //
 // Under the block the bar (ClosingBar) is the page's <footer>, rendered
-// after <main> so it keeps its landmark role: two rows on the page ground -
-// the reference screenshot's light bar would break the page's one-ground
-// rule. The first row is the mark on the left and the links on the right;
-// under a hairline the second is the small print, copyright left and the
-// credit right (owner's request, 14 Sep 2026). The legal links are still
-// "#" in site.config: they render, inert, so the bar has its final shape,
-// and they come alive on their own the moment the config carries real
-// URLs. The bar does not join the scroll reveal: RevealScope fires once a
+// after <main> so it keeps its landmark role. The initial release uses a
+// single row for copyright, LinkedIn, and credit. Legal links
+// stay commented out until the documents are ready. The bar does not join
+// the scroll reveal: RevealScope fires once a
 // block has climbed 15% above the fold, and the last thing on the page
 // never can - it sat masked and invisible at the foot of the page - so
 // the bar is simply there, settled, like the navbar at the other end.
@@ -99,27 +95,31 @@ export function Closing() {
 
 const links: { label: string; href: string; external?: boolean }[] = [
   { label: "LinkedIn", href: siteConfig.links.linkedin, external: true },
-  // TODO(client): terms and privacy are "#" until the documents are
-  // published; they render inert (aria-disabled, out of the tab order) and
-  // become live links as soon as site.config carries the real URLs.
-  { label: "Terms and conditions", href: siteConfig.links.terms },
-  { label: "Privacy Policy", href: siteConfig.links.privacy },
+  // Restore these links once the legal documents are published.
+  // { label: "Terms and conditions", href: siteConfig.links.terms },
+  // { label: "Privacy Policy", href: siteConfig.links.privacy },
 ];
 
 export function ClosingBar() {
   return (
     <footer className="section-container border-line border-t">
-      <div className="flex flex-col gap-6 py-6 md:flex-row md:items-center md:justify-between">
+      <div className="flex items-center gap-3 py-4 sm:gap-6">
+        {/*
         <ChronospaceLogoIcon
           role="img"
           aria-label="ChronoSpace"
           width={120}
           height={23}
-          className="text-ink shrink-0"
+          className="text-ink h-auto w-20 shrink-0 sm:w-30"
         />
+        */}
 
-        <nav aria-label="Footer">
-          <ul className="flex flex-wrap items-center gap-x-8 gap-y-3">
+        <p className="type-caption sm:type-nav text-muted shrink-0 whitespace-nowrap">
+          © 2026 ChronoSpace AI
+        </p>
+
+        <nav aria-label="Footer" className="ml-auto shrink-0">
+          <ul className="flex items-center gap-6">
             {links.map((link) => {
               const placeholder = link.href === "#";
               return (
@@ -128,8 +128,8 @@ export function ClosingBar() {
                     href={link.href}
                     className={
                       placeholder
-                        ? "type-nav text-muted pointer-events-none"
-                        : "type-nav text-ink hover:text-accent focus-visible:text-accent transition-colors duration-150 ease-out"
+                        ? "type-caption sm:type-nav text-muted pointer-events-none"
+                        : "type-caption sm:type-nav text-ink hover:text-accent focus-visible:text-accent inline-flex min-h-11 items-center transition-colors duration-150 ease-out"
                     }
                     {...(placeholder && {
                       "aria-disabled": true,
@@ -147,15 +147,11 @@ export function ClosingBar() {
             })}
           </ul>
         </nav>
-      </div>
-
-      <div className="border-line flex flex-col gap-3 border-t py-5 sm:flex-row sm:items-center sm:justify-between">
-        <p className="type-caption text-muted">© 2026 ChronoSpace AI</p>
         <a
           href={siteConfig.links.madeBy}
           target="_blank"
           rel="noreferrer"
-          className="type-caption text-muted hover:text-ink transition-colors duration-150 ease-out"
+          className="type-caption sm:type-nav text-muted hover:text-ink inline-flex min-h-11 shrink-0 items-center whitespace-nowrap transition-colors duration-150 ease-out"
         >
           Made by tonik
         </a>

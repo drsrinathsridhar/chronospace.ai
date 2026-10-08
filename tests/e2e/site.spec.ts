@@ -201,6 +201,9 @@ test("initial release shows a logo-only header, hero, backers, and footer", asyn
     footer.getByRole("navigation", { name: "Footer" }),
   ).toBeVisible();
   await expect(footer).toContainText("© 2026 ChronoSpace AI");
+  await expect(footer.getByRole("link")).toHaveCount(2);
+  await expect(footer).not.toContainText("Terms and conditions");
+  await expect(footer).not.toContainText("Privacy Policy");
   await expect(page.locator("video")).toHaveCount(0);
   await expect(
     page.getByRole("link", { name: "contact@chronospace.ai", exact: true }),

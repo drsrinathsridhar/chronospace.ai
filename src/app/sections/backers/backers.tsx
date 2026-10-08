@@ -137,7 +137,9 @@ export function Backers() {
                       {copy === 0 && (
                         <span className="sr-only">{backer.name}</span>
                       )}
-                      <span aria-hidden>{backer.mark}</span>
+                      <span aria-hidden className="flex items-center">
+                        {backer.mark}
+                      </span>
                       {/*
                        * Both flare classes: the header module's for the
                        * gesture itself, this section's for what only the
