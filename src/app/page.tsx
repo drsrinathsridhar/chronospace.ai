@@ -1,15 +1,16 @@
 import { SiteFrame } from "@/components/site-frame";
 import { SiteHeader } from "@/components/site-header";
 import { Hero } from "./sections/hero";
+import { Backers } from "./sections/backers";
+import { ClosingBar } from "./sections/closing";
 // Restore these imports and sections for the full launch.
 /*
-import { Backers } from "./sections/backers";
 import { Problem } from "./sections/problem";
 import { Product } from "./sections/product";
 import { Capture } from "./sections/capture";
 import { Team } from "./sections/team";
 import { Science } from "./sections/science";
-import { Closing, ClosingBar } from "./sections/closing";
+import { Closing } from "./sections/closing";
 */
 
 export default function HomePage() {
@@ -19,8 +20,8 @@ export default function HomePage() {
       <SiteFrame>
         <main>
           <Hero />
-          {/*
           <Backers />
+          {/*
           <Problem />
           <Product />
           <Capture />
@@ -29,7 +30,7 @@ export default function HomePage() {
           <Closing />
           */}
         </main>
-        {/* <ClosingBar /> */}
+        <ClosingBar />
       </SiteFrame>
     </>
   );
