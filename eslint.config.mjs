@@ -51,6 +51,13 @@ const eslintConfig = defineConfig([
     // Default ignores of eslint-config-next:
     ".next/**",
     "out/**",
+    // Generated assets served from the GitHub Pages root.
+    "_next/**",
+    "_not-found/**",
+    "404/**",
+    "contact/**",
+    "icons/**",
+    "media/**",
     "build/**",
     "next-env.d.ts",
     // Agent worktrees checked out inside the repo carry their own copies.
