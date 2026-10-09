@@ -18,10 +18,12 @@ export default function HomePage() {
     <>
       <SiteHeader showNavigation={false} />
       <SiteFrame>
-        <main>
-          <Hero />
-          <Backers />
-          {/*
+        {/* Remove the viewport layout when restoring the full landing page. */}
+        <div className="flex h-svh flex-col">
+          <main className="flex flex-1 flex-col">
+            <Hero />
+            <Backers />
+            {/*
           <Problem />
           <Product />
           <Capture />
@@ -29,8 +31,9 @@ export default function HomePage() {
           <Science />
           <Closing />
           */}
-        </main>
-        <ClosingBar />
+          </main>
+          <ClosingBar />
+        </div>
       </SiteFrame>
     </>
   );

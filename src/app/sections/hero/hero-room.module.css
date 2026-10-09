@@ -30,10 +30,8 @@
 }
 
 /*
- * 1496x724 in the comp - 48.4% of the page width tall, and never less than
- * the top three fifths of the hero, so a narrow screen gets a room rather
- * than a letterbox. It is also the container everything below is measured
- * against.
+ * The room shares the figures' floor line, leaving 3rem for the mobile
+ * pager and 5.5px for the ruler. It is the size container for its faces.
  */
 /*
  * The blue the whole room is lit in. The comp gets it from a #000420 wash
@@ -48,7 +46,7 @@
   inset: 0 0 auto;
   /* cqw of the site frame (components/site-frame.tsx), not the viewport:
      the room stops growing at the frame's 2560 cap. */
-  height: max(60%, 48.4cqw);
+  height: calc((100% - 3rem - 5.5px) / 1.0917);
   container-type: size;
   background-color: var(--room-wash);
   /*

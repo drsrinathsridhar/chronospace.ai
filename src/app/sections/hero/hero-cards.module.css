@@ -96,24 +96,10 @@
 /*
  * 1. Below md: the carousel.
  *
- * The .cards layer is the scroller: absolute in the hero like the room
- * layer, spanning the width, its bottom edge on the room's floor line - the
- * plate is max(60%, 48.4cqw) of the hero tall (hero-room.module.css) and
- * the cards' shared --card-feet is 1.0917 of that (hero-cards.tsx), so
- * `bottom` is what is left of the hero under the line. Each .slide is one
- * viewport wide and snaps to the centre; the card stands centred at the
- * slide's foot, so all three feet share the scroller's bottom edge.
- *
- * Sizes keep the room's proportions: the base is 56cqw times the card's
- * --card-scale, chosen so the manufacturing cell's visible piece (81.1% of
- * a 1.45 card) is about two thirds of a phone's width - 257px at 390 -
- * with the arm group at 62% and the dancer at 34% of the width, the three
- * ASSETS matched as the client asked for the room (round 3, slide 2). Any
- * bigger and the arm, the tallest of the three at 59.3cqw, runs into the
- * headline on an 800px-tall phone: hero.tsx floors the hero's height at
- * 25rem + 90.5cqw below md for exactly this clearance. A card is centred
- * on its VISIBLE pieces, not its box - the robot's span sits at 36.74% of
- * its card - by translating it 50% - --card-centre of its own width.
+ * The scroller stands 3rem above the scene's foot, leaving room for the
+ * pager. Width is capped by the available scene height so every capture
+ * fits below the copy. Slides still span the full scene width and snap to
+ * the centre; each card is centred on its visible pieces, not its box.
  *
  * No scrollbar in either engine, and `touch-action: pan-x pan-y` written
  * out: the hero root declares pan-y for the eye (hero.tsx), but a scroll
@@ -129,7 +115,7 @@
   .cards {
     position: absolute;
     inset-inline: 0;
-    bottom: calc(100% - max(60%, 48.4cqw) * 1.0917);
+    bottom: 3rem;
     display: flex;
     overflow-x: auto;
     overflow-y: hidden;
@@ -153,22 +139,8 @@
   }
 
   .card {
-    /*
-     * 56% of the frame, times the card's depth scale, so a phone's figure
-     * fills the screen the way the room's does - capped at 24rem so a
-     * landscape phone (640-767 wide, still below md) does not get a robot
-     * arm the height of its screen.
-     */
-    width: calc(min(56cqw, 24rem) * var(--card-scale, 1));
-    /*
-     * A phone held sideways is wide but short: 56% of a 640-767 frame
-     * stands a figure taller than the screen, so there the cap comes down
-     * to 14rem and the section fits in about two screens rather than
-     * three.
-     */
-    @media (orientation: landscape) {
-      width: calc(min(56cqw, 14rem) * var(--card-scale, 1));
-    }
+    /* Cap the tallest capture to the available height below the copy. */
+    width: calc(min(56cqw, calc((100cqh - 3rem) / 1.2)) * var(--card-scale, 1));
     /*
      * The visible centring plus the eye: shift and turn as in the room
      * (block 3 explains each term), minus the standing angle - a figure
@@ -202,7 +174,7 @@
   .pager {
     position: absolute;
     inset-inline: 0;
-    top: calc(max(60%, 48.4cqw) * 1.0917);
+    bottom: 0;
     z-index: 1;
     display: flex;
     justify-content: center;
@@ -230,8 +202,7 @@
 
 /*
  * 2. md to xl: the strip. Three columns in the flow, centred in whatever
- * height the hero has left between the copy and the ruler, at least 3rem
- * under the copy - a strip pinned to the copy left a bare band below.
+ * height the hero has left between the copy and the ruler.
  */
 @media (48rem <= width < 80rem) {
   .cards {
@@ -242,12 +213,11 @@
     width: 100%;
     padding-inline: var(--gutter);
     margin-block: auto;
-    padding-top: 3rem;
   }
 
   .card {
     width: 100%;
-    max-width: 11.1875rem; /* 178.826px */
+    max-width: min(11.1875rem, calc((100cqh - 3rem) / 0.8));
   }
 }
 
@@ -262,25 +232,11 @@
 
   .card {
     position: absolute;
-    /*
-     * The feet on the floor: the plate is max(60%, 48.4cqw) of the hero tall
-     * (hero-room.module.css), and the card's bottom edge sits at its
-     * fraction of that, whatever the card's own height - the translate
-     * pulls it up by exactly itself.
-     */
-    top: calc(max(60%, 48.4cqw) * var(--card-feet));
+    /* Anchor the visible centre, keeping the layout balanced as cards shrink. */
+    top: calc(100% - 3rem);
     left: var(--card-left);
-    /*
-     * Sized in the site frame's container units, like the room: the plate
-     * is 48.4cqw tall, so a card measured in cqw keeps its proportion to
-     * the box at any frame width - a bigger screen gets a bigger room and
-     * bigger figures with it, up to the frame's 2560 cap
-     * (components/site-frame.tsx), locked to their aspect ratios by the
-     * body and piece ratios.
-     * 19.1cqw is the strip card's 178.826px at the 1496 design width,
-     * scaled up 1.6x so the figures read near life-size in the room.
-     */
-    width: 19.1cqw;
+    /* 1.2 allows for the tallest card's aspect ratio and depth scale. */
+    width: min(19.1cqw, calc((100cqh - 3rem) / 1.2));
     pointer-events: auto;
     /*
      * Three moves in one transform: the eye move at this card's depth; the
@@ -299,7 +255,7 @@
      * 0 parks them along with the walls. The standing angle itself is not
      * scaled: it is where the card stands, not how it moves.
      */
-    transform-origin: 0 100%;
+    transform-origin: var(--card-centre) 100%;
     transform: translate3d(
         calc(
           var(--float-x, 0) * var(--card-shift-x, 0px) * var(--hero-wiggle, 1)
@@ -309,7 +265,8 @@
         ),
         0
       )
-      translateY(-100%) scale(var(--card-scale, 1)) perspective(56rem)
+      translate(calc(-1 * var(--card-centre)), -100%)
+      scale(var(--card-scale, 1)) perspective(56rem)
       rotateY(
         calc(
           var(--card-tilt, 0deg) + var(--float-x, 0) *

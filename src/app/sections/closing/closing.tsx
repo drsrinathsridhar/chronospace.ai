@@ -102,7 +102,7 @@ const links: { label: string; href: string; external?: boolean }[] = [
 
 export function ClosingBar() {
   return (
-    <footer className="section-container border-line border-t">
+    <footer className="section-container border-line shrink-0 border-t">
       <div className="flex items-center gap-3 py-4 sm:gap-6">
         {/*
         <ChronospaceLogoIcon

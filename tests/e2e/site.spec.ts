@@ -213,6 +213,77 @@ test("initial release shows a logo-only header, hero, backers, and footer", asyn
   );
 });
 
+test("compact release fits one viewport and keeps captures clear of the copy", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  await page.evaluate(() => document.fonts.ready);
+
+  for (const [width, height] of [
+    [1920, 1080],
+    [1920, 720],
+    [1440, 900],
+    [1366, 768],
+    [1024, 768],
+    [390, 844],
+    [320, 568],
+  ]) {
+    await page.setViewportSize({ width, height });
+    const geometry = await page.evaluate(() => {
+      const email = document.querySelector('a[href^="mailto:"]')!;
+      const backers = document.querySelector(
+        'section[aria-label="Backed by"]',
+      )!;
+      const footer = document.querySelector("footer")!;
+      const cards = Array.from(
+        document.querySelectorAll("[data-float] article"),
+      );
+      return {
+        width: document.documentElement.scrollWidth,
+        height: document.documentElement.scrollHeight,
+        emailBottom: email.getBoundingClientRect().bottom,
+        backersTop: backers.getBoundingClientRect().top,
+        footerBottom: footer.getBoundingClientRect().bottom,
+        captures: cards.map((card) => {
+          const box = card.getBoundingClientRect();
+          return { top: box.top, bottom: box.bottom };
+        }),
+      };
+    });
+    expect(geometry.width, `${width}x${height}: horizontal overflow`).toBe(
+      width,
+    );
+    expect(geometry.height, `${width}x${height}: vertical overflow`).toBe(
+      height,
+    );
+    expect(geometry.footerBottom).toBeLessThanOrEqual(height);
+    for (const capture of geometry.captures) {
+      expect(capture.top).toBeGreaterThanOrEqual(geometry.emailBottom);
+      expect(capture.bottom).toBeLessThan(geometry.backersTop);
+    }
+
+    if (width < 768) {
+      for (const index of [1, 2, 3]) {
+        const button = page.getByRole("button", {
+          name: `Show capture ${index} of 3`,
+        });
+        await button.click();
+        await expect(button).toHaveAttribute("aria-current", "true");
+        await expect
+          .poll(() =>
+            page
+              .locator("[data-float]")
+              .evaluate((node) =>
+                Math.round(node.scrollLeft / node.clientWidth),
+              ),
+          )
+          .toBe(index - 1);
+      }
+    }
+  }
+});
+
 test("hero pointer interaction works without runtime errors", async ({
   page,
 }) => {

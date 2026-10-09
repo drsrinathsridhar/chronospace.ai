@@ -14,9 +14,8 @@ import { media } from "@/media.config";
 import { BackersFade } from "./backers-fade.client";
 import styles from "./backers.module.css";
 
-// The backing band: the last row of the first screen. The hero gives up
-// exactly `--spacing-backing-band` of the viewport (hero.tsx), so the band
-// closes the fold with the timecode ruler as its top border - the strip
+// The backing band sits between the hero and footer. It keeps its fixed
+// height while the hero takes the remaining viewport space. The strip
 // shares the ruler's section-container width, and a plain hairline closes
 // it underneath (client feedback round 3; the rule sits inside the band's
 // box, so the fold does not move). The label rides inside the strip the
@@ -103,7 +102,7 @@ const trackCopies = 4;
 
 export function Backers() {
   return (
-    <section aria-label="Backed by" className="section-container">
+    <section aria-label="Backed by" className="section-container shrink-0">
       <div
         className="sweep-reveal h-backing-band border-line flex items-center border-b"
         style={{ "--reveal-index": 7 }}

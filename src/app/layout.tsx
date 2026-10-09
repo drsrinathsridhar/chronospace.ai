@@ -62,7 +62,7 @@ export default function RootLayout({
         "--trail-opacity": tuning.heroTrail.opacity,
       }}
     >
-      <body className="bg-paper text-ink min-h-screen antialiased">
+      <body className="bg-paper text-ink min-h-svh antialiased">
         <script type="application/ld+json">{organizationJsonLd}</script>
         {children}
       </body>

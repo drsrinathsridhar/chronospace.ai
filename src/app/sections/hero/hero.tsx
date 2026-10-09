@@ -5,6 +5,7 @@ import { siteConfig } from "@/site.config";
 import { HeroCards } from "./hero-cards";
 import { HeroRoom } from "./hero-room";
 import { HeroTimeline } from "./hero-timeline";
+import styles from "./hero.module.css";
 
 // The first screen, and the whole argument in one view: a dark room with the
 // claim standing in the middle of it and the evidence standing inside it -
@@ -12,7 +13,8 @@ import { HeroTimeline } from "./hero-timeline";
 // room behind it (hero-cards.tsx) - and the timecode ruler underlining the
 // whole screen at its foot.
 //
-// The initial release shows the hero alone. At xl+ the headline stays centred on the back wall above the figures, measured in the site frame's cqw so it stays within the room beyond the 2560px cap.
+// The compact release reserves space for the backers and footer. The figures
+// scale to the space below the copy, including on wide, short windows.
 //
 // Everything arrives on the same band of light, in reading order - see
 // `shimmer-reveal` / `sweep-reveal` in globals.css. `--reveal-index` is that
@@ -27,7 +29,7 @@ import { HeroTimeline } from "./hero-timeline";
 const headline = ["World Models", "for the Physical World"];
 
 export function Hero() {
-  // Fill the viewport without reserving navbar or backers space. The mobile minimum leaves room for the headline and email link above the carousel, including on wider portrait screens.
+  // Keep a readable minimum on very short windows and at increased text sizes.
   //
   // `touch-pan-y`: a finger on the hero steers the room while it is down
   // (hero-room-eye.client.tsx). The browser keeps vertical swipes for the
@@ -47,7 +49,7 @@ export function Hero() {
   // engines take as "no filter", so it is sized away rather than hidden.
   return (
     <section
-      className="relative flex min-h-[max(min(100svh,87rem),calc(52.84cqw+2.5rem))] touch-pan-y flex-col overflow-clip max-md:min-h-[max(100svh,calc(27rem+min(90.5cqw,39rem)))] max-md:landscape:min-h-[calc(28rem+min(90.5cqw,22rem))]"
+      className={`${styles.hero} relative flex touch-pan-y flex-col overflow-clip`}
       data-trail-mode={tuning.heroTrail.mode}
       data-trail-colour={tuning.heroTrail.colour}
     >
@@ -58,23 +60,8 @@ export function Hero() {
       />
       <HeroRoom />
 
-      {/*
-       * At xl the copy leaves the flow and centres itself on the back wall,
-       * translated up by half its own height onto --copy-centre. The centre
-       * is the middle of the band the headline has to itself: from the
-       * wall's top edge, the cove line at 20.68% of the 48.4cqw plate
-       * (10.01cqw), down to the figures' heads on the one-line row, ~35.4cqw
-       * (hero-cards.tsx) - 22.7cqw. That is also, within a few pixels, where
-       * the headline stood while it shared a block centred on the wall's
-       * midline with the call to action - the height the client signed off -
-       * so losing the action moved the figures, not the words. Below xl the
-       * copy keeps the comp's padding and the flow, with the cards in a
-       * strip under it (md to xl) or one at a time on the floor line below
-       * it (under md).
-       */}
       <div
-        className="section-container relative flex flex-col items-center gap-6 pt-24 text-center md:pt-26 xl:absolute xl:inset-x-0 xl:top-(--copy-centre) xl:z-10 xl:-translate-y-1/2 xl:pt-0"
-        style={{ "--copy-centre": "22.7cqw" }}
+        className={`${styles.copy} section-container relative z-10 flex shrink-0 flex-col items-center gap-4 text-center`}
       >
         <h1 className="type-display-xs sm:type-display-sm lg:type-display-md flex max-w-174.5 flex-col">
           {/*
@@ -117,10 +104,12 @@ export function Hero() {
        * standing on the floor line, one figure a screen, with three of the
        * ruler's ticks under it to swipe or tap between (hero-cards.tsx).
        */}
-      <HeroCards />
+      <div className={styles.scene}>
+        <HeroCards />
+      </div>
 
       {/* The ruler meets the backers band so the logos sit between its two rules. */}
-      <div className="section-container relative mt-auto pt-10">
+      <div className="section-container relative shrink-0">
         <HeroTimeline showLabels={false} />
       </div>
     </section>

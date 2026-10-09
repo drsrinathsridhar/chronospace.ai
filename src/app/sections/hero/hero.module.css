@@ -1,0 +1,26 @@
+/* Flex sizing reserves the backers and footer at their natural heights. */
+.hero {
+  flex: 1;
+  min-height: 24rem;
+  padding-top: var(--navbar-height-rest);
+}
+
+.copy {
+  padding-top: clamp(1.5rem, 10svh, 7rem);
+}
+
+/* The figures measure the space left after the headline and contact link. */
+.scene {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-height: 10rem;
+  flex-direction: column;
+  container-type: size;
+}
+
+@media (width < 48rem) {
+  .copy {
+    padding-top: 1.5rem;
+  }
+}

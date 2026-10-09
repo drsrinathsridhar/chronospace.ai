@@ -19,13 +19,9 @@ import { HeroPager } from "./hero-pager.client";
 // (hero-cards.module.css), so the hover trades one filter for none and the
 // trail, a copy of the same pieces, inherits the same colour for free.
 //
-// The stand is the anchor: each card's bottom edge is pinned to a fraction
-// of the room plate's height (--card-feet), so the frame sits on the floor
-// line wherever the viewport puts it, and the whole card scales from that
-// bottom edge by its depth (--card-scale). Since feedback round 2 all three
-// stand on the same line at the same depth, so the two numbers are the same
-// for every card - the mechanism stays per card so a scatter is one edit
-// away.
+// The stand is the anchor: cards scale from their feet on the room's floor
+// line. The base width is capped by the scene height so the copy, funders,
+// and footer can share one viewport without clipping the captures.
 //
 // Two kinds of motion, both defined in hero-cards.module.css:
 //
@@ -49,35 +45,12 @@ import { HeroPager } from "./hero-pager.client";
 //   layer is lazy and asks for half the subject's resolution, being
 //   blurred anyway.
 //
-// Geometry: one line. All three feet stand on 109.17% of the plate height -
-// the floor line the manufacturing capture always stood on, now shared -
-// over a base card of 19.1cqw, the comp's 178.826px at the design width
-// grown 1.6x and measured in the site frame's cqw so the figures keep their
-// proportion to the room on any display (client feedback, round 2: with
-// the centre call to action gone, the figures stand in a row and grow a
-// step). The scales were 1.75 / 1.73 / 1.08, chosen so the PEOPLE in the
-// three pictures stood at one height (owner's request, 11 Sep 2026); the
-// client then read the dancer as tiny beside the other two and asked for
-// the flanking assets to come down so the three ASSETS feel matched
-// (feedback round 3, slide 2), so the scales are now 1.5 / 1.45 / 1.22 -
-// at 1496 the arm stands 303px, the cell 252, the dancer 239 (her body;
-// the robotics man is 143, the workers about 138). The comp's scatter was
-// 17.38%/39.71%/68.85% with the flanks a step deeper (feet 95.77%/95.93%,
-// scale 1.153) and the centre nearest (1.386). The row keeps its order -
-// robot left, dancer right, both client feedback - and is placed by what
-// shows, not by the invisible card boxes: the robot's pieces span 0..74% of
-// its body, the line 9..91%, the dancer 25..75%, and the 9-degree stances
-// foreshorten the flanks. The line's visible centre sits at exactly 50% of
-// the frame (client feedback round 3: "align the centre asset exactly to
-// the centre of the page"), which with its 81.1%-wide piece puts the card
-// at 36.15%; the room's vanishing point moved to 50% with it
-// (hero-room.module.css). The flanks stand at 8.05% / 68.4%: the robot
-// keeps the 8% margin the client saw, the dancer takes a little more air on
-// her side (visible 74..86%) because she is the narrower mass - equal gaps
-// of ~11 / 13% either side of the line read as balanced where equal
-// margins would have pushed her against the wall. Measured at 1496 with
-// the eye parked (--hero-wiggle 0): robot 8.0..28.1%, line 38.8..61.2%,
-// dancer 74.2..86.2%.
+// All three captures share a floor line 3rem above the ruler. Their visible
+// centres sit at 18.58%, 50%, and 80% of the frame; centring on the pieces
+// keeps those positions stable when height limits the card width. The base
+// room width is 19.1cqw, with depth scales 1.5 / 1.45 / 1.22 to preserve the
+// approved relative sizes of the robot, manufacturing cell, and dancer.
+//
 // With every card at the same depth the shift factors are one number:
 // physically eyeshift * -z / (P - z) at 30cqw in front of the plate plane,
 // with the room's P of 100cqw and its 8cqw / 5.1cqh travel, is -3.5cqw /
@@ -154,7 +127,7 @@ const cards: StandingCard[] = [
         aspect: "161 / 579",
       },
     ],
-    left: "8.05%",
+    left: "18.58%",
     centre: "36.74%",
     feet: 1.0917,
     scale: 1.5,
@@ -180,7 +153,7 @@ const cards: StandingCard[] = [
         aspect: "1232 / 923",
       },
     ],
-    left: "36.15%",
+    left: "50%",
     centre: "50%",
     feet: 1.0917,
     scale: 1.45,
@@ -207,7 +180,7 @@ const cards: StandingCard[] = [
         aspect: "864 / 1152",
       },
     ],
-    left: "68.4%",
+    left: "80%",
     centre: "49.71%",
     feet: 1.0917,
     scale: 1.22,
